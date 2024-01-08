@@ -16,7 +16,8 @@ export const getIsIndividual = (business_type: BusinessType) =>
   business_type === AccountTypeEnum.individual;
 
 export const validateBusinessType = (business_type: BusinessType) => {
-  if (!business_types.includes(business_type)) throw "Invalid business type";
+  if (!business_types.includes(business_type))
+    throw new Error("Invalid business type");
 };
 
 export const extractDOB = (dob_string: string) => {
@@ -32,13 +33,13 @@ export const extractDOB = (dob_string: string) => {
 };
 
 export const validateEmailClient = async (email: string) => {
-  if (!email) throw "Email is required";
+  if (!email) throw new Error("Email is required");
 
   const isValidByRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
       email
     );
-  if (!isValidByRegex) throw "Invalid email";
+  if (!isValidByRegex) throw new Error("Invalid email");
 };
 
 // export const validateEmailServer = async (email: string) => {
@@ -52,7 +53,7 @@ export const validateEmailClient = async (email: string) => {
 //     validateDisposable: true,
 //     validateSMTP: true,
 //   });
-//   if (!isValidByDeepValidator) throw "Invalid email";
+//   if (!isValidByDeepValidator) throw new Error("Invalid email");
 // };
 
 export const validateDOB = (dob: DOB) => {
@@ -77,14 +78,15 @@ export const validateDOB = (dob: DOB) => {
       ? age - 1 >= 18
       : age >= 18;
 
-  if (!isAbove18) throw "You must be 18 years or older to open an account";
+  if (!isAbove18)
+    throw new Error("You must be 18 years or older to open an account");
 };
 
 export const validateName = (type: string, name?: string) => {
-  if (!name) throw `${type} is required`;
+  if (!name) throw new Error(`${type} is required`);
 
   if (name.length < 2 || name.length > 50)
-    throw `${type} must be between 2 and 50 characters`;
+    throw new Error(`${type} must be between 2 and 50 characters`);
 };
 
 export const getAccountType = (business_type: BusinessType) => {

@@ -1,4 +1,5 @@
 import { business_types, platform_name } from "@/constants";
+import useLogin from "@/hooks/use-login";
 import useToken from "@/hooks/use-token";
 import { BusinessTypeEnum, RegisterFormValues } from "@/types";
 import {
@@ -33,6 +34,7 @@ export default function RegisterForm() {
     () => getIsIndividual(formValues.business_type),
     [formValues.business_type]
   );
+  const login = useLogin();
 
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -65,10 +67,15 @@ export default function RegisterForm() {
 
       // 3. Generate token(s)
       const tokens = await generateToken(business_type, person, company);
+      console.info("Tokens generated: ", tokens);
 
-      console.log(tokens);
+      // 4. Magic Auth
+      await login(person.email);
+      console.info("Logged in successfully");
+
+      // 5. Create account
     } catch (error: any) {
-      setFormResponse(error?.message ?? error ?? "Something went wrong");
+      setFormResponse(error?.message ?? "Something went wrong");
     } finally {
       setTimeout(() => {
         setFormResponse("");
