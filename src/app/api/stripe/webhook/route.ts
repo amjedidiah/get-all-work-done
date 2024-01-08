@@ -1,4 +1,5 @@
-import stripe from "@/app/lib/stripe";
+import { stripeSecret as stripe } from "@/lib/stripe";
+import { handleRequestError } from "@/utils";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -20,6 +21,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(null);
   } catch (error: any) {
-    console.error(error);
+    return handleRequestError(error, false);
   }
 }

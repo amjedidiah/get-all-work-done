@@ -1,50 +1,49 @@
-# todo
-
-## Meeting Discussion
-
-- [ ] Will contractors only be US-based?
-- [ ] Are contractors individuals only, or they can be individuals and businesses?
-- [ ] Which tax form is best for platform: 1099-MISC form or 1099-K form?
-
-- [ ] Issue with account creation
-- [ ] What database is the application currently using, so I can integrate with it?
+# Planning
 
 ## Decision Making
 
-Chose Stripe Connect Custom account with **_Connect Onboarding_** using guide from here: <https://stripe.com/en-gb-us/connect/pricing>, based on these particular client requirements:
+Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guide from here: <https://stripe.com/en-gb-us/connect/pricing>, based on these particular client requirements:
 
 - Custom contractor onboarding and client payment forms
-- Custom dashboards for contractors to manage their payouts
-- Ability to modify contractor payouts schedule
+- Custom dashboards to manage contractor payouts
+- Ability to modify contractor payout schedule
 - Ability to modify contractor account details
-
-## Implementation Requirements
-
-- Onboarding flow
-- User dashboard
-- Reporting functionality
-- Communication channels
 
 ## Implementation Steps
 
+- [Stripe Connect Account Creation](#stripe-connect-account-creation)
+- [Contractor Onboarding](#contractor-onboarding)
+- [Client payment flow](#client-payment-flow)
+- [Commission Calculation](#commission-calculation)
+- [Payout to Contractors](#payout-to-contractors)
+- [Configure Webhooks](#configure-webhooks)
+- [Fraud mitigation](#fraud-mitigation)
+- [Implement Frontend Integration](#implement-frontend-integration)
+- [Testing](#testing)
+- [Documentation](#documentation)
+<!-- - User dashboard
+- Reporting functionality
+- Communication channels -->
+
 ### Stripe Connect Account Creation
 
-> Stripe recommends to use account tokens
+- [x] Create Platform Custom accounts: done by Arjun
 
-- [ ] Create custom accounts for platform
+### Contractor Onboarding
 
-#### Create custom accounts for contractors
+> Stripe recommends using account tokens for account creation and update calls
 
-- [ ] Collect customer KYC documents (without showing Stripe branding) and submit to Stripe: SSN, account number
+- [ ] Create a contractor account with email, DOB, type(whether individual or business) and company_name for business type
+- [ ] Collect customer KYC documents (without showing Stripe branding) and submit to Stripe: SSN, account number, etc
 - [ ] API endpoints to securely receive contractor document uploads and handle the communication with Stripe
 - [ ] Provide means for contractors to download and reupload 1099 Tax documentation
-- [ ] Include in app's terms and service, a link to [Stripe Recipient Agreement](https://stripe.com/connect-account/legal/recipient), clearly stating that accepting current app terms includes accepting the Stripe recipient service agreement. This can be done by updating current terms and service with the following:
+- [ ] Include in the app's terms and service, a link to the [Stripe Recipient Agreement](https://stripe.com/connect-account/legal/recipient), clearly stating that accepting current app terms includes accepting the Stripe recipient service agreement. This can be done by updating current terms and service with the following:
 
 ```md
-[App name] use Stripe to make payouts to contractors. The Stripe Recipient Agreement applies to your receipt of such Payouts. To receive payouts from [App name], you must provide [App name] accurate andcomplete information about you and your business, and you authorize [App name] to share it and transaction information related to your payout with Stripe.
+GetAllWorkDone uses Stripe to make payouts to contractors. The Stripe Recipient Agreement applies to your receipt of such Payouts. To receive payouts from GetAllWorkDone, you must provide GetAllWorkDone accurate and complete information about you and your business, and you authorize GetAllWorkDone to share it and transaction information related to your payout with Stripe.
 ```
 
-- [ ] Indicate acceptance of service agreement to Stripe with upsate account call:
+- [ ] Indicate acceptance of service agreement to Stripe with updated account call
 
 ```js
 const account = await stripe.accounts.update("{{CONNECTED_ACCOUNT_ID}}", {
@@ -57,7 +56,7 @@ const account = await stripe.accounts.update("{{CONNECTED_ACCOUNT_ID}}", {
 
 - [ ] Provide means for contractors to re-agree to Stripe service agreement on transfer of account or change of Tax Number
 
-- [ ] Include Stripe acquirer disclosure in app's terms and service
+- [ ] Include Stripe acquirer disclosure in the app's terms and service
 
 ```md
 Acquirer Disclosure
@@ -69,21 +68,23 @@ Payment services are powered by Stripe, Inc. Stripe, Inc. is a Payment Facilitat
 - Wells Fargo Bank, N.A., P.O. Box 6079, Concord, CA 94524, +1-844-284-6834 (Payment Facilitator and ISO).
 ```
 
-- [ ] Include in app's privacy policy, a link to Stripe’s Privacy Policy and the following language:
+- [ ] Include in the app's privacy policy, a link to Stripe’s Privacy Policy and the following language:
 
 ```md
-When you provide personal data in connection with the [Payment Services: term to identify services Stripe provides to contractors], Stripe receives that personal data and processes it in accordance with [Stripe’s Privacy Policy](https://stripe.com/privacy).
+When you provide personal data in connection with the [Payment Services: term to identify services Stripe provides to contractors], Stripe receives that personal data and processes it following [Stripe’s Privacy Policy](https://stripe.com/privacy).
 ```
 
-> Communicate to contractors that their documents are processed securely through the app without explicitly mentioning Stripe, using clear branding and messaging to reinforce trust and confidence in the app.
-> For Stripe to lawfully process personal data according to your instructions, you can be legally required to provide additional disclosures or obtain additional consents. Talk to your lawyer about those possible disclosures and consents.
-> Additional cost of $2/month for every contractor accounts that has received at least one payout on the platform
-> Platform is entirely responsible for fraud detection and prevention, and as such will bear the losses from these
+#### Things to Note
+
+- Communicate to contractors that their documents are processed securely through the app without explicitly mentioning Stripe, using clear branding and messaging to reinforce trust and confidence in the app.
+- For Stripe to lawfully process personal data according to said instructions, you can be legally required to provide additional disclosures or obtain additional consent. Talk to your lawyer about those possible disclosures and consent.
+- Additional cost of $2/month for every contractor account that has received at least one payout on the platform.
+- The platform is entirely responsible for fraud detection and prevention and will bear these losses.
 
 ### Client payment flow
 
 - [ ] Collect and save client credit card details
-- [ ] Implement logic to charge cards on collection of details
+- [ ] Implement logic to charge cards on the collection of details
 - [ ] Implement logic to charge cards on client action
 
 > Communicate to clients that their transactions are processed securely through the app without explicitly mentioning Stripe, using clear branding and messaging to reinforce trust and confidence in the app.
@@ -92,23 +93,23 @@ When you provide personal data in connection with the [Payment Services: term to
 
 - [ ] Use Stripe application fees to automate commission deductions
 - [ ] Allow admin to edit percentage sharing
-- [ ] Allow admin to edit contractors connect account IDs
+- [ ] Allow admin to edit contractors' connect account IDs
 
 ### Payout to Contractors
 
-- [ ] Implement payouts to fixed contractor number using bank account or debit card
+- [ ] Implement payouts to fixed contractor numbers using a bank account or debit card
 - [ ] Implement payouts to dynamic contractor number
 - [ ] Implement weekly payout schedule
 - [ ] Implement instant payout schedule on request
 
-### Implement Frontend Integration
+### Configure Webhooks
 
-- [ ] Create API endpoints on the backend to handle communication with the frontend.
-- [ ] Update the frontend to trigger payment actions and display relevant information to users.
+- [ ] Setup [Connect webhooks](https://stripe.com/docs/connect/webhooks) on live mode
+- [ ] Listen for when Stripe shuts down an account using the `account.updated` event
 
-## Fraud mitigation
+### Fraud mitigation
 
-### Steps to prevent fraud
+#### Steps to Prevent Fraud
 
 - Verify contractors (within a certain amount of time) before they can do business through the app.
 - Examine a contractor’s online presence through social or professional profiles like Facebook, Twitter, or LinkedIn.
@@ -121,20 +122,40 @@ When you provide personal data in connection with the [Payment Services: term to
 - Add additional verifications to Connect onboarding and disable payouts or payments until the checks pass, using [Stripe Identity](https://stripe.com/docs/identity)
 - [Reject suspicious accounts](https://stripe.com/docs/api/account/reject)
 
-### Explore Using Radar with Connect
+#### Explore Using Radar with Connect
 
 <https://stripe.com/docs/connect/radar>
 
-### Webhooks
+### Implement Frontend Integration
 
-- [ ] Setup [Connect webhooks](https://stripe.com/docs/connect/webhooks) on live mode
-- [ ] Listen for when stripe shuts down an account using the `account.updated` event
+- [ ] Create API endpoints on the backend to communicate with the Flutter front end.
+- [ ] Update the Flutter front end to trigger payment actions and display relevant information to users.
 
 ### Testing
 
-- [ ] Test the entire payment flow in sandbox: verify that payments are correctly processed, commissions are calculated, and payouts are successful.
-- [ ] Test the entire payment flow in live environment: verify that payments are correctly processed, commissions are calculated, and payouts are successful.
+- [ ] Test the entire payment flow in the sandbox: verify that payments are correctly processed, commissions are calculated, and payouts are successful.
+- [ ] Test the entire payment flow in a live environment: verify that payments are correctly processed, commissions are calculated, and payouts are successful.
 
 ### Documentation
 
-- [ ] Document the integration process and provide clear instructions for ongoing maintenance.
+- [x] Document the integration process and provide clear instructions for ongoing maintenance.
+
+## Extras
+
+## Meeting Discussion
+
+- [x] Will contractors only be US-based? not only US-based, but start with US-based
+- [x] Are contractors individuals only, or can they be individuals and businesses? Both
+- [ ] Which tax form is best for the platform: the 1099-MISC form or the 1099-K form?
+- [x] What database is the application currently using, so I can integrate with it? MySQL | DynamoDB
+
+## Blockers
+
+- [ ] Issues with account creation
+
+## Resources
+
+- [Account Tokens](https://stripe.com/docs/connect/account-tokens#stripe-connected-account-agreement)
+- [Create an account token](https://stripe.com/docs/api/tokens/create_account)
+- [Create a person token](https://stripe.com/docs/api/tokens/create_person)
+- [Create an account](https://stripe.com/docs/api/accounts/create)
