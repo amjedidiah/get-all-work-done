@@ -1,48 +1,25 @@
-import stripe from "@/app/lib/stripe";
-import {
-  extractNames,
-  validateDOB,
-  validateName,
-  validateRequest,
-} from "@/app/utils";
-import type { NextRequest } from "next/server";
+import { verifyAuth } from "@/lib/auth";
+import { stripeSecret as stripe } from "@/lib/stripe";
+import { handleRequestError } from "@/utils";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-export type FirstAndLastNames = {
-  first_name: string;
-  last_name: string;
-};
-
-export type FullName = {
-  name: string;
-};
-
-export type DOB = {
-  day: number;
-  month: number;
-  year: number;
-};
-
-type AccountDetails = {
-  dob: DOB;
-} & (FirstAndLastNames | FullName);
-
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
-    // Check if request is valid JSON
-    validateRequest(request);
+    const account_token = headers().get("Account-Token");
+    const person_token = headers().get("Person-Token");
 
-    const { dob, ...rest }: AccountDetails = await request.json();
-    const { first_name, last_name } = extractNames(rest);
+    if (!account_token)
+      throw {
+        message: "Account token is required",
+        statusCode: 400,
+      };
 
-    // Validate fields
-    validateName(first_name);
-    validateName(last_name);
-    validateDOB(dob);
+    // TODO: Check if person and account exist on Stripe for this user first before creating one
 
-    // Create account
+    // Create account now with default country US
+    // TODO: Later on create account with user's country of operation
     const account = await stripe.accounts.create({
-      country: "US",
       type: "custom",
       capabilities: {
         tax_reporting_us_1099_misc: {
@@ -54,33 +31,39 @@ export async function POST(request: NextRequest) {
         transfers: {
           requested: true,
         },
+        card_payments: {
+          requested: true,
+        },
       },
-      business_type: "individual",
-      individual: {
-        first_name,
-        last_name,
-        dob: dob,
-      },
+      account_token,
     });
 
-    // TODO: Store account ID in DB
-    // const accountID = account.id;
+    const account_id = account.id;
+
+    // If person_token is present, associate business with person
+    const isPersonTokenValid =
+      person_token !== "undefined" && person_token !== "null";
+    if (person_token && isPersonTokenValid)
+      await stripe.accounts.createPerson(account_id, {
+        person_token,
+      });
+
+    const session = await verifyAuth();
+    const user_id = session?.user_id;
+
+    // TODO: Store account ID & issuer in DB
 
     return NextResponse.json(
       {
-        data: account,
-        message: "Connected account created",
+        data: { user_id, account },
+        message: `Connected account created`,
         error: false,
       },
       {
         status: 201,
       }
     );
-  } catch (error: any) {
-    console.error(error);
-    return NextResponse.json(
-      { data: null, message: error.message, error: true },
-      { status: error.statusCode ?? 500 }
-    );
+  } catch (error) {
+    return handleRequestError(error);
   }
 }

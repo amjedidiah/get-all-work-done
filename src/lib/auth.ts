@@ -1,6 +1,5 @@
 import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
-import { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 
 interface UserJwtPayload {
@@ -25,7 +24,7 @@ const getJwtSecretKey = () => {
 
 const getTokenCookie = () => cookies().get(TOKEN_NAME)?.value;
 
-export const verifyAuth = async (request: NextRequest) => {
+export const verifyAuth = async () => {
   try {
     const token = getTokenCookie();
     if (!token) return;

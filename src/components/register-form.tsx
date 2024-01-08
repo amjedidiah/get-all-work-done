@@ -74,6 +74,20 @@ export default function RegisterForm() {
       console.info("Logged in successfully");
 
       // 5. Create account
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("Account-Token", tokens.account_token!);
+      headers.append("Person-Token", tokens.person_token!);
+
+      const { data, message, error } = await fetch("/api/stripe/account", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({}),
+      }).then((res) => res.json());
+
+      if (error) throw new Error(message);
+
+      console.info("Account created: ", data);
     } catch (error: any) {
       setFormResponse(error?.message ?? "Something went wrong");
     } finally {
