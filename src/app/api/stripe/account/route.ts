@@ -2,10 +2,13 @@ import { verifyAuth } from "@/lib/auth";
 import { stripeSecret as stripe } from "@/lib/stripe";
 import { handleRequestError } from "@/utils";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
+    const session = await verifyAuth(request);
+    const user_id = session?.user_id!;
+
     const account_token = headers().get("Account-Token");
     const person_token = headers().get("Person-Token");
 
@@ -37,7 +40,6 @@ export async function POST() {
       },
       account_token,
     });
-
     const account_id = account.id;
 
     // If person_token is present, associate business with person
@@ -47,9 +49,6 @@ export async function POST() {
       await stripe.accounts.createPerson(account_id, {
         person_token,
       });
-
-    const session = await verifyAuth();
-    const user_id = session?.user_id;
 
     // TODO: Store account ID & issuer in DB
 

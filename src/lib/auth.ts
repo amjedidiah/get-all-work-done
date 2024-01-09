@@ -1,6 +1,6 @@
 import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
-import { cookies } from "next/headers";
+import type { NextRequest } from "next/server";
 
 interface UserJwtPayload {
   jti: string;
@@ -9,11 +9,9 @@ interface UserJwtPayload {
 }
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY!;
-export const TOKEN_NAME = process.env.TOKEN_NAME!;
+export const HEADER_NAME = process.env.HEADER_NAME!;
 
 const MAX_AGE_HOURS = 24; // 24 hours
-
-const MAX_AGE = 60 * 60 * MAX_AGE_HOURS; // 24 hours
 
 const getJwtSecretKey = () => {
   if (!JWT_SECRET_KEY || JWT_SECRET_KEY.length === 0)
@@ -22,43 +20,28 @@ const getJwtSecretKey = () => {
   return JWT_SECRET_KEY;
 };
 
-const getTokenCookie = () => cookies().get(TOKEN_NAME)?.value;
+export const verifyAuth = async (request: NextRequest) => {
+  const token = request.headers.get(HEADER_NAME);
+  if (!token) throw new Error("No token provided");
 
-export const verifyAuth = async () => {
-  try {
-    const token = getTokenCookie();
-    if (!token) return;
-
-    return await getSession(token);
-  } catch (error) {
-    console.error(error);
-    return;
-  }
+  return await getSession(token);
 };
 
-export const getSession = async (token?: string) => {
-  try {
-    if (!token) return;
+export const getSession = async (token: string) => {
+  const verified = await jwtVerify(
+    token,
+    new TextEncoder().encode(getJwtSecretKey())
+  );
+  if (!verified?.payload) throw new Error("Invalid token");
 
-    const verified = await jwtVerify(
-      token,
-      new TextEncoder().encode(getJwtSecretKey())
-    );
+  const session = verified.payload as UserJwtPayload;
 
-    if (!verified?.payload) throw new Error("Invalid token");
+  const data = {
+    user_id: session.user_id,
+    token,
+  };
 
-    const session = verified.payload as UserJwtPayload;
-
-    const data = {
-      user_id: session?.user_id,
-      token,
-    };
-
-    return data;
-  } catch (error) {
-    console.error(error);
-    return;
-  }
+  return data;
 };
 
 export const generateToken = async (issuer: string) => {
@@ -74,16 +57,20 @@ export const generateToken = async (issuer: string) => {
   return token;
 };
 
-export async function setUserCookie(token: string) {
-  cookies().set(TOKEN_NAME, token, {
-    maxAge: MAX_AGE,
-    path: "/",
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-  });
+export const getLocalTokenName = (user_id: string) =>
+  `${HEADER_NAME}_${user_id}`;
+
+export async function storeUserToken(token: string, user_id: string) {
+  const localTokenName = getLocalTokenName(user_id);
+  localStorage.setItem(localTokenName, token);
 }
 
-export const expireUserCookie = () => {
-  cookies().delete(TOKEN_NAME);
+export const expireUserToken = (user_id: string) => {
+  const localTokenName = getLocalTokenName(user_id);
+  localStorage.removeItem(localTokenName);
+};
+
+export const retrieveUserToken = (user_id: string) => {
+  const localTokenName = getLocalTokenName(user_id);
+  return localStorage.getItem(localTokenName);
 };

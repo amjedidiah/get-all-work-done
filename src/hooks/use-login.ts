@@ -2,6 +2,11 @@ import { useCallback } from "react";
 import { RPCError, RPCErrorCode } from "magic-sdk";
 import { magicPublishable as magic } from "@/lib/magic";
 
+type LoginData = {
+  token: string;
+  user_id: string;
+};
+
 export default function useLogin() {
   const handleLogin = useCallback(async (email: string) => {
     if (!magic) return;
@@ -9,15 +14,20 @@ export default function useLogin() {
     try {
       const didToken = await magic.auth.loginWithMagicLink({ email });
 
-      const res = await fetch("/api/auth/login", {
+      const { data, error, message } = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${didToken}`,
         },
-      });
+      }).then((res) => res.json());
 
-      if (!res.ok) throw new Error(await res.text());
+      if (error) throw new Error(message);
+
+      return {
+        token: data.token,
+        user_id: data.user_id,
+      } as LoginData;
     } catch (error) {
       console.error(error);
       if (error instanceof RPCError)

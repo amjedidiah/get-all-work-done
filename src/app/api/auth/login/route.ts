@@ -1,5 +1,5 @@
 import { magicSecret as magic } from "@/lib/magic";
-import { generateToken, setUserCookie } from "@/lib/auth";
+import { generateToken } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { handleRequestError } from "@/utils";
 
@@ -34,10 +34,9 @@ export async function POST(request: NextRequest) {
     // Create JWT
     const token = await generateToken(metadata.issuer);
 
-    // Set cookie
-    setUserCookie(token);
-
+    // Return token to store in local storage
     return NextResponse.json({
+      data: { token, user_id: metadata.issuer },
       message: "Logged in successfully",
       error: false,
     });

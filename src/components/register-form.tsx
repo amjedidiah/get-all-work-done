@@ -1,6 +1,7 @@
 import { business_types, platform_name } from "@/constants";
 import useLogin from "@/hooks/use-login";
 import useToken from "@/hooks/use-token";
+import { HEADER_NAME, storeUserToken } from "@/lib/auth";
 import { BusinessTypeEnum, RegisterFormValues } from "@/types";
 import {
   extractDOB,
@@ -70,14 +71,20 @@ export default function RegisterForm() {
       console.info("Tokens generated: ", tokens);
 
       // 4. Magic Auth
-      await login(person.email);
+      const res = await login(person.email);
       console.info("Logged in successfully");
+
+      // 5.Save Token
+      if (!res) throw new Error("Invalid token");
+      storeUserToken(res.token, res.user_id);
+      console.info("Token saved");
 
       // 5. Create account
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
       headers.append("Account-Token", tokens.account_token!);
       headers.append("Person-Token", tokens.person_token!);
+      headers.append(HEADER_NAME, res.token);
 
       const { data, message, error } = await fetch("/api/stripe/account", {
         method: "POST",
