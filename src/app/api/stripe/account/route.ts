@@ -3,9 +3,11 @@ import { stripeSecret as stripe } from "@/lib/stripe";
 import { handleRequestError } from "@/utils";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import User from "@/db/models/user";
 
 export async function POST(request: NextRequest) {
   try {
+    const { email } = await request.json();
     const session = await verifyAuth(request);
     const user_id = session?.user_id!;
 
@@ -18,7 +20,14 @@ export async function POST(request: NextRequest) {
         statusCode: 400,
       };
 
-    // TODO: Check if person and account exist on Stripe for this user first before creating one
+    // Check if user exist in db first before creating account
+    const existingUser = await User.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+
+    if (existingUser) throw new Error("User already exists");
 
     // Create account now with default country US
     // TODO: Later on create account with user's country of operation
@@ -50,7 +59,12 @@ export async function POST(request: NextRequest) {
         person_token,
       });
 
-    // TODO: Store account ID & issuer in DB
+    // Store account ID & issuer in DB
+    await User.create({
+      id: user_id,
+      accountId: account_id,
+      email,
+    });
 
     return NextResponse.json(
       {

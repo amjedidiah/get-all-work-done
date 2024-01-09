@@ -1,7 +1,7 @@
 import { business_types, platform_name } from "@/constants";
 import useLogin from "@/hooks/use-login";
 import useToken from "@/hooks/use-token";
-import { HEADER_NAME, storeUserToken } from "@/lib/auth";
+import { NEXT_PUBLIC_HEADER_NAME, storeUserToken } from "@/lib/auth";
 import { BusinessTypeEnum, RegisterFormValues } from "@/types";
 import {
   extractDOB,
@@ -11,7 +11,9 @@ import {
   validateEmailClient,
   validateName,
 } from "@/utils";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 const initialValues: RegisterFormValues = {
   email: "",
@@ -36,6 +38,7 @@ export default function RegisterForm() {
     [formValues.business_type]
   );
   const login = useLogin();
+  const router = useRouter();
 
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -47,9 +50,12 @@ export default function RegisterForm() {
     });
   };
 
-  async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const formSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    handleFormSubmit();
+  };
 
+  const handleFormSubmit = useDebouncedCallback(async () => {
     try {
       // 1. Format values
       const { business_type, company_name, ...person } =
@@ -71,12 +77,12 @@ export default function RegisterForm() {
       console.info("Tokens generated: ", tokens);
 
       // 4. Magic Auth
-      const res = await login(person.email);
+      const resp = await login(person.email);
       console.info("Logged in successfully");
 
       // 5.Save Token
-      if (!res) throw new Error("Invalid token");
-      storeUserToken(res.token, res.user_id);
+      if (!resp?.token) throw new Error("Invalid token");
+      storeUserToken(resp.token);
       console.info("Token saved");
 
       // 5. Create account
@@ -84,17 +90,20 @@ export default function RegisterForm() {
       headers.append("Content-Type", "application/json");
       headers.append("Account-Token", tokens.account_token!);
       headers.append("Person-Token", tokens.person_token!);
-      headers.append(HEADER_NAME, res.token);
+      headers.append(NEXT_PUBLIC_HEADER_NAME, resp.token);
 
       const { data, message, error } = await fetch("/api/stripe/account", {
         method: "POST",
         headers,
-        body: JSON.stringify({}),
+        body: JSON.stringify({ email: person.email }),
       }).then((res) => res.json());
 
       if (error) throw new Error(message);
 
       console.info("Account created: ", data);
+
+      // 6. Redirect to onboarding
+      router.push("/onboarding");
     } catch (error: any) {
       setFormResponse(error?.message ?? "Something went wrong");
     } finally {
@@ -102,7 +111,7 @@ export default function RegisterForm() {
         setFormResponse("");
       }, 5000);
     }
-  }
+  }, 1500);
 
   useEffect(() => {
     if (isIndividual)
@@ -113,7 +122,7 @@ export default function RegisterForm() {
   }, [isIndividual]);
 
   return (
-    <form className="grid gap-5 max-w-xl" onSubmit={handleFormSubmit}>
+    <form className="grid gap-5 max-w-xl" onSubmit={formSubmit}>
       <div className="grid gap-1">
         <label className="uppercase text-xs font-semibold" htmlFor="email">
           Personal Email Address

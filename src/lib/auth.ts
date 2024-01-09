@@ -9,7 +9,7 @@ interface UserJwtPayload {
 }
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY!;
-export const HEADER_NAME = process.env.HEADER_NAME!;
+export const NEXT_PUBLIC_HEADER_NAME = process.env.NEXT_PUBLIC_HEADER_NAME!;
 
 const MAX_AGE_HOURS = 24; // 24 hours
 
@@ -21,7 +21,7 @@ const getJwtSecretKey = () => {
 };
 
 export const verifyAuth = async (request: NextRequest) => {
-  const token = request.headers.get(HEADER_NAME);
+  const token = request.headers.get(NEXT_PUBLIC_HEADER_NAME);
   if (!token) throw new Error("No token provided");
 
   return await getSession(token);
@@ -57,20 +57,18 @@ export const generateToken = async (issuer: string) => {
   return token;
 };
 
-export const getLocalTokenName = (user_id: string) =>
-  `${HEADER_NAME}_${user_id}`;
+export const storeUserToken = async (token: string) =>
+  localStorage.setItem(NEXT_PUBLIC_HEADER_NAME, token);
 
-export async function storeUserToken(token: string, user_id: string) {
-  const localTokenName = getLocalTokenName(user_id);
-  localStorage.setItem(localTokenName, token);
-}
-
-export const expireUserToken = (user_id: string) => {
-  const localTokenName = getLocalTokenName(user_id);
-  localStorage.removeItem(localTokenName);
+export const expireUserToken = () => {
+  localStorage.removeItem(NEXT_PUBLIC_HEADER_NAME);
 };
 
-export const retrieveUserToken = (user_id: string) => {
-  const localTokenName = getLocalTokenName(user_id);
-  return localStorage.getItem(localTokenName);
+export const retrieveUserToken = () =>
+  localStorage.getItem(NEXT_PUBLIC_HEADER_NAME);
+
+export const getAuthStatus = () => {
+  const token = retrieveUserToken();
+
+  return !!token;
 };
