@@ -5,6 +5,7 @@ class User extends Model {
   public id!: string;
   public accountId!: string;
   public email!: string;
+  public isOnboarded!: boolean;
 }
 
 User.init(
@@ -21,6 +22,11 @@ User.init(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    isOnboarded: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   {

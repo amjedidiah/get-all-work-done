@@ -1,19 +1,10 @@
 "use client";
 import Article from "@/components/shared/article";
 import Section from "@/components/shared/section";
-import useAuth from "@/hooks/use-auth";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import useLogout from "@/hooks/use-logout";
 
 export default function Logout() {
-  const router = useRouter();
-  const { isAuthed, expireUserToken } = useAuth();
-
-  useEffect(() => {
-    if (isAuthed) expireUserToken();
-
-    router.push("/");
-  }, [expireUserToken, isAuthed, router]);
+  useLogout();
 
   return (
     <Section>

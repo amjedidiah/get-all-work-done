@@ -38,3 +38,44 @@ export async function GET(request: NextRequest) {
     return handleRequestError(error);
   }
 }
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const { dbUpdate, stripeUpdate } = await request.json();
+    const { user_id } = await verifyAuth(request);
+
+    const user = await User.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+    if (!user)
+      throw {
+        statusCode: 404,
+        message: "User not found",
+      };
+
+    for (const key in dbUpdate) {
+      (user as any)[key] = dbUpdate[key];
+    }
+    console.log({ user });
+    await user.save();
+
+    // TODO: Update stripe
+    // const updatedStripeUser = await stripe.accounts.update(
+    //   user.accountId,
+    //   stripeUpdate
+    // );
+
+    return NextResponse.json({
+      data: user.dataValues,
+      message: "User has been updated successfully",
+      error: false,
+    });
+  } catch (error: any) {
+    return handleRequestError(error);
+  }
+}
+
+
+

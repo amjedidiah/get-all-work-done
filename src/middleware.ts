@@ -7,7 +7,6 @@ export function middleware(request: NextRequest) {
     ?.includes("application/json");
   const isPOST = request.method === "POST";
 
-  console.info({ isNotJSON, isPOST });
   if (isNotJSON && isPOST)
     return NextResponse.json(
       { data: null, message: "Invalid content type", error: true },
