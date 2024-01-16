@@ -1,125 +1,15 @@
+"use client";
 import { business_types, platform_name } from "@/constants";
-import useLogin from "@/hooks/use-login";
-import useToken from "@/hooks/use-token";
-import { NEXT_PUBLIC_HEADER_NAME, storeUserToken } from "@/lib/auth";
-import { BusinessTypeEnum, RegisterFormValues } from "@/types";
-import {
-  extractDOB,
-  getIsIndividual,
-  validateBusinessType,
-  validateDOB,
-  validateEmailClient,
-  validateName,
-} from "@/utils";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
-
-const initialValues: RegisterFormValues = {
-  email: "",
-  dob_string: "",
-  business_type: BusinessTypeEnum.individual,
-  company_name: "",
-};
-
-const formatValues = ({ dob_string, ...rest }: RegisterFormValues) => {
-  const dob = extractDOB(dob_string);
-
-  return { ...rest, dob };
-};
+import useRegisterForm from "@/hooks/use-register-form";
 
 export default function RegisterForm() {
-  const generateToken = useToken();
-  const [formValues, setFormValues] =
-    useState<RegisterFormValues>(initialValues);
-  const [formResponse, setFormResponse] = useState("");
-  const isIndividual = useMemo(
-    () => getIsIndividual(formValues.business_type),
-    [formValues.business_type]
-  );
-  const login = useLogin();
-  const router = useRouter();
-
-  const handleFormChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = event.currentTarget;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-  };
-
-  const formSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    handleFormSubmit();
-  };
-
-  const handleFormSubmit = useDebouncedCallback(async () => {
-    try {
-      // 1. Format values
-      const { business_type, company_name, ...person } =
-        formatValues(formValues);
-      const company = company_name
-        ? {
-            name: company_name,
-          }
-        : undefined;
-
-      // 2. Validations
-      await validateEmailClient(person.email);
-      validateDOB(person.dob);
-      validateBusinessType(business_type);
-      if (!isIndividual) validateName("Company Name", company_name);
-
-      // 3. Generate token(s)
-      const tokens = await generateToken(business_type, person, company);
-      console.info("Tokens generated: ", tokens);
-
-      // 4. Magic Auth
-      const resp = await login(person.email);
-      console.info("Logged in successfully");
-
-      // 5.Save Token
-      if (!resp?.token) throw new Error("Invalid token");
-      storeUserToken(resp.token);
-      console.info("Token saved");
-
-      // 5. Create account
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      headers.append("Account-Token", tokens.account_token!);
-      headers.append("Person-Token", tokens.person_token!);
-      headers.append(NEXT_PUBLIC_HEADER_NAME, resp.token);
-
-      const { data, message, error } = await fetch("/api/stripe/account", {
-        method: "POST",
-        headers,
-        body: JSON.stringify({ email: person.email }),
-      }).then((res) => res.json());
-
-      if (error) throw new Error(message);
-
-      console.info("Account created: ", data);
-
-      // 6. Redirect to onboarding
-      router.push("/onboarding");
-    } catch (error: any) {
-      setFormResponse(error?.message ?? "Something went wrong");
-    } finally {
-      setTimeout(() => {
-        setFormResponse("");
-      }, 5000);
-    }
-  }, 1500);
-
-  useEffect(() => {
-    if (isIndividual)
-      setFormValues((prev) => ({
-        ...prev,
-        company_name: "",
-      }));
-  }, [isIndividual]);
+  const {
+    formSubmit,
+    handleFormChange,
+    formValues,
+    formResponse,
+    isIndividual,
+  } = useRegisterForm();
 
   return (
     <form className="grid gap-5 max-w-xl" onSubmit={formSubmit}>
@@ -198,6 +88,32 @@ export default function RegisterForm() {
       <button className="bg-slate-700 text-white px-4 py-2 w-fit uppercase font-semibold">
         Submit
       </button>
+
+      {/*/Disabled checked checkbox for agreeing to terms and conditions */}
+      <div className="flex items-center mt-5">
+        <input
+          className="mr-2"
+          type="checkbox"
+          name="agree_to_terms"
+          id="agree_to_terms"
+          value="true"
+          checked
+          disabled
+        />
+        <label className="text-xs" htmlFor="agree_to_terms">
+          I agree to the{" "}
+          <a
+            className="text-blue-500 underline"
+            href="https://www.notion.so/Terms-of-Service-916770687908
+          -1865014e909648468987056c2862
+          41621"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Terms of Service and Privacy Policy
+          </a>
+        </label>
+      </div>
 
       <p>{formResponse}</p>
     </form>

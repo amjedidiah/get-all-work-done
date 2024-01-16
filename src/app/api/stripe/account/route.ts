@@ -8,8 +8,7 @@ import User from "@/db/models/user";
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
-    const session = await verifyAuth(request);
-    const user_id = session?.user_id!;
+    const { user_id } = await verifyAuth(request);
 
     const account_token = headers().get("Account-Token");
     const person_token = headers().get("Person-Token");

@@ -7,7 +7,11 @@ export const handleRequestError = (error: any, shouldRespond = true) => {
 
   if (shouldRespond)
     return NextResponse.json(
-      { data: null, message: error.message, error: true },
+      {
+        data: null,
+        message: error.message,
+        error: true,
+      },
       { status: error.statusCode ?? 500 }
     );
 };
@@ -31,30 +35,6 @@ export const extractDOB = (dob_string: string) => {
     year: dateObject.getFullYear(),
   } as DOB;
 };
-
-export const validateEmailClient = async (email: string) => {
-  if (!email) throw new Error("Email is required");
-
-  const isValidByRegex =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
-      email
-    );
-  if (!isValidByRegex) throw new Error("Invalid email");
-};
-
-// export const validateEmailServer = async (email: string) => {
-//   validateEmailClient(email);
-
-//   const isValidByDeepValidator = await validate({
-//     email,
-//     validateRegex: true,
-//     validateMx: true,
-//     validateTypo: false,
-//     validateDisposable: true,
-//     validateSMTP: true,
-//   });
-//   if (!isValidByDeepValidator) throw new Error("Invalid email");
-// };
 
 export const validateDOB = (dob: DOB) => {
   // Extract day, month, and year from the dob
@@ -93,3 +73,5 @@ export const getAccountType = (business_type: BusinessType) => {
   const isIndividual = getIsIndividual(business_type);
   return isIndividual ? AccountTypeEnum.individual : AccountTypeEnum.company;
 };
+
+export const isClient = typeof window !== "undefined";

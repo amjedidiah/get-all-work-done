@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:secure": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -18,7 +19,6 @@
     "@stripe/react-stripe-js": "^2.4.0",
     "@stripe/stripe-js": "^2.2.2",
     "@types/sequelize": "^4.28.19",
-    "deep-email-validator": "^0.1.21",
     "jose": "^5.2.0",
     "magic-sdk": "^21.5.0",
     "mysql2": "^3.7.0",

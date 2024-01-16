@@ -9,7 +9,7 @@ interface UserJwtPayload {
 }
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY!;
-export const NEXT_PUBLIC_HEADER_NAME = process.env.NEXT_PUBLIC_HEADER_NAME!;
+export const HEADER_NAME = process.env.NEXT_PUBLIC_HEADER_NAME!;
 
 const MAX_AGE_HOURS = 24; // 24 hours
 
@@ -21,7 +21,7 @@ const getJwtSecretKey = () => {
 };
 
 export const verifyAuth = async (request: NextRequest) => {
-  const token = request.headers.get(NEXT_PUBLIC_HEADER_NAME);
+  const token = request.headers.get(HEADER_NAME);
   if (!token) throw new Error("No token provided");
 
   return await getSession(token);
@@ -35,6 +35,7 @@ export const getSession = async (token: string) => {
   if (!verified?.payload) throw new Error("Invalid token");
 
   const session = verified.payload as UserJwtPayload;
+  if (!session.user_id) throw new Error("Invalid token");
 
   const data = {
     user_id: session.user_id,
@@ -55,20 +56,4 @@ export const generateToken = async (issuer: string) => {
     .sign(new TextEncoder().encode(getJwtSecretKey()));
 
   return token;
-};
-
-export const storeUserToken = async (token: string) =>
-  localStorage.setItem(NEXT_PUBLIC_HEADER_NAME, token);
-
-export const expireUserToken = () => {
-  localStorage.removeItem(NEXT_PUBLIC_HEADER_NAME);
-};
-
-export const retrieveUserToken = () =>
-  localStorage.getItem(NEXT_PUBLIC_HEADER_NAME);
-
-export const getAuthStatus = () => {
-  const token = retrieveUserToken();
-
-  return !!token;
 };

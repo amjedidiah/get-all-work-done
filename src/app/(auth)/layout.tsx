@@ -6,9 +6,11 @@ export default function AuthLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const title = useMemo(
     () =>
-      pathname === "/register"
-        ? "Register an account"
-        : "Login to your account",
+      ({
+        "/register": "Register an account",
+        "/login": "Login to your account",
+        "/onboarding": "Onboarding",
+      }[pathname] || ""),
     [pathname]
   );
 

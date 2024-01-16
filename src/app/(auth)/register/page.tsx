@@ -1,6 +1,6 @@
 "use client";
 import RegisterForm from "@/components/register-form";
-import { getAuthStatus } from "@/lib/auth";
+import useAuth from "@/hooks/use-auth";
 import { stripePublishable } from "@/lib/stripe";
 import { Elements } from "@stripe/react-stripe-js";
 import { useRouter } from "next/navigation";
@@ -8,11 +8,11 @@ import { useEffect } from "react";
 
 export default function Register() {
   const router = useRouter();
+  const { isAuthed } = useAuth();
 
   useEffect(() => {
-    const isAuthed = getAuthStatus();
     if (isAuthed) router.push("/onboarding");
-  }, [router]);
+  }, [isAuthed, router]);
 
   return (
     <section>
