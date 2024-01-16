@@ -2,7 +2,7 @@ import { HEADER_NAME } from "@/lib/auth";
 import { isClient } from "@/utils";
 
 export default function useAuth() {
-  const storeUserToken = async (token: string) =>
+  const storeUserToken = (token: string) =>
     localStorage.setItem(HEADER_NAME, token);
 
   const expireUserToken = () => localStorage.removeItem(HEADER_NAME);

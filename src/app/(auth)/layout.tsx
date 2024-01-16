@@ -1,4 +1,6 @@
 "use client";
+import Article from "@/components/shared/article";
+import Section from "@/components/shared/section";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useMemo } from "react";
 
@@ -16,11 +18,11 @@ export default function AuthLayout({ children }: PropsWithChildren) {
 
   return (
     <>
-      <section className="py-8">
-        <article className="container mx-auto px-4 lg:px-8">
+      <Section>
+        <Article>
           <h1 className="text-4xl">{title}</h1>
-        </article>
-      </section>
+        </Article>
+      </Section>
 
       {children}
     </>

@@ -1,5 +1,7 @@
 "use client";
 import RegisterForm from "@/components/register-form";
+import Article from "@/components/shared/article";
+import Section from "@/components/shared/section";
 import useAuth from "@/hooks/use-auth";
 import { stripePublishable } from "@/lib/stripe";
 import { Elements } from "@stripe/react-stripe-js";
@@ -15,12 +17,12 @@ export default function Register() {
   }, [isAuthed, router]);
 
   return (
-    <section>
-      <article className="container mx-auto px-4 lg:px-8">
+    <Section>
+      <Article>
         <Elements stripe={stripePublishable}>
           <RegisterForm />
         </Elements>
-      </article>
-    </section>
+      </Article>
+    </Section>
   );
 }

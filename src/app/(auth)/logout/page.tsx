@@ -1,4 +1,6 @@
 "use client";
+import Article from "@/components/shared/article";
+import Section from "@/components/shared/section";
 import useAuth from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -14,10 +16,10 @@ export default function Logout() {
   }, [expireUserToken, isAuthed, router]);
 
   return (
-    <section>
-      <article className="container mx-auto px-4 lg:px-8">
+    <Section>
+      <Article>
         <p>Logging you out...</p>
-      </article>
-    </section>
+      </Article>
+    </Section>
   );
 }

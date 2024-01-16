@@ -28,3 +28,7 @@ export type RegisterFormValues = {
   business_type: BusinessType;
   company_name?: string;
 };
+
+export type LoginFormValues = {
+  email: string;
+};

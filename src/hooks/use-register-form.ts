@@ -87,7 +87,7 @@ export default function useRegisterForm() {
 
       // 5.Save Token
       if (!resp?.token) throw new Error("Invalid token");
-      await storeUserToken(resp.token);
+      storeUserToken(resp.token);
       console.info("Token saved");
 
       // 5. Create account
