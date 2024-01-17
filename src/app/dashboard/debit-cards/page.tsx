@@ -8,28 +8,28 @@ import {
   TableBody,
   Table,
 } from "@/components/ui/table";
-import BankAccountForm from "@/components/bank-account-form";
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePublishable } from "@/lib/stripe";
 import useExternalAccounts from "@/hooks/use-external-accounts";
+import DebitCardForm from "@/components/debit-card-form";
 
 export default function Payouts() {
   const {
     externalAccounts,
     handleDeleteExternalAccount,
     handleMakeDefaultExternalAccount,
-  } = useExternalAccounts("bank_account");
+  } = useExternalAccounts("card");
 
   return (
     <main className="flex-1 p-4 md:p-6 overflow-auto grid gap-6">
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>New Bank Account</CardTitle>
+            <CardTitle>New Debit Card</CardTitle>
           </CardHeader>
           <CardContent>
             <Elements stripe={stripePublishable}>
-              <BankAccountForm />
+              <DebitCardForm />
             </Elements>
           </CardContent>
         </Card>
@@ -43,9 +43,12 @@ export default function Payouts() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Bank Name</TableHead>
+                  <TableHead>Brand</TableHead>
                   <TableHead>Last 4</TableHead>
-                  <TableHead>Routing Number</TableHead>
+                  <TableHead>
+                    Expiration
+                    <span className="hidden">expiration month and year</span>
+                  </TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Payout Methods</TableHead>
                   <TableHead>Actions</TableHead>
@@ -61,12 +64,14 @@ export default function Payouts() {
                     default_for_currency,
                     ...rest
                   }) => {
-                    if ("routing_number" in rest)
+                    if ("brand" in rest)
                       return (
                         <TableRow key={id}>
-                          <TableCell>{rest.bank_name}</TableCell>
+                          <TableCell>{rest.brand}</TableCell>
                           <TableCell>{last4}</TableCell>
-                          <TableCell>{rest.routing_number}</TableCell>
+                          <TableCell>
+                            {rest.exp_month} / {rest.exp_year}
+                          </TableCell>
                           <TableCell>{status}</TableCell>
                           <TableCell className="flex flex-col lg:flex-row flex-wrap gap-2">
                             {available_payout_methods?.map((item) => (

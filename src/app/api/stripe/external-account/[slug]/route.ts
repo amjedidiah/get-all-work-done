@@ -29,7 +29,7 @@ export async function DELETE(
 
     return NextResponse.json({
       data: { deleted },
-      message: "Bank account deleted successfully",
+      message: "External account deleted successfully",
       error: false,
     });
   } catch (error) {
@@ -65,7 +65,7 @@ export async function PATCH(
 
     return NextResponse.json({
       data: { updated },
-      message: "Bank account has been made default",
+      message: "External account has been made default",
       error: false,
     });
   } catch (error) {

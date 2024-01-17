@@ -1,4 +1,11 @@
-import { AccountTypeObject, Individual, BusinessType, Company } from "@/types";
+import {
+  AccountTypeObject,
+  Individual,
+  BusinessType,
+  Company,
+  ExternalAccountObject,
+  ExternalAccount,
+} from "@/types";
 import { getAccountType, getIsIndividual, validateBusinessType } from "@/utils";
 import { useStripe } from "@stripe/react-stripe-js";
 import { useCallback } from "react";
@@ -22,6 +29,8 @@ export default function useToken() {
         [account_type]: account_type_object,
       });
 
+      if (accountRes.error) throw new Error(accountRes.error.message);
+
       return accountRes.token?.id;
     },
     [stripe]
@@ -34,6 +43,8 @@ export default function useToken() {
         throw new Error("Person data is required to create person token");
 
       const personRes = await stripe.createToken("person", person);
+
+      if (personRes.error) throw new Error(personRes.error.message);
 
       return personRes.token?.id;
     },
@@ -76,22 +87,31 @@ export default function useToken() {
     [generateAccountToken, generatePersonToken]
   );
 
-  const generateBankAccountToken = useCallback(
-    async (accountDetails: any) => {
+  const generateExternalAccountToken = useCallback(
+    async (
+      externalAccountDetails: Partial<ExternalAccount>,
+      tokenType: ExternalAccountObject
+    ) => {
       if (!stripe) throw new Error("An error occurred. Try again...");
-      if (!accountDetails)
-        throw new Error("Account details are required to create bank token");
+      if (!externalAccountDetails)
+        throw new Error(
+          "External account details are required to create external account token"
+        );
 
-      const bankRes = await stripe.createToken("bank_account", {
+      const externalAccountRes = await stripe.createToken(tokenType as any, {
         country: "US",
         currency: "usd",
-        ...accountDetails,
+        object: tokenType,
+        ...externalAccountDetails,
       });
 
-      return bankRes.token?.id;
+      if (externalAccountRes.error)
+        throw new Error(externalAccountRes.error.message);
+
+      return externalAccountRes.token?.id;
     },
     [stripe]
   );
 
-  return { generateBusinessToken, generateBankAccountToken };
+  return { generateBusinessToken, generateExternalAccountToken };
 }

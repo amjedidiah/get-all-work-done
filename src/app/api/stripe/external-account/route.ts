@@ -1,11 +1,15 @@
 import User from "@/db/models/user";
 import { verifyAuth } from "@/lib/auth";
 import { stripeSecret as stripe } from "@/lib/stripe";
+import { ExternalAccountObject } from "@/types";
 import { handleRequestError } from "@/utils";
 import { headers } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
-const listBankAccounts = async (accountId: string) => {
+const listExternalAccountsType = async (
+  accountId: string,
+  type: ExternalAccountObject
+) => {
   const account = await stripe.accounts.retrieve(accountId);
   if (!account)
     throw {
@@ -14,11 +18,11 @@ const listBankAccounts = async (accountId: string) => {
     };
 
   const externalAccounts = account.external_accounts?.data || [];
-  const bankAccounts = externalAccounts.filter(
-    ({ object }) => object === "bank_account"
+  const externalAccountsType = externalAccounts.filter(
+    ({ object }) => object === type
   );
 
-  return bankAccounts;
+  return externalAccountsType;
 };
 
 export async function POST(request: NextRequest) {
@@ -36,11 +40,11 @@ export async function POST(request: NextRequest) {
         message: "User not found",
       };
 
-    const external_account = headers().get("Bank-Account-Token");
+    const external_account = headers().get("External-Account-Token");
     if (!external_account)
       throw {
         statusCode: 400,
-        message: "External account and bank name are required",
+        message: "External account token is required",
       };
 
     const externalAccount = await stripe.accounts.createExternalAccount(
@@ -55,7 +59,7 @@ export async function POST(request: NextRequest) {
         data: {
           externalAccount,
         },
-        message: "Bank account created successfully",
+        message: "External account created successfully",
         error: false,
       },
       {
@@ -69,6 +73,11 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = request.nextUrl;
+    const type = searchParams.get("type");
+
+    if (!type) throw { statusCode: 400, message: "Type is required" };
+
     const { user_id } = await verifyAuth(request);
 
     const user = await User.findOne({
@@ -82,13 +91,16 @@ export async function GET(request: NextRequest) {
         message: "User not found",
       };
 
-    const bankAccounts = await listBankAccounts(user.accountId);
+    const externalAccountsType = await listExternalAccountsType(
+      user.accountId,
+      type as ExternalAccountObject
+    );
 
     return NextResponse.json({
       data: {
-        bankAccounts,
+        externalAccountsType,
       },
-      message: "Bank accounts retrieved successfully",
+      message: `${type}s retrieved successfully"`,
       error: false,
     });
   } catch (error) {

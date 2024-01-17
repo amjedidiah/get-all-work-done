@@ -38,4 +38,18 @@ export type BankAccountFormValues = {
   routing_number: string;
 };
 
+export type DebitCardFormValues = {
+  default_for_currency: boolean;
+
+  expiry: string;
+  number: string;
+  cvc: string;
+
+  name: string;
+};
+
 export type BankAccount = Stripe.BankAccount;
+
+export type ExternalAccount = Stripe.ExternalAccount;
+
+export type ExternalAccountObject = Stripe.ExternalAccount["object"];

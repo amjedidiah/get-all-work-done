@@ -36,7 +36,7 @@ Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guid
 - [x] Indicate acceptance of platform's service agreement which should include Stripe's service agreement
 - [x] Create a contractor account with email, DOB, type(whether individual or business) and company_name for business type
 - [x] Collect customer KYC details (without showing Stripe branding) and submit to Stripe
-- [ ] Collect customer account details
+- [x] Collect customer account details
 - [ ] API endpoints to securely receive contractor document uploads and handle the communication with Stripe
 - [ ] Provide means for contractors to download and reupload 1099 Tax documentation
 - [ ] Provide means for contractors to re-agree to Stripe service agreement on transfer of account or change of Tax Number
@@ -74,6 +74,7 @@ Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guid
 - [ ] Setup [Connect webhooks](https://stripe.com/docs/connect/webhooks) on live mode
 - [ ] Listen for `account.updated` webhook events for when Stripe shuts down an account
 - [ ] Listen for `account.updated` webhook events to detect changes to capability states based on verification of onboarding details
+- [ ] Listen for `payout.created`, `payout.updated`, `payout.paid` `payout.failed` events
 
 ### Fraud mitigation
 
@@ -160,11 +161,17 @@ When you provide personal data in connection with the [Payment Services: term to
 - [Customize Embedded Components](https://stripe.com/docs/connect/customize-connect-embedded-components)
 - [API-based Onboarding](https://stripe.com/docs/connect/custom/onboarding#api-based-onboarding)
 - [Stripe Test data](https://stripe.com/docs/connect/testing)
+- [Payouts Bank Accounts](https://stripe.com/docs/connect/payouts-bank-accounts)
 - [Create a bank account token](https://stripe.com/docs/api/tokens/create_bank_account)
 - [Create a connected account bank account](https://stripe.com/docs/api/external_account_bank_accounts/create)
 - [List connected account bank accounts](https://stripe.com/docs/api/external_account_bank_accounts/list)
 - [Update connected account bank accounts](https://stripe.com/docs/api/external_account_bank_accounts/update)
 - [Delete connected account bank accounts](https://stripe.com/docs/api/external_account_bank_accounts/delete)
+- [Create a card token](https://stripe.com/docs/api/tokens/create_bank_account)
+- [Create a connected account card](https://stripe.com/docs/api/external_account_cards/create)
+- [List connected account cards](https://stripe.com/docs/api/external_account_cards/list)
+- [Update connected account cards](https://stripe.com/docs/api/external_account_cards/update)
+- [Delete connected account cards](https://stripe.com/docs/api/external_account_cards/delete)
 
 ### Using Financial Connections to collect account details
 
