@@ -2,23 +2,27 @@ import { useCallback, useEffect } from "react";
 import useAuthFetch from "@/hooks/use-auth-fetch";
 import useAuth from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
+import useConnectInstance from "@/hooks/use-connect-instance";
 
 export default function useLogout() {
   const router = useRouter();
-  const { expireUserToken, isAuthed } = useAuth();
+  const { expireUserToken } = useAuth();
   const authFetch = useAuthFetch();
+  const stripeConnectInstance = useConnectInstance();
 
-  const handleLogout = useCallback(async () => {
-    await authFetch<null>("/api/auth/logout");
-  }, [authFetch]);
-
-  useEffect(() => {
-    if (isAuthed)
-      handleLogout()
+  const handleLogout = useCallback(
+    async () =>
+      authFetch<null>("/api/auth/logout")
         .catch(console.error)
-        .finally(() => {
+        .finally(async () => {
+          if (stripeConnectInstance) await stripeConnectInstance.logout();
           expireUserToken();
           router.push("/");
-        });
-  }, [expireUserToken, handleLogout, isAuthed, router]);
+        }),
+    [authFetch, expireUserToken, router, stripeConnectInstance]
+  );
+
+  useEffect(() => {
+    handleLogout();
+  }, [handleLogout]);
 }

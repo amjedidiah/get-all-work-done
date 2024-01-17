@@ -38,7 +38,7 @@ const validateEmailClient = (email: string) => {
 export default function useRegisterForm() {
   const authFetch = useAuthFetch();
   const { storeUserToken } = useAuth();
-  const generateToken = useToken();
+  const { generateBusinessToken } = useToken();
   const [formValues, setFormValues] =
     useState<RegisterFormValues>(initialValues);
   const [formResponse, setFormResponse] = useState("");
@@ -78,7 +78,11 @@ export default function useRegisterForm() {
       if (!isIndividual) validateName("Company Name", company_name);
 
       // 3. Generate token(s)
-      const tokens = await generateToken(business_type, person, company);
+      const tokens = await generateBusinessToken(
+        business_type,
+        person,
+        company
+      );
       console.info("Tokens generated: ", tokens);
 
       // 4. Magic Auth

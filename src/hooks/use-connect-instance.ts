@@ -2,22 +2,15 @@ import useAuthFetch from "@/hooks/use-auth-fetch";
 import {
   StripeConnectInstance,
   loadConnectAndInitialize,
-} from "@stripe/connect-js";
+} from "@stripe/connect-js/pure";
 import { useEffect, useState } from "react";
 import useUser from "@/hooks/use-user";
 
-export default function useOnboarding() {
+export default function useConnectInstance() {
   const authFetch = useAuthFetch();
-  const { user, handleUpdateUser } = useUser();
+  const { user } = useUser();
   const [stripeConnectInstance, setStripeConnectInstance] =
     useState<StripeConnectInstance>();
-
-  const updateIsOnboarded = () =>
-    handleUpdateUser({
-      dbUpdate: {
-        isOnboarded: true,
-      },
-    });
 
   useEffect(() => {
     // Fetch the AccountSession client secret
@@ -39,12 +32,11 @@ export default function useOnboarding() {
         loadConnectAndInitialize({
           publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
           fetchClientSecret,
+          appearance: {},
+          fonts: [],
         })
       );
   }, [user?.accountId, stripeConnectInstance, authFetch]);
 
-  return {
-    updateIsOnboarded,
-    stripeConnectInstance,
-  };
+  return stripeConnectInstance;
 }

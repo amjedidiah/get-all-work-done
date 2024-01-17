@@ -14,7 +14,7 @@ export default function useUser() {
     fetcher,
     {
       revalidateIfStale: true,
-      revalidateOnFocus: true,
+      revalidateOnFocus: false,
       revalidateOnReconnect: true,
     }
   );
@@ -33,8 +33,6 @@ export default function useUser() {
   useEffect(() => {
     if (!data?.user && !isLoading) router.push("/logout");
   }, [data?.user, error, isLoading, router]);
-
-  console.log(error, data);
 
   return { user, handleUpdateUser };
 }

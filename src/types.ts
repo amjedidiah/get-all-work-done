@@ -32,3 +32,10 @@ export type RegisterFormValues = {
 export type LoginFormValues = {
   email: string;
 };
+
+export type BankAccountFormValues = {
+  account_number: string;
+  routing_number: string;
+};
+
+export type BankAccount = Stripe.BankAccount;

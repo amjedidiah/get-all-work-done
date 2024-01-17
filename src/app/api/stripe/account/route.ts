@@ -5,6 +5,18 @@ import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/db/models/user";
 
+const createBusinessPerson = async (
+  account_id: string,
+  person_token: string | null
+) => {
+  const isPersonTokenValid =
+    person_token !== "undefined" && person_token !== "null";
+  if (person_token && isPersonTokenValid)
+    await stripe.accounts.createPerson(account_id, {
+      person_token,
+    });
+};
+
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
@@ -47,16 +59,14 @@ export async function POST(request: NextRequest) {
         },
       },
       account_token,
+      metadata: {
+        user_id,
+      },
     });
     const account_id = account.id;
 
     // If person_token is present, associate business with person
-    const isPersonTokenValid =
-      person_token !== "undefined" && person_token !== "null";
-    if (person_token && isPersonTokenValid)
-      await stripe.accounts.createPerson(account_id, {
-        person_token,
-      });
+    createBusinessPerson(account_id, person_token);
 
     // Store account ID & issuer in DB
     await User.create({

@@ -150,7 +150,23 @@ When you provide personal data in connection with the [Payment Services: term to
 ## Resources
 
 - [Using Connect with Custom accounts](https://stripe.com/docs/connect/custom-accounts#identity-verification)
-- [Account Tokens](https://stripe.com/docs/connect/account-tokens#stripe-connected-account-agreement)
+- [Account Tokens](https://stripe.com/docs/connect/account-tokens)
+- [File Uploads](https://stripe.com/docs/connect/account-tokens#file-upload)
 - [Create an account token](https://stripe.com/docs/api/tokens/create_account)
 - [Create a person token](https://stripe.com/docs/api/tokens/create_person)
 - [Create an account](https://stripe.com/docs/api/accounts/create)
+- [Embedded Onboarding](https://stripe.com/docs/connect/custom/onboarding#embedded-onboarding)
+- [Supported Embedded Components](https://stripe.com/docs/connect/supported-embedded-components#account-onboarding)
+- [Customize Embedded Components](https://stripe.com/docs/connect/customize-connect-embedded-components)
+- [API-based Onboarding](https://stripe.com/docs/connect/custom/onboarding#api-based-onboarding)
+- [Stripe Test data](https://stripe.com/docs/connect/testing)
+- [Create a bank account token](https://stripe.com/docs/api/tokens/create_bank_account)
+- [Create a connected account bank account](https://stripe.com/docs/api/external_account_bank_accounts/create)
+- [List connected account bank accounts](https://stripe.com/docs/api/external_account_bank_accounts/list)
+- [Update connected account bank accounts](https://stripe.com/docs/api/external_account_bank_accounts/update)
+- [Delete connected account bank accounts](https://stripe.com/docs/api/external_account_bank_accounts/delete)
+
+### Using Financial Connections to collect account details
+
+- [Activate this option](https://dashboard.stripe.com/settings/connect/custom)
+- [Financial Connections Pricing](https://stripe.com/en-gb-us/financial-connections#pricing)

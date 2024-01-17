@@ -4,7 +4,10 @@ import { stripeSecret as stripe } from "@/lib/stripe";
 import { handleRequestError } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
     const { user_id } = await verifyAuth(request);
 
@@ -19,29 +22,26 @@ export async function GET(request: NextRequest) {
         message: "User not found",
       };
 
-    const account = await stripe.accounts.retrieve(user.accountId);
-    if (!account)
-      throw {
-        statusCode: 404,
-        message: "Stripe account not found",
-      };
+    const deleted = await stripe.accounts.deleteExternalAccount(
+      user.accountId,
+      params.slug
+    );
 
     return NextResponse.json({
-      data: {
-        user,
-        account,
-      },
-      message: "User found",
+      data: { deleted },
+      message: "Bank account deleted successfully",
       error: false,
     });
-  } catch (error: any) {
+  } catch (error) {
     return handleRequestError(error);
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
-    const { dbUpdate, stripeUpdate } = await request.json();
     const { user_id } = await verifyAuth(request);
 
     const user = await User.findOne({
@@ -55,26 +55,20 @@ export async function PATCH(request: NextRequest) {
         message: "User not found",
       };
 
-    for (const key in dbUpdate) {
-      (user as any)[key] = dbUpdate[key];
-    }
-    await user.save();
-
-    // TODO: Update stripe
-    // const updatedStripeUser = await stripe.accounts.update(
-    //   user.accountId,
-    //   stripeUpdate
-    // );
+    const updated = await stripe.accounts.updateExternalAccount(
+      user.accountId,
+      params.slug,
+      {
+        default_for_currency: true,
+      }
+    );
 
     return NextResponse.json({
-      data: user.dataValues,
-      message: "User has been updated successfully",
+      data: { updated },
+      message: "Bank account has been made default",
       error: false,
     });
-  } catch (error: any) {
+  } catch (error) {
     return handleRequestError(error);
   }
 }
-
-
-

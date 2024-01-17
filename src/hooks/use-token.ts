@@ -40,7 +40,7 @@ export default function useToken() {
     [stripe]
   );
 
-  const generateToken = useCallback(
+  const generateBusinessToken = useCallback(
     async (
       business_type: BusinessType,
       person: Individual,
@@ -76,5 +76,22 @@ export default function useToken() {
     [generateAccountToken, generatePersonToken]
   );
 
-  return generateToken;
+  const generateBankAccountToken = useCallback(
+    async (accountDetails: any) => {
+      if (!stripe) throw new Error("An error occurred. Try again...");
+      if (!accountDetails)
+        throw new Error("Account details are required to create bank token");
+
+      const bankRes = await stripe.createToken("bank_account", {
+        country: "US",
+        currency: "usd",
+        ...accountDetails,
+      });
+
+      return bankRes.token?.id;
+    },
+    [stripe]
+  );
+
+  return { generateBusinessToken, generateBankAccountToken };
 }

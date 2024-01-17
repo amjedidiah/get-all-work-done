@@ -1,10 +1,7 @@
-"use client";
 import { platform_name } from "@/constants";
-import useAuth from "@/hooks/use-auth";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-const initHeaderLinks = [
+const headerLinks = [
   {
     label: "register",
     href: "register",
@@ -16,19 +13,6 @@ const initHeaderLinks = [
 ];
 
 export default function Header() {
-  const { isAuthed } = useAuth();
-  const [headerLinks, setHeaderLinks] = useState(initHeaderLinks);
-
-  useEffect(() => {
-    if (isAuthed)
-      setHeaderLinks([
-        {
-          label: "logout",
-          href: "logout",
-        },
-      ]);
-  }, [isAuthed]);
-
   return (
     <header className="shadow-lg py-4">
       <nav className="container mx-auto px-4 lg:px-8 flex justify-between items-center">

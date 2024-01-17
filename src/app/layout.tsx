@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { platform_name } from "@/constants";
 import { PropsWithChildren } from "react";
-import Header from "@/components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,12 +14,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className="h-full">
-      <body
-        className={`${inter.className} min-h-full grid grid-rows-[auto,1fr]`}
-      >
-        <Header />
-        <main>{children}</main>
-      </body>
+      <body className={`${inter.className} h-full`}>{children}</body>
     </html>
   );
 }
