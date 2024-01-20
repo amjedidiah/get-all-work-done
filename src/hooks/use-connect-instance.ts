@@ -2,7 +2,7 @@ import useAuthFetch from "@/hooks/use-auth-fetch";
 import {
   StripeConnectInstance,
   loadConnectAndInitialize,
-} from "@stripe/connect-js/pure";
+} from "@stripe/connect-js";
 import { useEffect, useState } from "react";
 import useUser from "@/hooks/use-user";
 

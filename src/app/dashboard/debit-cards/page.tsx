@@ -37,7 +37,7 @@ export default function Payouts() {
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Existing Bank Accounts</CardTitle>
+            <CardTitle>Existing Debit Cards</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>

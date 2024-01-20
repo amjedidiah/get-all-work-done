@@ -71,6 +71,12 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
               >
                 <DropdownMenuItem>Debit Cards</DropdownMenuItem>
               </Link>
+              <Link
+                href="/dashboard/transactions"
+                className="cursor-pointer lg:hidden"
+              >
+                <DropdownMenuItem>Transactions</DropdownMenuItem>
+              </Link>
               <Link href="logout" className="cursor-pointer">
                 <DropdownMenuItem>Logout</DropdownMenuItem>
               </Link>

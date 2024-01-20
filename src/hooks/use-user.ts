@@ -1,23 +1,17 @@
 import { useEffect } from "react";
 import User from "@/db/models/user";
 import useAuthFetch from "@/hooks/use-auth-fetch";
-import useAuth from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import useSWR, { useSWRConfig } from "swr";
 
 export default function useUser() {
-  const { isAuthed } = useAuth();
   const authFetch = useAuthFetch();
   const fetcher = (url: string) => authFetch<{ user: User }>(url);
-  const { data, error, isLoading } = useSWR(
-    !isAuthed ? null : "/api/user",
-    fetcher,
-    {
-      revalidateIfStale: true,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: true,
-    }
-  );
+  const { data, error, isLoading } = useSWR("/api/user", fetcher, {
+    revalidateIfStale: true,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+  });
   const user = data?.user;
   const router = useRouter();
   const { mutate } = useSWRConfig();

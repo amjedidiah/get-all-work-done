@@ -8,6 +8,11 @@ export const navLinks = [
     name: "bank-accounts",
   },
   { label: "Debit Cards", href: "/dashboard/debit-cards", name: "debit-cards" },
+  {
+    label: "Transactions",
+    href: "/dashboard/transactions",
+    name: "transactions",
+  },
 ];
 
 export default function ProtectedNav() {

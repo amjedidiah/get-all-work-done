@@ -20,6 +20,14 @@ export async function POST(request: NextRequest) {
         account_onboarding: {
           enabled: true,
         },
+        payments: {
+          enabled: true,
+          features: {
+            refund_management: true,
+            dispute_management: true,
+            capture_payments: true,
+          },
+        },
       },
     });
 

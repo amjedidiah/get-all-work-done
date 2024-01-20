@@ -75,3 +75,22 @@ export const getAccountType = (business_type: BusinessType) => {
 };
 
 export const isClient = typeof window !== "undefined";
+
+export const convertToQueryString = (params: Record<string, string>) => {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      searchParams.append(key, value.toString());
+    }
+  });
+
+  return searchParams.toString();
+};
+
+export const formatAmount = (amount: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "usd",
+    minimumFractionDigits: 2,
+  }).format(amount / 100);

@@ -53,3 +53,7 @@ export type BankAccount = Stripe.BankAccount;
 export type ExternalAccount = Stripe.ExternalAccount;
 
 export type ExternalAccountObject = Stripe.ExternalAccount["object"];
+
+export type TransactionsParams = Stripe.ChargeListParams;
+
+export type Transaction = Stripe.Charge;
