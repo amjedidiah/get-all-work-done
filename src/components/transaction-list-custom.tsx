@@ -1,3 +1,4 @@
+"use client";
 import useTransactions from "@/hooks/use-transactions";
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
 import {
@@ -32,6 +33,7 @@ export default function TransactionListCustom() {
                   <TableHead>Status</TableHead>
                   <TableHead>Transaction ID</TableHead>
                   <TableHead>Date</TableHead>
+                  <TableHead>Receipt</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -40,9 +42,10 @@ export default function TransactionListCustom() {
                     created,
                     id,
                     amount,
-                    currency,
                     status,
                     application_fee_amount,
+                    refunded,
+                    amount_refunded,
                   }) => {
                     const timeObject = new Date(created * 1000);
                     const date = timeObject.toDateString();
@@ -58,7 +61,9 @@ export default function TransactionListCustom() {
                         <TableCell>{formatAmount(net_amount)}</TableCell>
                         <TableCell>
                           <span className="bg-slate-400 text-white rounded-lg w-fit py-1 px-2">
-                            {status}
+                            {refunded
+                              ? `refunded ${formatAmount(amount_refunded)}`
+                              : status}
                           </span>
                         </TableCell>
                         <TableCell>{id}</TableCell>

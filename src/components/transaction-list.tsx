@@ -1,3 +1,4 @@
+"use client";
 import useConnectInstance from "@/hooks/use-connect-instance";
 import {
   ConnectComponentsProvider,

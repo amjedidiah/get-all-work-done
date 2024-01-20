@@ -13,7 +13,7 @@ import { stripePublishable } from "@/lib/stripe";
 import useExternalAccounts from "@/hooks/use-external-accounts";
 import DebitCardForm from "@/components/debit-card-form";
 
-export default function Payouts() {
+export default function DebitCards() {
   const {
     externalAccounts,
     handleDeleteExternalAccount,

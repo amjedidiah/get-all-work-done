@@ -15,16 +15,16 @@ export default function Home() {
 
         <div className="grid grid-cols-5">
           <div className="shadow py-2 px-3 grid gap-2">
-            <h4 className="text-lg">Abel</h4>
+            <h4 className="text-lg">Pani</h4>
             <p>
               Price: <span className="font-semibold">$100.00</span>
             </p>
 
             <Link
-              href={`/pay?amount=10000&application=10&destination=1OZhkwIGWz9N1AyF`}
+              href={`/pay?amount=10000&application=10&destination=1OZHXtIZ3hc5uLXA`}
             >
               <button className="px-2 py-1 bg-slate-200 hover:bg-slate-300 border-slate-300 border">
-                Hire Abel
+                Hire Pani
               </button>
             </Link>
           </div>

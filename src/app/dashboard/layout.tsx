@@ -26,7 +26,7 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
     <div className="grid h-full max-h-full overflow-hidden lg:grid-cols-[280px_1fr]">
       <div className="border-r h-full hidden lg:block">
         <div className="flex h-[60px] items-center border-b px-6">
-          <Link className="flex items-center gap-2 font-semibold" href="#">
+          <Link className="flex items-center gap-2 font-semibold" href="/">
             <span className="">{platform_name}</span>
           </Link>
         </div>

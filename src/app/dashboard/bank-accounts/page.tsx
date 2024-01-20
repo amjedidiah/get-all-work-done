@@ -13,7 +13,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { stripePublishable } from "@/lib/stripe";
 import useExternalAccounts from "@/hooks/use-external-accounts";
 
-export default function Payouts() {
+export default function BankAccounts() {
   const {
     externalAccounts,
     handleDeleteExternalAccount,
