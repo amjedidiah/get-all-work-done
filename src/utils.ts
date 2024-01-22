@@ -94,3 +94,5 @@ export const formatAmount = (amount: number) =>
     currency: "usd",
     minimumFractionDigits: 2,
   }).format(amount / 100);
+
+export const swrFetcher = (url: string) => fetch(url).then((res) => res.json());

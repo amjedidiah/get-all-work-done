@@ -1,9 +1,8 @@
 import { PayFormProps } from "@/components/pay-form";
+import { swrFetcher } from "@/utils";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { FormEventHandler, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function usePayForm({ price, paymentIntentId }: PayFormProps) {
   const stripe = useStripe();
@@ -14,15 +13,12 @@ export default function usePayForm({ price, paymentIntentId }: PayFormProps) {
     () => (price ?? 0) - discount,
     [discount, price]
   );
-  const shouldUpdatePaymentIntent = useMemo(
-    () => !!(paymentIntentId && discount),
-    [paymentIntentId, discount]
-  );
+  const shouldUpdatePaymentIntent = useMemo(() => !!discount, [discount]);
   const { data } = useSWR(
     shouldUpdatePaymentIntent
       ? `/api/stripe/payment/update?amount=${discountedPrice}&paymentIntentId=${paymentIntentId}`
       : null,
-    fetcher
+    swrFetcher
   );
 
   const applyDiscount = () => setDiscount(50);

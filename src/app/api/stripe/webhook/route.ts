@@ -1,15 +1,15 @@
 import { gigs } from "@/constants";
 import { stripeSecret as stripe } from "@/lib/stripe";
+import { PaymentIntent, StripeEvent } from "@/types";
 import { handleRequestError } from "@/utils";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
 
 const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET as string;
 
 export async function POST(request: NextRequest) {
   const sig = request.headers.get("stripe-signature") as string;
-  let event: Stripe.Event;
+  let event: StripeEvent;
 
   try {
     const body = await request.text();
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case "payment_intent.succeeded": {
         // Get payment intent
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const paymentIntent = event.data.object as PaymentIntent;
 
         // Get necessary info from payment intent
         const gigId = paymentIntent.transfer_group;

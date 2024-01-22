@@ -1,3 +1,5 @@
+import User from "@/db/models/user";
+import { verifyAuth } from "@/lib/auth";
 import { stripeSecret as stripe } from "@/lib/stripe";
 import { handleRequestError } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,10 +19,25 @@ export async function GET(
   }
 ) {
   try {
+    const { user_id } = await verifyAuth(request);
+
+    const user = await User.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+    if (!user)
+      throw {
+        statusCode: 404,
+        message: "User not found",
+      };
+
     const params = request.nextUrl.searchParams;
     const paramsObject = Object.fromEntries(params.entries());
 
-    const data = await (stripe[object][action] as Function)(paramsObject);
+    const data = await (stripe[object][action] as Function)(paramsObject, {
+      stripeAccount: user.accountId,
+    });
 
     return NextResponse.json({
       data,
@@ -44,8 +61,23 @@ export async function POST(
   }
 ) {
   try {
+    const { user_id } = await verifyAuth(request);
+
+    const user = await User.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+    if (!user)
+      throw {
+        statusCode: 404,
+        message: "User not found",
+      };
+
     const params = await request.json();
-    const data = await (stripe[object][action] as Function)(params);
+    const data = await (stripe[object][action] as Function)(params, {
+      stripeAccount: user.accountId,
+    });
 
     return NextResponse.json({
       data,

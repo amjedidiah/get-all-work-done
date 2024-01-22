@@ -1,6 +1,20 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import Stripe from "stripe";
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "stripe-buy-button": StripeBuyButtonProps;
+    }
+  }
+}
+
+interface StripeBuyButtonProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
+  ["buy-button-id"]: string;
+  ["publishable-key"]: string;
+}
+
 export type DOB = Stripe.AccountCreateParams.Individual.Dob;
 
 export type BusinessType = Stripe.TokenCreateParams.Account.BusinessType;
@@ -63,16 +77,8 @@ export type Payout = Stripe.Payout;
 
 export type PayoutListParams = Stripe.PayoutListParams;
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      "stripe-buy-button": StripeBuyButtonProps;
-    }
-  }
-}
+export type PaymentLink = Stripe.PaymentLink;
 
-interface StripeBuyButtonProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
-  ["buy-button-id"]: string;
-  ["publishable-key"]: string;
-}
+export type PaymentIntent = Stripe.PaymentIntent;
+
+export type StripeEvent = Stripe.Event;

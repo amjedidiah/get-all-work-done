@@ -7,7 +7,7 @@ Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guid
 - [x] Custom contractor onboarding
 - [x] Custom form to receive client payment
 - [x] Ability for contractor to manage account details
-- [ ] Ability for contractor to manage debit cards
+- [x] Ability for contractor to manage debit cards
 - [x] Activate weekly contractor payouts
 - [ ] Activate instant contractor payouts, only on request
 - [x] Controlling percentage sharing between platform and contractor from Stripe or Database

@@ -37,6 +37,10 @@ export default function Home() {
             buy-button-id="buy_btn_1ObGJKI8t6XbCC5Y3KH3hura"
             publishable-key="pk_test_C1Ucx2BWenzZZ6BoeG5OlKMu00DJWe7WZ5"
           ></stripe-buy-button>
+          <stripe-buy-button
+            buy-button-id="buy_btn_1ObQ9RI8t6XbCC5YIdufZHGW"
+            publishable-key="pk_test_C1Ucx2BWenzZZ6BoeG5OlKMu00DJWe7WZ5"
+          ></stripe-buy-button>
         </div>
       </Article>
       <Script async src="https://js.stripe.com/v3/buy-button.js" />
