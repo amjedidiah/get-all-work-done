@@ -8,9 +8,9 @@ Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guid
 - [x] Custom form to receive client payment
 - [x] Ability for contractor to manage account details
 - [ ] Ability for contractor to manage debit cards
-- [ ] Activate weekly contractor payouts
+- [x] Activate weekly contractor payouts
 - [ ] Activate instant contractor payouts, only on request
-- [ ] Controlling percentage sharing between platform and contractor from Stripe or Database
+- [x] Controlling percentage sharing between platform and contractor from Stripe or Database
 
 ## Implementation Steps
 
@@ -177,6 +177,10 @@ When you provide personal data in connection with the [Payment Services: term to
 - [List connected account cards](https://stripe.com/docs/api/external_account_cards/list)
 - [Update connected account cards](https://stripe.com/docs/api/external_account_cards/update)
 - [Delete connected account cards](https://stripe.com/docs/api/external_account_cards/delete)
+- [Creating a charge](https://stripe.com/docs/connect/charges)
+- [Stripe Connect charge types: Separate Charges and Transfers](https://www.youtube.com/watch?v=Wn9YrnLnPz4)
+- [Accept a payment](https://stripe.com/docs/payments/accept-a-payment)
+- [Configure Webhooks](https://dashboard.stripe.com/test/webhooks)
 
 ### Using Financial Connections to collect account details
 

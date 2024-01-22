@@ -4,21 +4,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { amount, application_fee_amount, destination } =
-      await request.json();
+    const { amount, transfer_group } = await request.json();
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "usd",
-      application_fee_amount,
-      transfer_data: {
-        destination,
-      },
+      transfer_group,
     });
 
     return NextResponse.json({
       data: {
-        client_secret: paymentIntent.client_secret,
+        payment_intent: paymentIntent,
       },
       message: "Payment intent created successfully",
     });

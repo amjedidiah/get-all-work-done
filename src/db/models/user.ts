@@ -6,6 +6,8 @@ class User extends Model {
   public accountId!: string;
   public email!: string;
   public isOnboarded!: boolean;
+  public createdAt!: Date;
+  public updatedAt!: Date;
 }
 
 User.init(
@@ -34,6 +36,7 @@ User.init(
   {
     sequelize,
     tableName: "users",
+    timestamps: true,
   }
 );
 
