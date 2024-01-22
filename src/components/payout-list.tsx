@@ -2,11 +2,11 @@
 import useConnectInstance from "@/hooks/use-connect-instance";
 import {
   ConnectComponentsProvider,
-  ConnectPayments,
+  ConnectPayouts,
 } from "@stripe/react-connect-js";
 import { CardContent, CardHeader, CardTitle } from "./ui/card";
 
-export default function TransactionList() {
+export default function PayoutList() {
   const stripeConnectInstance = useConnectInstance();
 
   if (!stripeConnectInstance) return <div>Loading...</div>;
@@ -14,10 +14,10 @@ export default function TransactionList() {
   return (
     <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
       <CardHeader>
-        <CardTitle>Stripe Transaction History</CardTitle>
+        <CardTitle>Stripe Payouts History</CardTitle>
       </CardHeader>
       <CardContent>
-        <ConnectPayments />
+        <ConnectPayouts />
       </CardContent>
     </ConnectComponentsProvider>
   );

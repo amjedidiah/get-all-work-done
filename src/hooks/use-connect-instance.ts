@@ -15,12 +15,14 @@ export default function useConnectInstance() {
   useEffect(() => {
     // Fetch the AccountSession client secret
     const fetchClientSecret = async () => {
+      if (!user?.accountId) return "";
+
       const data = await authFetch<{
         client_secret: string;
       }>("/api/stripe/account/session", {
         method: "POST",
         body: JSON.stringify({
-          account_id: user?.accountId,
+          account_id: user.accountId,
         }),
       });
 

@@ -1,5 +1,6 @@
 import { HEADER_NAME } from "@/lib/auth";
 import { isClient } from "@/utils";
+import { useState } from "react";
 
 const storeUserToken = (token: string) =>
   localStorage.setItem(HEADER_NAME, token);
@@ -29,7 +30,7 @@ const getAuthHeaders = () => {
 };
 
 export default function useAuth() {
-  const isAuthed = getAuthStatus();
+  const [isAuthed] = useState(getAuthStatus);
 
   return {
     isAuthed,

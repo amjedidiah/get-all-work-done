@@ -28,13 +28,16 @@ export async function POST(request: NextRequest) {
             capture_payments: true,
           },
         },
+        payouts: {
+          enabled: true,
+        },
       },
     });
 
     return NextResponse.json(
       {
         data: { client_secret: accountSession.client_secret },
-        message: `Account session created successfully`,
+        message: `Account session created successfully for ${account}`,
         error: false,
       },
       {

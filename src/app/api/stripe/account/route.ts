@@ -62,6 +62,15 @@ export async function POST(request: NextRequest) {
       metadata: {
         user_id,
       },
+      settings: {
+        payouts: {
+          schedule: {
+            interval: "weekly",
+            delay_days: 3,
+            weekly_anchor: "friday",
+          },
+        },
+      },
     });
     const account_id = account.id;
 

@@ -54,6 +54,10 @@ export type ExternalAccount = Stripe.ExternalAccount;
 
 export type ExternalAccountObject = Stripe.ExternalAccount["object"];
 
-export type TransactionsParams = Stripe.ChargeListParams;
+export type TransactionsListParams = Stripe.ChargeListParams;
 
 export type Transaction = Stripe.Charge;
+
+export type Payout = Stripe.Payout;
+
+export type PayoutListParams = Stripe.PayoutListParams;

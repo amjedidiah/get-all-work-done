@@ -13,6 +13,11 @@ export const navLinks = [
     href: "/dashboard/transactions",
     name: "transactions",
   },
+  {
+    label: "Payouts",
+    href: "/dashboard/payouts",
+    name: "payouts",
+  },
 ];
 
 export default function ProtectedNav() {

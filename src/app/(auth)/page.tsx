@@ -21,7 +21,7 @@ export default function Home() {
             </p>
 
             <Link
-              href={`/pay?amount=10000&application=10&destination=1OZHXtIZ3hc5uLXA`}
+              href={`/pay?amount=10000&application=10&destination=1OafF3IKQoAn7HFi`}
             >
               <button className="px-2 py-1 bg-slate-200 hover:bg-slate-300 border-slate-300 border">
                 Hire Pani
