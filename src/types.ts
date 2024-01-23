@@ -53,14 +53,8 @@ export type BankAccountFormValues = {
   routing_number: string;
 };
 
-export type DebitCardFormValues = {
-  default_for_currency: boolean;
-
-  expiry: string;
-  number: string;
-  cvc: string;
-
-  name: string;
+export type WithdrawFormValues = {
+  amount: number;
 };
 
 export type BankAccount = Stripe.BankAccount;
@@ -82,3 +76,5 @@ export type PaymentLink = Stripe.PaymentLink;
 export type PaymentIntent = Stripe.PaymentIntent;
 
 export type StripeEvent = Stripe.Event;
+
+export type Balance = Stripe.Balance;
