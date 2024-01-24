@@ -21,7 +21,7 @@ export default function useBalance() {
       | Balance["instant_available"]
   ) => balanceObject?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
 
-  console.log(data);
+  console.info(data);
 
   return {
     pendingBalance: compileBalance(data?.pending),

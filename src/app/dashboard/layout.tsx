@@ -34,7 +34,7 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
       </div>
       <div className="flex flex-col h-full max-h-full overflow-hidden">
         <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b px-6 justify-between lg:justify-end">
-          <Link className="lg:hidden font-semibold" href="#">
+          <Link className="lg:hidden font-semibold" href="/">
             <span className="sr-only">Home</span>
             <span>{platform_name}</span>
           </Link>

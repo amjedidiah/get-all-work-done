@@ -10,7 +10,7 @@ const initialValues: WithdrawFormValues = {
 
 export default function useWithdrawForm({
   withdrawableBalance,
-}: WithdrawFormProps) {
+}: Pick<WithdrawFormProps, "withdrawableBalance">) {
   const [formValues, setFormValues] =
     useState<WithdrawFormValues>(initialValues);
   const [formResponse, setFormResponse] = useState("");

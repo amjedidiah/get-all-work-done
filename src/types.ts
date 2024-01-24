@@ -78,3 +78,14 @@ export type PaymentIntent = Stripe.PaymentIntent;
 export type StripeEvent = Stripe.Event;
 
 export type Balance = Stripe.Balance;
+
+export type StripeAccount = Stripe.Account;
+
+export type Contractor = {
+  id: string;
+  isSettled: boolean;
+};
+
+export type ContractorWithShares = Contractor & {
+  percentageShare: number;
+};

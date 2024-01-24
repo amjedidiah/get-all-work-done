@@ -1,27 +1,33 @@
 import { PayFormProps } from "@/components/pay-form";
 import { swrFetcher } from "@/utils";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
-import { FormEventHandler, useEffect, useMemo, useState } from "react";
+import {
+  FormEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useState,
+} from "react";
 import useSWR from "swr";
 
 export default function usePayForm({ price, paymentIntentId }: PayFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const discountedPrice = useMemo(
-    () => (price ?? 0) - discount,
-    [discount, price]
-  );
-  const shouldUpdatePaymentIntent = useMemo(() => !!discount, [discount]);
+  const [discountedPrice, setDiscountedPrice] = useState(0);
   const { data } = useSWR(
-    shouldUpdatePaymentIntent
+    discountedPrice
       ? `/api/stripe/payment/update?amount=${discountedPrice}&paymentIntentId=${paymentIntentId}`
       : null,
     swrFetcher
   );
+  const [discountApplied, setDiscountApplied] = useState(false);
 
-  const applyDiscount = () => setDiscount(50);
+  const applyDiscount: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    const appliedDiscount = Number(e.currentTarget.dataset.discount);
+
+    setDiscountedPrice(((100 - appliedDiscount) / 100) * Number(price));
+  };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> | undefined = async (
     event
@@ -48,18 +54,26 @@ export default function usePayForm({ price, paymentIntentId }: PayFormProps) {
   };
 
   useEffect(() => {
-    if (data.data?.status === "requires_payment_method" && elements) {
+    const discountApplied = async () => {
+      if (!elements) return;
+
       console.info("fetching updates...");
-      elements.fetchUpdates();
-    }
-  }, [data.data?.status, elements]);
+      await elements.fetchUpdates();
+
+      console.info("Updates fetched...");
+      setDiscountApplied(true);
+    };
+
+    if (data?.data?.status === "requires_payment_method") discountApplied();
+  }, [data?.data?.status, elements]);
 
   return {
     handleSubmit,
-    discount,
+    discountApplied,
     errorMessage,
     applyDiscount,
     stripe,
-    price,
+    price: price ?? 0,
+    discountedPrice,
   };
 }

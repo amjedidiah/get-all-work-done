@@ -6,6 +6,8 @@ import { formatAmount } from "@/utils";
 import Link from "next/link";
 import Script from "next/script";
 
+const filteredGigs = gigs.filter((gig) => gig.status !== "settled");
+
 export default function Home() {
   return (
     <Section>
@@ -17,7 +19,7 @@ export default function Home() {
         <h2 className="text-md mb-4 mt-8 font-bold uppercase">Contractors</h2>
 
         <div className="grid grid-cols-5 gap-5">
-          {gigs.map((gig) => (
+          {filteredGigs.map((gig) => (
             <div key={gig.id} className="shadow py-2 px-3 grid gap-2 h-fit">
               <h4 className="text-lg">{gig.title}</h4>
               <p>

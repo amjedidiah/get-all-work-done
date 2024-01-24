@@ -10,6 +10,9 @@ export async function POST(request: NextRequest) {
       amount,
       currency: "usd",
       transfer_group,
+      metadata: {
+        gigId: transfer_group,
+      },
     });
 
     return NextResponse.json({

@@ -1,8 +1,14 @@
-import { stripeSecret as stripe } from "@/lib/stripe";
-import { StripeEvent } from "@/types";
+import {
+  handlePaymentIntentSucceeded,
+  stripeSecret as stripe,
+} from "@/lib/stripe";
+import { PaymentIntent, StripeAccount, StripeEvent } from "@/types";
 import { handleRequestError } from "@/utils";
 import { NextResponse, type NextRequest } from "next/server";
+
 const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET as string;
+
+const handleStripeAccountUpdated = async (stripeAccount: StripeAccount) => {};
 
 export async function POST(request: NextRequest) {
   const sig = request.headers.get("stripe-signature") as string;
@@ -17,6 +23,20 @@ export async function POST(request: NextRequest) {
 
     // Handle the event
     switch (event.type) {
+      case "account.updated": {
+        // Get account
+        const account = event.data.object as StripeAccount;
+
+        await handleStripeAccountUpdated(account);
+        break;
+      }
+      case "payment_intent.succeeded": {
+        // Get payment intent
+        const paymentIntent = event.data.object as PaymentIntent;
+
+        await handlePaymentIntentSucceeded(paymentIntent);
+        break;
+      }
       default:
         console.info(`Unhandled event type ${event.type}`);
     }
