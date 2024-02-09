@@ -10,7 +10,10 @@
     "lint": "next lint",
     "db:init": "npx sequelize-cli init",
     "db:create": "npx sequelize-cli db:create",
-    "db:migrate": "npx sequelize-cli db:migrate"
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "docs:dev": "vocs dev",
+    "docs:build": "vocs build",
+    "docs:preview": "vocs preview"
   },
   "dependencies": {
     "@magic-sdk/admin": "^2.0.1",
@@ -39,7 +42,8 @@
     "swr": "^2.2.4",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
-    "use-debounce": "^10.0.0"
+    "use-debounce": "^10.0.0",
+    "vocs": "1.0.0-alpha.32"
   },
   "devDependencies": {
     "@types/node": "^20",

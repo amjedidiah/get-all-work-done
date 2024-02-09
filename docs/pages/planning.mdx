@@ -2,7 +2,7 @@
 
 ## Decision Making
 
-Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guide from here: <https://stripe.com/en-gb-us/connect/pricing>, based on these particular client requirements:
+Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guide from here: [https://stripe.com/en-gb-us/connect/pricing](https://stripe.com/en-gb-us/connect/pricing), based on these particular client requirements:
 
 - [x] Custom contractor onboarding
 - [x] Custom form to receive client payment
@@ -24,9 +24,9 @@ Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guid
 - [Implement Frontend Integration](#implement-frontend-integration)
 - [Testing](#testing)
 - [Documentation](#documentation)
-<!-- - User dashboard
+- User dashboard
 - Reporting functionality
-- Communication channels -->
+- Communication channels
 
 ### Stripe Connect Account Creation
 
@@ -42,6 +42,8 @@ Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guid
 - [x] Save contractor account details
 - [ ] Save contractor debit card details
 - [ ] API endpoints to securely receive contractor document uploads and handle the communication with Stripe
+- [ ] API for ID document upload
+- [ ] API to match captured images(selfies) and data extracted from ID documents
 - [ ] Provide means for contractors to download and reupload 1099 Tax documentation
 - [ ] Provide means for contractors to re-agree to Stripe service agreement on transfer of account or change of Tax Number
 
@@ -78,21 +80,23 @@ Chose Stripe Connect Custom account with **_Connect Onboarding_** using the guid
 
 - [ ] Setup [Connect webhooks](https://stripe.com/docs/connect/webhooks) on live mode
 - [ ] Listen for `account.updated` webhook events for when Stripe shuts down an account
-- [ ] Listen for `account.updated` webhook events to detect changes to capability states based on verification of onboarding details
+- [ ] Listen for `account.updated` webhook events to detect changes to capability states based on verification of onboarding details, to update DB and ui with isVerified false and reason for failed verification
 - [ ] Listen for `payout.created`, `payout.updated`, `payout.paid` `payout.failed` events
 
 ### Fraud mitigation
 
-#### Steps to Prevent Fraud
+#### Steps to Verify Contractors
 
-- [ ] Verify contractors (within a certain amount of time) before they can do business through the app.
+> ID verification at any point in this document is before first payout
+
+- [ ] Verify contractors (within a certain amount of time) before they can do business through the app. Provide an API call to update user verification status.
 - Examine a contractor’s online presence through social or professional profiles like Facebook, Twitter, or LinkedIn.
 - Closely review the contractor’s website (should they reasonably have one).
 - Collect appropriate licenses if appropriate for their business.
-- Confirm their email address if it’s linked to their business domain (for example, send an email to an address at that domain and require a response from it).
+- [ ] Provide API to confirm their email address if it’s linked to their business domain (for example, send an email to an address at that domain and require a response from it).
 - Collect and verify platform-appropriate information such as a physical address, inventory list, or selling history.
 - Monitor activity on the platform to get a sense of typical behaviour, which you can use to look for suspicious behaviour.
-- [ ] Pause payments or payouts when suspicious behaviour is detected.
+- [ ] API to pause payments or payouts when suspicious behaviour is detected.
 - [ ] Add additional verifications to Connect onboarding and disable payouts or payments until the checks pass, using [Stripe Identity](https://stripe.com/docs/identity)
 - [ ] [Reject suspicious accounts](https://stripe.com/docs/api/account/reject)
 
@@ -136,11 +140,25 @@ Payment services are powered by Stripe, Inc. Stripe, Inc. is a Payment Facilitat
 When you provide personal data in connection with the [Payment Services: term to identify services Stripe provides to contractors], Stripe receives that personal data and processes it following [Stripe’s Privacy Policy](https://stripe.com/privacy).
 ```
 
+- [ ] Inform platform users of Stripe account onboarding
+
+```md
+GetAllWorkDone uses Stripe to get you paid quickly and keep your personal and payment information secure. Thousands of companies around the world trust Stripe to process payments for their users. We help you set up a Stripe account to get paid with GetAllWorkDone.
+```
+
+```md
+Stripe is processing charges for the platform’s users. Although the platform is initiating and managing the transactions, funds are not flowing through the platform itself.
+```
+
+```md
+The platform’s user has a Stripe account but relies on the platform to help manage it, and Stripe has a legal obligation to know who they are.
+```
+
 ## Extras
 
 ### Explore Using Radar with Connect
 
-<https://stripe.com/docs/connect/radar>
+[https://stripe.com/docs/connect/radar](https://stripe.com/docs/connect/radar)
 
 ## Meeting Discussion
 
@@ -155,6 +173,7 @@ When you provide personal data in connection with the [Payment Services: term to
 
 ## Resources
 
+- [Connect Best Practices](https://stripe.com/docs/connect/best-practices)
 - [Using Connect with Custom accounts](https://stripe.com/docs/connect/custom-accounts#identity-verification)
 - [Account Tokens](https://stripe.com/docs/connect/account-tokens)
 - [File Uploads](https://stripe.com/docs/connect/account-tokens#file-upload)
