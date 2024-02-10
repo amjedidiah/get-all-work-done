@@ -5,7 +5,10 @@
   "scripts": {
     "api": "nx serve api",
     "web": "nx run web:start --experimental-https",
-    "web:dev": "nx run web:dev --experimental-https"
+    "web:dev": "nx run web:dev --experimental-https",
+    "docs:dev": "vocs dev",
+    "docs:build": "vocs build",
+    "docs:preview": "vocs preview"
   },
   "private": true,
   "dependencies": {
@@ -15,7 +18,7 @@
     "next": "14.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tslib": "^2.3.0"
+    "vocs": "1.0.0-alpha.35"
   },
   "devDependencies": {
     "@nx/esbuild": "18.0.3",
