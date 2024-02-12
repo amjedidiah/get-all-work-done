@@ -35,6 +35,13 @@ const validateEmailClient = (email: string) => {
   if (!isValidByRegex) throw new Error("Invalid email");
 };
 
+const getCompany = (company_name?: string) =>
+  company_name
+    ? {
+        name: company_name,
+      }
+    : undefined;
+
 export default function useRegisterForm() {
   const authFetch = useAuthFetch();
   const { storeUserToken } = useAuth();
@@ -65,11 +72,7 @@ export default function useRegisterForm() {
       // 1. Format values
       const { business_type, company_name, ...person } =
         formatValues(formValues);
-      const company = company_name
-        ? {
-            name: company_name,
-          }
-        : undefined;
+      const company = getCompany(company_name);
 
       // 2. Validations
       validateEmailClient(person.email);
@@ -103,8 +106,8 @@ export default function useRegisterForm() {
         },
         {
           headers: [
-            { name: "Account-Token", value: tokens.account_token! },
-            { name: "Person-Token", value: tokens.person_token! },
+            { name: "account-token", value: tokens.account_token! },
+            { name: "person-token", value: tokens.person_token! },
           ],
         }
       );

@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
     const { email } = await request.json();
     const { user_id } = await verifyAuth(request);
 
-    const account_token = headers().get("Account-Token");
-    const person_token = headers().get("Person-Token");
+    const account_token = headers().get("account-token");
+    const person_token = headers().get("person-token");
 
     if (!account_token)
       throw {

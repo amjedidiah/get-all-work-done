@@ -1,7 +1,7 @@
 import ProtectedNavItem from "@/components/protected-nav-item";
 
 export const navLinks = [
-  { label: "dashboard", href: "/dashboard", name: "dashboard" },
+  { label: "Dashboard", href: "/dashboard", name: "dashboard" },
   {
     label: "Bank Accounts",
     href: "/dashboard/bank-accounts",
@@ -17,6 +17,11 @@ export const navLinks = [
     label: "Payouts",
     href: "/dashboard/payouts",
     name: "payouts",
+  },
+  {
+    label: "Tax",
+    href: "/dashboard/tax",
+    name: "tax",
   },
 ];
 

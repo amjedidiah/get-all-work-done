@@ -1,4 +1,5 @@
 import { AccountTypeEnum, BusinessType, BusinessTypeEnum } from "@/types";
+import { State } from "country-state-city";
 
 export const platform_name = "GetAllWorkDone";
 
@@ -57,11 +58,11 @@ export const gigs = [
     price: 4000,
     platformFeePercentage: 0.3,
     contractors: [
-      { id: "acct_1OZhPTI89diiTOrD", isSettled: false },
-      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: false },
-      { id: "acct_1OafF3IKQoAn7HFi", isSettled: false },
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: true },
+      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: true },
+      { id: "acct_1OafF3IKQoAn7HFi", isSettled: true },
     ],
-    status: "in progress",
+    status: "completed",
   },
   {
     id: "gig_922jd9",
@@ -89,3 +90,10 @@ export const gigs = [
     status: "settled",
   },
 ];
+
+export const states = State.getStatesOfCountry("US").map(
+  ({ name, isoCode }) => ({
+    name,
+    isoCode,
+  })
+);

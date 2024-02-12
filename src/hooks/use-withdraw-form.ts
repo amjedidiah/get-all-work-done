@@ -1,7 +1,7 @@
 import { WithdrawFormValues } from "@/types";
 import { useCallback, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import useAuthFetch from "./use-auth-fetch";
+import useAuthFetch from "@/hooks/use-auth-fetch";
 import { WithdrawFormProps } from "@/components/withdraw-form";
 
 const initialValues: WithdrawFormValues = {

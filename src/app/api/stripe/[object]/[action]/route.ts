@@ -20,7 +20,15 @@ export async function GET(
     const params = request.nextUrl.searchParams;
     const paramsObject = Object.fromEntries(params.entries());
 
-    const data = await (stripe[object][action] as Function)(paramsObject);
+    let data;
+    if ((object as string).includes(".")) {
+      const [stripeObject, stripeObjectParam] = (object as string).split(".");
+      data = await(
+        (stripe[stripeObject as keyof typeof stripe] as any)[stripeObjectParam][
+          action
+        ] as Function
+      )(paramsObject);
+    } else data = await(stripe[object][action] as Function)(paramsObject);
 
     return NextResponse.json({
       data,
@@ -45,7 +53,16 @@ export async function POST(
 ) {
   try {
     const params = await request.json();
-    const data = await (stripe[object][action] as Function)(params);
+    
+    let data;
+    if ((object as string).includes(".")) {
+      const [stripeObject, stripeObjectParam] = (object as string).split(".");
+      data = await(
+        (stripe[stripeObject as keyof typeof stripe] as any)[stripeObjectParam][
+          action
+        ] as Function
+      )(params);
+    } else data = await(stripe[object][action] as Function)(params);
 
     return NextResponse.json({
       data,

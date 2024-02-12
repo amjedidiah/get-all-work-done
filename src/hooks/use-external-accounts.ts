@@ -1,4 +1,4 @@
-import useAuthFetch from "./use-auth-fetch";
+import useAuthFetch from "@/hooks/use-auth-fetch";
 import useAuth from "@/hooks/use-auth";
 import useSWR, { useSWRConfig } from "swr";
 import { ExternalAccount, ExternalAccountObject } from "@/types";
@@ -60,7 +60,7 @@ export default function useExternalAccounts(type: ExternalAccountObject) {
         },
         {
           headers: [
-            { name: "External-Account-Token", value: external_account_token },
+            { name: "external-account-token", value: external_account_token },
           ],
         }
       ).then(async (data) => {

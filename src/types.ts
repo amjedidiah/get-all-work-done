@@ -89,3 +89,5 @@ export type Contractor = {
 export type ContractorWithShares = Contractor & {
   percentageShare: number;
 };
+
+export type TaxSettings = Stripe.TaxSettingsUpdatedEvent["data"]["object"];

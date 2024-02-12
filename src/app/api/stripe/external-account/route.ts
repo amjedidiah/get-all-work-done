@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
         message: "User not found",
       };
 
-    const external_account = headers().get("External-Account-Token");
+    const external_account = headers().get("external-account-token");
     if (!external_account)
       throw {
         statusCode: 400,

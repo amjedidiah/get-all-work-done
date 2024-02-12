@@ -35,9 +35,20 @@ export async function GET(
     const params = request.nextUrl.searchParams;
     const paramsObject = Object.fromEntries(params.entries());
 
-    const data = await (stripe[object][action] as Function)(paramsObject, {
-      stripeAccount: user.accountId,
-    });
+    let data;
+    if ((object as string).includes(".")) {
+      const [stripeObject, stripeObjectParam] = (object as string).split(".");
+      data = await (
+        (stripe[stripeObject as keyof typeof stripe] as any)[stripeObjectParam][
+          action
+        ] as Function
+      )(paramsObject, {
+        stripeAccount: user.accountId,
+      });
+    } else
+      data = await (stripe[object][action] as Function)(paramsObject, {
+        stripeAccount: user.accountId,
+      });
 
     return NextResponse.json({
       data,
@@ -75,9 +86,21 @@ export async function POST(
       };
 
     const params = await request.json();
-    const data = await (stripe[object][action] as Function)(params, {
-      stripeAccount: user.accountId,
-    });
+
+    let data;
+    if ((object as string).includes(".")) {
+      const [stripeObject, stripeObjectParam] = (object as string).split(".");
+      data = await (
+        (stripe[stripeObject as keyof typeof stripe] as any)[stripeObjectParam][
+          action
+        ] as Function
+      )(params, {
+        stripeAccount: user.accountId,
+      });
+    } else
+      data = await (stripe[object][action] as Function)(params, {
+        stripeAccount: user.accountId,
+      });
 
     return NextResponse.json({
       data,

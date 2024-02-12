@@ -4,7 +4,7 @@ import {
   ConnectComponentsProvider,
   ConnectPayouts,
 } from "@stripe/react-connect-js";
-import { CardContent, CardHeader, CardTitle } from "./ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function PayoutList() {
   const stripeConnectInstance = useConnectInstance();

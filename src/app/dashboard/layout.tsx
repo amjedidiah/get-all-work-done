@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { platform_name } from "@/constants";
 import Image from "next/image";
-import ProtectedNav from "@/components/protected-nav";
+import ProtectedNav, { navLinks } from "@/components/protected-nav";
 import useAuth from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 
@@ -56,33 +56,13 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <Link href="dashboard" className="cursor-pointer lg:hidden">
-                <DropdownMenuItem>Dashboard</DropdownMenuItem>
-              </Link>
-              <Link
-                href="/dashboard/bank-accounts"
-                className="cursor-pointer lg:hidden"
-              >
-                <DropdownMenuItem>Bank Accounts</DropdownMenuItem>
-              </Link>
-              <Link
-                href="/dashboard/debit-cards"
-                className="cursor-pointer lg:hidden"
-              >
-                <DropdownMenuItem>Debit Cards</DropdownMenuItem>
-              </Link>
-              <Link
-                href="/dashboard/transactions"
-                className="cursor-pointer lg:hidden"
-              >
-                <DropdownMenuItem>Transactions</DropdownMenuItem>
-              </Link>
-              <Link
-                href="/dashboard/payouts"
-                className="cursor-pointer lg:hidden"
-              >
-                <DropdownMenuItem>Payouts</DropdownMenuItem>
-              </Link>
+              {navLinks.map(({ name, href, label }) => (
+                <Link key={name} href={href} className="lg:hidden">
+                  <DropdownMenuItem className="cursor-pointer">
+                    {label}
+                  </DropdownMenuItem>
+                </Link>
+              ))}
               <Link href="/logout" className="cursor-pointer">
                 <DropdownMenuItem>Logout</DropdownMenuItem>
               </Link>
