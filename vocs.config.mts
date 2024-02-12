@@ -8,7 +8,10 @@ export default defineConfig({
     { text: 'DB Setup', link: 'db-setup' },
     {
       text: 'MISCELLANEOUS',
-      items: [{ text: 'Repo Setup', link: '/repo-setup' }],
+      items: [
+        { text: 'Repo Setup', link: '/repo-setup' },
+        { text: 'Comments', link: '/comments' },
+      ],
     },
   ],
   socials: [

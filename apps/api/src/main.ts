@@ -1,20 +1,18 @@
 import express from 'express';
 import cors from 'cors';
-import { getWorld } from '@get-all-work-done/shared/utils';
+import routes from './v1/routes';
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 8008;
+// Process Env
+const { HOST, PORT } = process.env;
+const host = HOST ?? 'localhost';
+const port = PORT ? Number(PORT) : 8008;
 
+// App
 const app = express();
+
 app.use(cors());
-
-app.get('/', (req, res) => {
-  res.send({ message: `Hello ${getWorld()}` });
-});
-
-app.get('/list', (req, res) => {
-  res.send({ message: 'list' });
-});
+app.use(express.json());
+app.use('/v1', routes);
 
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);

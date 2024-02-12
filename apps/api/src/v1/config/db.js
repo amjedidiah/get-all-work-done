@@ -2,7 +2,7 @@ const mysql2 = require('mysql2');
 
 require('dotenv').config({
   path: '.env.local',
-  debug: true,
+  // debug: true,
 });
 
 const dbConfig = {
