@@ -83,6 +83,27 @@ export const handleGigTransfer = async (
   // TODO: DB call to update gig status to settled
 };
 
+export const handleTaxTransaction = async (
+  reference: string,
+  calculation: string
+) => {
+  // CReate tax transaction
+  const transaction = await stripeSecret.tax.transactions.createFromCalculation(
+    {
+      calculation,
+      reference,
+      expand: ["line_items"],
+    }
+  );
+
+  // Store transaction ID in Payment Intent
+  await stripeSecret.paymentIntents.update(reference, {
+    metadata: {
+      tax_transaction: transaction.id,
+    },
+  });
+};
+
 export const handlePaymentIntentSucceeded = async (
   paymentIntent: PaymentIntent
 ) => {
@@ -90,5 +111,9 @@ export const handlePaymentIntentSucceeded = async (
   const gigId = paymentIntent.transfer_group;
   if (!gigId) return;
 
+  await handleTaxTransaction(
+    paymentIntent.id,
+    paymentIntent.metadata.tax_calculation
+  );
   await handleGigTransfer(gigId, paymentIntent);
 };

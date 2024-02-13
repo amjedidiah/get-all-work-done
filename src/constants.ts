@@ -62,7 +62,29 @@ export const gigs = [
       { id: "acct_1OZhkwIGWz9N1AyF", isSettled: true },
       { id: "acct_1OafF3IKQoAn7HFi", isSettled: true },
     ],
-    status: "completed",
+    status: "settled",
+  },
+  {
+    id: "gig_bc1kj2",
+    title: "House roofing",
+    price: 6000,
+    platformFeePercentage: 0.2,
+    contractors: [
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: true },
+      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: true, percentageShare: 0.4 },
+    ],
+    status: "settled",
+  },
+  {
+    id: "gig_ad349a",
+    title: "Tile cleaning",
+    price: 100000,
+    platformFeePercentage: 0.1,
+    contractors: [
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: false, percentageShare: 0.2 },
+      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: false },
+    ],
+    status: "in progress",
   },
   {
     id: "gig_922jd9",
