@@ -12,7 +12,7 @@ import { formatAmount } from "@/utils";
 import usePayouts from "@/hooks/use-payouts";
 
 export default function PayoutListCustom() {
-  const payouts = usePayouts({ limit: 10 });
+  const payouts = usePayouts({ limit: 100 });
 
   if (!payouts) return null;
 

@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import useAuthFetch from "@/hooks/use-auth-fetch";
 import { WithdrawFormProps } from "@/components/withdraw-form";
+import { useSWRConfig } from "swr";
 
 const initialValues: WithdrawFormValues = {
   amount: 0,
@@ -15,6 +16,7 @@ export default function useWithdrawForm({
     useState<WithdrawFormValues>(initialValues);
   const [formResponse, setFormResponse] = useState("");
   const authFetch = useAuthFetch();
+  const { mutate } = useSWRConfig();
 
   const handleFormChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,12 +44,13 @@ export default function useWithdrawForm({
         {
           method: "POST",
           body: JSON.stringify({
-            amount,
+            amount: amount * 100, // accounting for cents
             currency: "usd",
           }),
         }
       );
       console.info("Withdrawal successful: ", data);
+      mutate("/api/stripe/connected/payouts/list?limit=100"); // Update payouts list
 
       setFormResponse("Withdrawal successful");
       setFormValues(initialValues);

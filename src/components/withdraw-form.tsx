@@ -22,7 +22,7 @@ export default function WithdrawForm({
         <Input
           id="amount"
           name="amount"
-          placeholder="Amount"
+          placeholder="Amount in dollars"
           type="number"
           onChange={handleFormChange}
           value={formValues.amount}
