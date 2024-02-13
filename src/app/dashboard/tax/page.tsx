@@ -1,12 +1,16 @@
 "use client";
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
 import useTaxSettings from "@/hooks/use-tax-settings";
-import { TaxSettings } from "@/types";
 import { cn } from "@/lib/utils";
 import TaxSettingsForm from "@/components/tax-settings-form";
+import TaxRegistrationForm from "@/components/tax-registration-form";
+import useTaxRegistration from "@/hooks/use-tax-registration";
+import TaxSettingsDetails from "@/components/tax-settings-details";
+import TaxRegistrations from "@/components/tax-registrations";
 
 export default function Tax() {
   const { taxSettings } = useTaxSettings();
+  const { taxRegistrations } = useTaxRegistration();
 
   return (
     <main className="flex-1 p-4 md:p-6 overflow-auto grid gap-6">
@@ -22,14 +26,25 @@ export default function Tax() {
         </Card>
       </div>
       <div className="flex flex-col gap-6">
-        {taxSettings && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Add New Tax Registration</CardTitle>
+            <p>Add your tax registration for a select state</p>
+          </CardHeader>
+          <CardContent>
+            <TaxRegistrationForm />
+          </CardContent>
+        </Card>
+      </div>
+      {taxSettings && (
+        <div className="flex flex-col gap-6">
           <Card>
             <CardHeader className="flex-row items-center justify-between">
-              <CardTitle>Tax Settings</CardTitle>
+              <CardTitle>Tax Status</CardTitle>
               <span
-                className={cn("py-1 px-4 rounded font-medium", {
-                  "bg-green-500 text-white": (taxSettings.status = "active"),
-                  "bg-slate-500 ": (taxSettings.status = "pending"),
+                className={cn("py-1 px-4 rounded font-medium text-white", {
+                  "bg-green-500": taxSettings.status === "active",
+                  "bg-slate-500 ": taxSettings.status === "pending",
                 })}
               >
                 {taxSettings.status}
@@ -57,55 +72,9 @@ export default function Tax() {
                 </CardContent>
               )}
           </Card>
-        )}
-      </div>
+        </div>
+      )}
+      <TaxRegistrations taxRegistrations={taxRegistrations} />
     </main>
   );
 }
-
-const TaxSettingsDetails = ({
-  head_office,
-  defaults: { tax_behavior, tax_code },
-  status,
-}: TaxSettings) => {
-  if (status === "pending") return null;
-
-  return (
-    <>
-      {head_office && (
-        <CardContent>
-          <h4 className="font-semibold">HeadOffice</h4>
-          <TaxAddress headOffice={head_office} />
-        </CardContent>
-      )}
-      {tax_behavior && (
-        <CardContent>
-          <h4 className="font-semibold">Tax Behaviour</h4>
-          <p>{tax_behavior}</p>
-        </CardContent>
-      )}
-      {tax_code && (
-        <CardContent>
-          <h4 className="font-semibold">Tax Code</h4>
-          <p>{tax_code}</p>
-        </CardContent>
-      )}
-    </>
-  );
-};
-
-const TaxAddress = ({
-  headOffice,
-}: {
-  headOffice: TaxSettings["head_office"];
-}) => {
-  if (!headOffice) return null;
-  const { line1, line2, city, state, country, postal_code } =
-    headOffice.address;
-
-  return (
-    <address>
-      {line1} {line2} {city} {state} {country} {postal_code}
-    </address>
-  );
-};

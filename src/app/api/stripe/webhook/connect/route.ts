@@ -2,13 +2,20 @@ import {
   handlePaymentIntentSucceeded,
   stripeSecret as stripe,
 } from "@/lib/stripe";
-import { PaymentIntent, StripeAccount, StripeEvent } from "@/types";
+import {
+  PaymentIntent,
+  StripeAccount,
+  StripeEvent,
+  TaxSettings,
+} from "@/types";
 import { handleRequestError } from "@/utils";
 import { NextResponse, type NextRequest } from "next/server";
 
 const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET as string;
 
 const handleStripeAccountUpdated = async (stripeAccount: StripeAccount) => {};
+
+const handleStripeTaxSettingsUpdated = async (stripeAccount: TaxSettings) => {};
 
 export async function POST(request: NextRequest) {
   const sig = request.headers.get("stripe-signature") as string;
@@ -28,6 +35,13 @@ export async function POST(request: NextRequest) {
         const account = event.data.object as StripeAccount;
 
         await handleStripeAccountUpdated(account);
+        break;
+      }
+      case "tax.settings.updated": {
+        // Get account
+        const taxSettings = event.data.object as TaxSettings;
+
+        await handleStripeTaxSettingsUpdated(taxSettings);
         break;
       }
       case "payment_intent.succeeded": {

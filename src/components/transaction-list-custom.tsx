@@ -28,8 +28,6 @@ export default function TransactionListCustom() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Amount</TableHead>
-                  <TableHead>Platform Commission</TableHead>
-                  <TableHead>Net Amount</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Transaction ID</TableHead>
                   <TableHead>Date</TableHead>
@@ -43,22 +41,18 @@ export default function TransactionListCustom() {
                     id,
                     amount,
                     status,
-                    application_fee_amount,
                     refunded,
                     amount_refunded,
+                    receipt_url,
+                    customer,
                   }) => {
                     const timeObject = new Date(created * 1000);
                     const date = timeObject.toDateString();
                     const time = timeObject.toLocaleTimeString();
-                    const net_amount = amount - Number(application_fee_amount);
 
                     return (
                       <TableRow key={id}>
                         <TableCell>{formatAmount(amount)}</TableCell>
-                        <TableCell>
-                          {formatAmount(application_fee_amount || 0)}
-                        </TableCell>
-                        <TableCell>{formatAmount(net_amount)}</TableCell>
                         <TableCell>
                           <span className="bg-slate-400 text-white rounded-lg w-fit py-1 px-2">
                             {refunded
@@ -69,6 +63,18 @@ export default function TransactionListCustom() {
                         <TableCell>{id}</TableCell>
                         <TableCell>
                           {date} <span>{time}</span>
+                        </TableCell>
+                        <TableCell>
+                          {receipt_url && (
+                            <a
+                              href={receipt_url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="underline"
+                            >
+                              Get receipt
+                            </a>
+                          )}
                         </TableCell>
                       </TableRow>
                     );

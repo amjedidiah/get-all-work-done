@@ -1,0 +1,23 @@
+{
+    "object": "list",
+    "data": [
+        {
+            "id": "taxreg_1Oj9prIYwDu4c6UwDNaG5nEj",
+            "object": "tax.registration",
+            "active_from": 1707784015,
+            "country": "US",
+            "country_options": {
+                "us": {
+                    "state": "CA",
+                    "type": "state_sales_tax"
+                }
+            },
+            "created": 1707784015,
+            "expires_at": 1767225600,
+            "livemode": false,
+            "status": "active"
+        }
+    ],
+    "has_more": false,
+    "url": "/v1/tax/registrations"
+}
