@@ -51,6 +51,7 @@ export default function useWithdrawForm({
       );
       console.info("Withdrawal successful: ", data);
       mutate("/api/stripe/connected/payouts/list?limit=100"); // Update payouts list
+      mutate("/api/stripe/connected/balance/retrieve"); // Update available balance
 
       setFormResponse("Withdrawal successful");
       setFormValues(initialValues);

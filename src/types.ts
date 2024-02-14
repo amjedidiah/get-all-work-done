@@ -2,6 +2,7 @@ import { DetailedHTMLProps, HTMLAttributes } from "react";
 import Stripe from "stripe";
 import taxRegistrationData from "@/data/tax-registration.json";
 import ipData from "@/data/ip-data.json";
+import { gigs } from "@/constants";
 
 declare global {
   namespace JSX {
@@ -97,3 +98,12 @@ export type TaxSettings = Stripe.TaxSettingsUpdatedEvent["data"]["object"];
 export type TaxRegistration = (typeof taxRegistrationData)["data"][number];
 
 export type IPData = typeof ipData;
+
+export type Transfer = Stripe.Transfer;
+
+export type AccountWithCredit = {
+  accountId: string;
+  credit: number;
+};
+
+export type Gig = (typeof gigs)[number];

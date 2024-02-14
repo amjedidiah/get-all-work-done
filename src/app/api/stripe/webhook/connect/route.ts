@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
 
     // Check if the webhook is in live mode to handle effectively
-    // const isLiveMode = event.livemode;
+    // const isLiveMode = event.livemode;     // TODO: Handle in deployment
 
     // Handle the event
     switch (event.type) {

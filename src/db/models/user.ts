@@ -8,6 +8,8 @@ class User extends Model {
   public isOnboarded!: boolean;
   public createdAt!: Date;
   public updatedAt!: Date;
+  public isVerified!: boolean;
+  public credit!: number;
 }
 
 User.init(
@@ -31,6 +33,15 @@ User.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
+    },
+    isVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    credit: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
   },
   {

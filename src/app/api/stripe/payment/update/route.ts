@@ -1,4 +1,4 @@
-import { stripeSecret as stripe } from "@/lib/stripe";
+import { calculateTax, stripeSecret as stripe } from "@/lib/stripe";
 import { handleRequestError } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,10 +14,17 @@ export async function GET(request: NextRequest) {
         message: "Invalid request",
       };
 
+    // Recalculate tax
+    const calculation = await calculateTax(Number(amount));
+
+    // Update payment intent
     const paymentIntent = await stripe.paymentIntents.update(
       payment_intent_id,
       {
-        amount: Number(amount),
+        amount: calculation.amount_total,
+        metadata: {
+          tax_calculation: calculation.id,
+        },
       }
     );
 
@@ -25,7 +32,7 @@ export async function GET(request: NextRequest) {
       data: {
         status: paymentIntent.status,
       },
-      message: "Payment intent created successfully",
+      message: "Payment intent updated successfully",
     });
   } catch (error) {
     return handleRequestError(error);

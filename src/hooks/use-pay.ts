@@ -1,6 +1,22 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import useGig from "@/hooks/use-gig";
 import { useCallback, useEffect, useState } from "react";
+import { Gig } from "@/types";
+
+const handlePayment = async (gig: Gig) => {
+  if (!gig) throw new Error("Gig not found");
+
+  return fetch("/api/stripe/payment", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      amount: gig.price,
+      transfer_group: gig.id,
+    }),
+  }).then((res) => res.json());
+};
 
 export default function usePay() {
   const searchParams = useSearchParams();
@@ -9,21 +25,12 @@ export default function usePay() {
   const gig = useGig(gigId);
   const [clientSecret, setClientSecret] = useState("");
   const [paymentIntentId, setPaymentIntentId] = useState("");
+  const [shouldGoHome, setShouldGoHome] = useState(false);
+  const [shouldHandleGig, setShouldHandleGig] = useState(false);
 
   const handleGig = useCallback(async () => {
-    if (!gig) return;
-
     try {
-      const { data } = await fetch("/api/stripe/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: gig.price,
-          transfer_group: gig.id,
-        }),
-      }).then((res) => res.json());
+      const { data } = await handlePayment(gig as Gig);
       const paymentIntent = data?.payment_intent;
 
       if (paymentIntent) {
@@ -36,10 +43,21 @@ export default function usePay() {
   }, [gig]);
 
   useEffect(() => {
-    if (!gig?.id) return router.push("/");
+    if (shouldGoHome) router.push("/");
+  }, [router, shouldGoHome]);
 
-    handleGig();
-  }, [gig?.id, handleGig, router]);
+  useEffect(() => {
+    if (shouldHandleGig) handleGig();
+  }, [handleGig, shouldHandleGig]);
+
+  useEffect(() => {
+    if (!gig?.id) {
+      setShouldGoHome(true);
+      return;
+    }
+
+    setShouldHandleGig(true);
+  }, [gig?.id]);
 
   return {
     clientSecret,

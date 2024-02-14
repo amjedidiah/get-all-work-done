@@ -78,13 +78,13 @@ export const gigs = [
   {
     id: "gig_ad349a",
     title: "Tile cleaning",
-    price: 100000,
+    price: 10000,
     platformFeePercentage: 0.1,
     contractors: [
-      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: false, percentageShare: 0.2 },
-      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: false },
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: true, percentageShare: 0.2 },
+      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: true },
     ],
-    status: "in progress",
+    status: "settled",
   },
   {
     id: "gig_922jd9",
@@ -110,6 +110,42 @@ export const gigs = [
       { id: "acct_1OZhkwIGWz9N1AyF", isSettled: true },
     ],
     status: "settled",
+  },
+  {
+    id: "gig_gt320q",
+    title: "Car repairs",
+    price: 20000,
+    platformFeePercentage: 0.15,
+    contractors: [
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: true },
+      { id: "acct_1OZHXtIZ3hc5uLXA", isSettled: true },
+      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: true },
+    ],
+    status: "settled",
+  },
+  {
+    id: "gig_gt3q1q",
+    title: "House painting",
+    price: 15000,
+    platformFeePercentage: 0.1,
+    contractors: [
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: true },
+      { id: "acct_1OZHXtIZ3hc5uLXA", isSettled: true },
+      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: true },
+    ],
+    status: "settled",
+  },
+  {
+    id: "gig_gt3q1q",
+    title: "Stump cutting",
+    price: 12000,
+    platformFeePercentage: 0.12,
+    contractors: [
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: false },
+      { id: "acct_1OZHXtIZ3hc5uLXA", isSettled: false },
+      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: false },
+    ],
+    status: "in progress",
   },
 ];
 
