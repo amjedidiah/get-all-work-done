@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import BankAccountForm from "@/components/bank-account-form";
 import { Elements } from "@stripe/react-stripe-js";
-import { stripePublishable } from "@/lib/stripe";
+import { stripePublishable } from "@/lib/stripe.fe";
 import useExternalAccounts from "@/hooks/use-external-accounts";
 
 export default function BankAccounts() {

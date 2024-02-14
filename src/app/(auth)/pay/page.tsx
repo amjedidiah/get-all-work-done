@@ -1,7 +1,7 @@
 "use client";
 import PayForm from "@/components/pay-form";
 import usePay from "@/hooks/use-pay";
-import { stripePublishable } from "@/lib/stripe";
+import { stripePublishable } from "@/lib/stripe.fe";
 import { Elements } from "@stripe/react-stripe-js";
 
 export default function Pay() {

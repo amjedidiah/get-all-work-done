@@ -9,7 +9,7 @@ import {
   Table,
 } from "@/components/ui/table";
 import { Elements } from "@stripe/react-stripe-js";
-import { stripePublishable } from "@/lib/stripe";
+import { stripePublishable } from "@/lib/stripe.fe";
 import useExternalAccounts from "@/hooks/use-external-accounts";
 import DebitCardForm from "@/components/debit-card-form";
 
