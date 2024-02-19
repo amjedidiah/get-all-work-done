@@ -1,11 +1,12 @@
-import { handleRefundTransfers, stripeSecret as stripe } from "@/lib/stripe";
+import { stripeSecret as stripe } from "@/lib/stripe";
 import { handleRequestError } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { refund_reason, payment_intent_id } = await request.json();
+    const { refund_reason, payment_intent_id, amount } = await request.json();
     // Refund reason must be one of: duplicate, fraudulent, requested_by_customer
+    // amount is in dollars
 
     // Get the payment intent
     const paymentIntent = await stripe.paymentIntents.retrieve(
@@ -21,6 +22,7 @@ export async function POST(request: NextRequest) {
     const refund = await stripe.refunds.create({
       charge: paymentIntent.latest_charge.toString(),
       reason: refund_reason,
+      amount: amount * 100,
     });
     console.info("Charge refunded successfully: ", refund);
 
@@ -42,18 +44,13 @@ export async function POST(request: NextRequest) {
       taxTransactionReversal
     );
 
-    const transfer_reversals = await handleRefundTransfers(
-      paymentIntent.transfer_group,
-      refund_reason
-    );
-
     return NextResponse.json({
       data: {
         refund,
         tax_transaction_reversal: taxTransactionReversal,
-        transfer_reversals,
       },
-      message: "All refunds done successfully",
+      message:
+        "Charge and tax transaction reversed successfully. Don't forget to refund associated transfers.",
     });
   } catch (error) {
     return handleRequestError(error);

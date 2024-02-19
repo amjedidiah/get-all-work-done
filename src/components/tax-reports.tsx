@@ -1,7 +1,6 @@
 "use client";
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import useTaxRegistration from "@/hooks/use-tax-registration";
 import {
   Table,
   TableBody,
@@ -10,78 +9,75 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import useTaxReport from "@/hooks/use-tax-report";
+import { Button } from "@/components/ui/button";
 
-export default function TaxRegistrations() {
-  const { expireTaxRegistration, taxRegistrations } = useTaxRegistration();
-  if (!taxRegistrations) return null;
+export default function TaxReports() {
+  const { taxReports, fetchFileLink } = useTaxReport();
+  if (!taxReports) return null;
 
   return (
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Tax Registrations</CardTitle>
+          <CardTitle>Tax Reports</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>ID</TableHead>
-                <TableHead>State</TableHead>
                 <TableHead>Created</TableHead>
-                <TableHead>Active From</TableHead>
-                <TableHead>Expires At</TableHead>
+                <TableHead>From</TableHead>
+                <TableHead>To</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Size</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {taxRegistrations.map(
+              {taxReports.map(
                 ({
                   id,
-                  country_options: {
-                    us: { state },
-                  },
                   created,
-                  active_from,
-                  expires_at,
+                  parameters: { interval_start: from, interval_end: to },
+                  result,
                   status,
                 }) => (
                   <TableRow key={id}>
                     <TableCell>{id}</TableCell>
-                    <TableCell>{state}</TableCell>
                     <TableCell>
                       {new Date(created * 1000).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      {new Date(active_from * 1000).toLocaleDateString()}
+                      {new Date(from * 1000).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      {new Date(expires_at * 1000).toLocaleDateString()}
+                      {new Date(to * 1000).toLocaleDateString()}
                     </TableCell>
+                    <TableCell>{result?.title}</TableCell>
+                    <TableCell>{result?.size}</TableCell>
                     <TableCell>
                       <span
                         className={cn(
                           "py-1 px-4 rounded font-medium  text-white",
                           {
-                            "bg-green-500": status === "active",
-                            "bg-slate-500 ": status === "expired",
+                            "bg-green-500": status === "succeeded",
+                            "bg-slate-500 ": status === "pending",
                           }
                         )}
                       >
                         {status}
                       </span>
                     </TableCell>
-                    {status === "active" && (
-                      <TableCell>
-                        <button
-                          className="py-2 px-3 bg-red-500 hover:bg-red-600 rounded text-white mb-2 lg:me-2"
-                          id={id}
-                          onClick={expireTaxRegistration}
-                        >
-                          End
-                        </button>
-                      </TableCell>
-                    )}
+                    <TableCell>
+                      {result?.id && (
+                        <Button onClick={() => fetchFileLink(id)}>
+                          Download
+                        </Button>
+                      )}
+                    </TableCell>
                   </TableRow>
                 )
               )}
