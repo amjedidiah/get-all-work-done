@@ -4,7 +4,7 @@ import { stripe } from '../../lib/stripe';
 import User from '../../models/user';
 import { handleResponseError, handleValidationErrors } from '../../utils';
 
-export const postRegister = async (request: Request, response: Response) => {
+const postRegister = async (request: Request, response: Response) => {
   try {
     // Validate request
     handleValidationErrors(request);
@@ -71,3 +71,5 @@ export const postRegister = async (request: Request, response: Response) => {
     handleResponseError(response, error);
   }
 };
+
+export default postRegister;
