@@ -1,7 +1,8 @@
-import { body, header } from 'express-validator';
+import { body, header, query } from 'express-validator';
 import { validate } from 'deep-email-validator';
 import { getUserByEmail } from '../lib/db';
 import { isDev } from '@get-all-work-done/shared/constants';
+import { ExternalAccountObject } from '../types';
 
 export const emailValidator = () =>
   body('email', 'Please enter a valid email address')
@@ -38,3 +39,19 @@ export const accountTokenValidator = () =>
 
 export const accountIdValidator = () =>
   body('account_id', 'account_id is required').isString().exists();
+
+export const externalAccountTokenValidator = () =>
+  header(
+    'external-account-token',
+    'External account token is required'
+  ).notEmpty();
+
+export const externalAccountTypeValidator = () =>
+  query('type', 'External account type is required')
+    .exists()
+    .custom((type: ExternalAccountObject) => {
+      if (type !== 'bank_account' && type !== 'card')
+        throw new Error('Invalid external account type');
+
+      return true;
+    });
