@@ -1,8 +1,9 @@
 const mysql2 = require("mysql2");
 const pg = require("pg");
+import { isDev } from '@get-all-work-done/shared/constants';
 
-require("dotenv").config({
-  path: process.env.NODE_ENV === "production" ? ".env" : ".env.local",
+require('dotenv').config({
+  path: !isDev ? '.env' : '.env.local',
   // debug: true,
 });
 

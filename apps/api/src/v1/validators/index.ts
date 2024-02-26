@@ -1,7 +1,7 @@
 import { body, header, query } from 'express-validator';
 import { validate } from 'deep-email-validator';
 import { getUserByEmail } from '../lib/db';
-import { isDev } from '@get-all-work-done/shared/constants';
+import { isDev, refundReasons } from '@get-all-work-done/shared/constants';
 import { ExternalAccountObject } from '../types';
 
 export const emailValidator = () =>
@@ -70,6 +70,16 @@ export const transferGroupValidator = () =>
     .isString();
 
 export const paymentIntentValidator = () =>
-  body('payment_intent_id', 'payment_intent_id is requried')
+  body('payment_intent_id', 'payment_intent_id is required')
     .notEmpty()
     .isString();
+
+export const refundReasonValidator = () =>
+  body('refund_reason', 'Refund reason is required')
+    .notEmpty()
+    .custom((reason: string) => {
+      if (!refundReasons.includes(reason))
+        throw new Error('Invalid refund reason');
+
+      return true;
+    });

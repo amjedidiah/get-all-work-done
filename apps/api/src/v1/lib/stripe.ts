@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 import { gigs } from '@get-all-work-done/shared/constants';
 import { HttpError } from '../utils';
 import { IPData } from '../types';
+import { addUsersCredit } from './db';
 
 type Contractor = {
   id: string;
@@ -60,6 +61,7 @@ export const handleGigTransfer = async (
   const latestCharge = paymentIntent.latest_charge as string;
 
   // Get the particular gig
+  // * Replace this with actual call to the DB
   const gig = gigs.find((gig) => gig.id === gigId);
   if (!gig) throw new HttpError(404, 'Gig not found');
 
@@ -131,7 +133,7 @@ export const calculateTax = async (amount: number) => {
   const ipData: IPData = await fetch('https://ipapi.co/json/').then((res) =>
     res.json()
   );
-  if (!ipData.ip) throw { message: 'IP address not found', statusCode: 404 };
+  if (!ipData.ip) throw new HttpError(404, 'IP address not found');
 
   // Calculate tax
   const calculation = await stripe.tax.calculations.create({
@@ -149,4 +151,72 @@ export const calculateTax = async (amount: number) => {
   console.info('Tax calculation completed: ', calculation);
 
   return calculation;
+};
+
+export const handleRefundTransfers = async (
+  transfer_group: string | null,
+  refund_reason: string
+) => {
+  if (!transfer_group)
+    throw new HttpError(
+      400,
+      'Cannot reverse this payment because no transfers were found'
+    );
+
+  // Get all the transfers associated with the charge
+  const transfers = await stripe.transfers.list({
+    limit: 100,
+    transfer_group,
+  });
+  console.info(
+    `${transfers.data.length} transfers found for this charge. Attempting reversal...`
+  );
+
+  let monitoredTransfers = [...transfers.data];
+  const transferReversals = [];
+  try {
+    for (const transfer of transfers.data) {
+      // Reverse the transfer
+      const transferReversal = await stripe.transfers.createReversal(
+        transfer.id,
+        {
+          description: `Refund: ${refund_reason}`,
+          amount: 10000,
+        }
+      );
+
+      // Add to list of reversals
+      transferReversals.push(transferReversal);
+
+      // Remove transfer from list of monitored transfers
+      monitoredTransfers = monitoredTransfers.filter(
+        (monitoredTransfer) => monitoredTransfer.id !== transfer.id
+      );
+      console.info(
+        `Transfer reversed successfully for ${transferReversals.length} transfer: `,
+        transferReversal
+      );
+    }
+  } catch (error) {
+    const accountsWithCredit = monitoredTransfers.map((item) => ({
+      accountId: item.destination as string,
+      credit: item.amount,
+    }));
+    const owingAccounts = accountsWithCredit.map((item) => item.accountId);
+    const amounts = accountsWithCredit.map((item) => item.credit);
+
+    // Add the amounts to the account as a credit
+    await addUsersCredit(accountsWithCredit);
+
+    throw new HttpError(
+      400,
+      `Failed to refund transfers for the following accounts: ${owingAccounts.join(
+        ', '
+      )}. The amounts: ${amounts.join(
+        ', '
+      )} have been added to the accounts as a credit.`
+    );
+  }
+
+  return transferReversals;
 };

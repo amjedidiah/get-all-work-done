@@ -84,3 +84,9 @@ export const gigs = [
 ];
 
 export const isDev = process.env.NODE_ENV === 'development';
+
+export const refundReasons = [
+  'duplicate',
+  'fraudulent',
+  'requested_by_customer',
+];
