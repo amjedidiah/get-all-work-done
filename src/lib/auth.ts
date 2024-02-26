@@ -1,5 +1,5 @@
 import { jwtVerify, SignJWT } from "jose";
-import { nanoid } from "nanoid";
+import { v4 as uuidv4 } from "uuid";
 import type { NextRequest } from "next/server";
 
 interface UserJwtPayload {
@@ -50,7 +50,7 @@ export const generateToken = async (issuer: string) => {
     user_id: issuer,
   })
     .setProtectedHeader({ alg: "HS256" })
-    .setJti(nanoid())
+    .setJti(uuidv4())
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE_HOURS}h`)
     .sign(new TextEncoder().encode(getJwtSecretKey()));

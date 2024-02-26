@@ -74,19 +74,16 @@ export default function DebitCards() {
                           </TableCell>
                           <TableCell>{status}</TableCell>
                           <TableCell className="flex flex-col lg:flex-row flex-wrap gap-2">
-                            {available_payout_methods?.map((item) => (
+                            {available_payout_methods?.map((item, i) => (
                               <span
                                 className="py-1 px-4 bg-slate-200 rounded font-medium"
-                                key={`${last4}-item`}
+                                key={`${last4}-item-${i}`}
                               >
                                 {item}
                               </span>
                             ))}
                             {default_for_currency && (
-                              <span
-                                className="py-1 px-4 bg-green-500 text-white rounded font-medium"
-                                key={`${last4}-item`}
-                              >
+                              <span className="py-1 px-4 bg-green-500 text-white rounded font-medium">
                                 default
                               </span>
                             )}
