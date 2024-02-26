@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { gigs } from '@get-all-work-done/shared/constants';
 import { HttpError } from '../utils';
+import { IPData } from '../types';
 
 type Contractor = {
   id: string;
@@ -123,4 +124,29 @@ export const handlePaymentIntentSucceeded = async (
   if (!gigId) return;
 
   await handleGigTransfer(gigId, paymentIntent);
+};
+
+export const calculateTax = async (amount: number) => {
+  // Fetch customer's IP address for Tax calculation
+  const ipData: IPData = await fetch('https://ipapi.co/json/').then((res) =>
+    res.json()
+  );
+  if (!ipData.ip) throw { message: 'IP address not found', statusCode: 404 };
+
+  // Calculate tax
+  const calculation = await stripe.tax.calculations.create({
+    currency: 'usd',
+    line_items: [
+      {
+        amount,
+        reference: 'L1',
+      },
+    ],
+    customer_details: {
+      ip_address: ipData.ip,
+    },
+  });
+  console.info('Tax calculation completed: ', calculation);
+
+  return calculation;
 };

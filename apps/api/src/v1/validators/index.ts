@@ -55,3 +55,21 @@ export const externalAccountTypeValidator = () =>
 
       return true;
     });
+
+export const amountValidator = () =>
+  body('amount', 'Amount is required')
+    .isInt()
+    .custom((amount: number) => {
+      if (amount < 1) throw new Error('Amount must be greater than 0');
+      return true;
+    });
+
+export const transferGroupValidator = () =>
+  body('transfer_group', 'transfer_group string is required')
+    .notEmpty()
+    .isString();
+
+export const paymentIntentValidator = () =>
+  body('payment_intent_id', 'payment_intent_id is requried')
+    .notEmpty()
+    .isString();
