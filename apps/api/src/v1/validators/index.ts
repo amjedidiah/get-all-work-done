@@ -35,3 +35,6 @@ export const emailExistsValidator = () =>
 
 export const accountTokenValidator = () =>
   header('account-token', 'Account token is required').notEmpty();
+
+export const accountIdValidator = () =>
+  body('account_id', 'account_id is required').isString().exists();

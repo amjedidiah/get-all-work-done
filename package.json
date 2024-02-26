@@ -10,6 +10,7 @@
     "docs:build": "vocs build",
     "docs:preview": "vocs preview",
     "db:create": "npx sequelize-cli db:create",
+    "db:create:prod": "npx sequelize-cli db:create --env=production",
     "db:migrate": "npx sequelize-cli db:migrate"
   },
   "private": true,
@@ -24,6 +25,7 @@
     "jose": "^5.2.1",
     "mysql2": "^3.9.1",
     "next": "14.0.4",
+    "pg": "^8.11.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sequelize": "^6.36.0",

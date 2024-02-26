@@ -40,7 +40,6 @@ const postRegister = async (request: Request, response: Response) => {
         payouts: {
           schedule: {
             interval: 'weekly',
-            delay_days: 3,
             weekly_anchor: 'friday',
           },
         },

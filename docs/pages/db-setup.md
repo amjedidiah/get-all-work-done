@@ -1,5 +1,7 @@
 # DB Setup
 
+> Only run DB setup for local development
+
 For this project, a minimal MySQL DB(as recommended) with just a `users` table was used.
 A local install of `Sequelize` and `Sequelize CLI` were used to manage the DB and tables.
 
