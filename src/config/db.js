@@ -1,26 +1,39 @@
 const mysql2 = require("mysql2");
+const pg = require("pg");
+
+require("dotenv").config({
+  path: process.env.NODE_ENV === "production" ? ".env" : ".env.local",
+  // debug: true,
+});
+
+const devDBConfig = {
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  host: process.env.DB_HOST,
+  dialect: "mysql",
+  dialectModule: mysql2,
+};
+
+const testDBConfig = {
+  ...devDBConfig,
+  database: process.env.DB_NAME_TEST,
+};
+
+const prodDBConfig = {
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DATABASE,
+  host: process.env.POSTGRES_HOST,
+  dialect: "postgres",
+  dialectModule: pg,
+  dialectOptions: {
+    ssl: { require: true },
+  },
+};
 
 module.exports = {
-  development: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-    dialectModule: mysql2,
-  },
-  test: {
-    username: process.env.DB_USERNAME,
-    password: null,
-    database: "database_test",
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-  },
-  production: {
-    username: process.env.DB_USERNAME,
-    password: null,
-    database: "database_production",
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-  },
+  development: devDBConfig,
+  test: testDBConfig,
+  production: prodDBConfig,
 };
