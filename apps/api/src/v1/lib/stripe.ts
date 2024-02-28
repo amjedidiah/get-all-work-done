@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 import { gigs } from '@get-all-work-done/shared/constants';
 import { HttpError } from '../utils';
 import { IPData } from '../types';
+import User from '../models/user';
 import { addUsersCredit } from './db';
 
 type Contractor = {
@@ -13,7 +14,26 @@ type ContractorWithShares = Contractor & {
   percentageShare: number;
 };
 
+type ContractorWithCredit = ContractorWithShares & {
+  credit: number;
+};
+
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+
+const updateContractorsWithCredit = async (
+  contractors: ContractorWithShares[]
+) => {
+  const users = await User.findAll({
+    where: {
+      id: contractors.map(({ id }) => id),
+    },
+  });
+
+  return [...contractors].map((contractor, index) => ({
+    ...contractor,
+    credit: users[index].credit,
+  })) as ContractorWithCredit[];
+};
 
 const updateContractorsWithShares = (
   contractors: Array<Contractor | ContractorWithShares>
@@ -54,13 +74,7 @@ const updateContractorsWithShares = (
   ) as ContractorWithShares[];
 };
 
-export const handleGigTransfer = async (
-  gigId: string,
-  paymentIntent: Stripe.PaymentIntent
-) => {
-  const latestCharge = paymentIntent.latest_charge as string;
-
-  // Get the particular gig
+const verifyAndFetchGig = (gigId: string) => {
   // * Replace this with actual call to the DB
   const gig = gigs.find((gig) => gig.id === gigId);
   if (!gig) throw new HttpError(404, 'Gig not found');
@@ -69,6 +83,18 @@ export const handleGigTransfer = async (
 
   const gigIsDone = gig.status === 'completed';
   if (!gigIsDone) throw new HttpError(400, 'Gig is not completed');
+
+  return gig;
+};
+
+export const handleGigTransfer = async (
+  gigId: string,
+  paymentIntent: Stripe.PaymentIntent
+) => {
+  const latestCharge = paymentIntent.latest_charge as string;
+
+  // Get the particular gig
+  const gig = verifyAndFetchGig(gigId);
 
   // Get contractor account IDs for this gig
   const contractors = gig.contractors;
@@ -85,34 +111,62 @@ export const handleGigTransfer = async (
   const updatedContractors = updateContractorsWithShares(contractors);
   console.info('updatedContractors: ', updatedContractors);
 
+  // Update contractors with credit
+  const contractorsWithCredit = await updateContractorsWithCredit(
+    updatedContractors
+  );
+  console.info('contractorsWithCredit: ', contractorsWithCredit);
+
   // Make the necessary transfers
-  for (const contractor of updatedContractors) {
+  for (const contractor of contractorsWithCredit) {
     // Get contractor share
     const share = Math.floor(contractor.percentageShare * balance);
+    const updatedShared = share - contractor.credit;
+    const recoveredCredit = Math.min(updatedShared, contractor.credit);
 
-    // Set destination account ID
-    const destination = contractor.id;
+    // Console if credit
+    if (recoveredCredit)
+      console.info(
+        'Recovered credit: ',
+        recoveredCredit,
+        ' from ',
+        contractor.id
+      );
 
-    //Transfer
-    const transfer = await stripe.transfers.create({
-      amount: share,
-      currency: 'usd',
-      destination,
-      transfer_group: gigId,
-      source_transaction: latestCharge,
-    });
+    // If share is 0, skip this contractor
+    if (!updatedShared) {
+      console.info(
+        'No share for ',
+        contractor.id,
+        ', because share: ',
+        share,
+        ' is same as credit: ',
+        contractor.credit
+      );
+    } else {
+      // Set destination account ID
+      const destination = contractor.id;
 
-    const account = await stripe.accounts.retrieve(destination);
+      //Transfer
+      const transfer = await stripe.transfers.create({
+        amount: updatedShared,
+        currency: 'usd',
+        destination,
+        transfer_group: gigId,
+        source_transaction: latestCharge,
+      });
 
-    // Output success
-    console.info(
-      `transfer to ${
-        account.individual?.first_name ?? account.business_profile?.name
-      }: `,
-      transfer
+      // Output success
+      console.info(`transfer to ${destination}: `, transfer);
+    }
+
+    // Update contractor credit in DB
+    await User.decrement(
+      { credit: recoveredCredit },
+      { where: { id: contractor.id } }
     );
 
-    // * DB call to update contractors status to settled
+    // * DB call to update contractors status in gig to settled
   }
 
   // * DB call to update gig status to settled
