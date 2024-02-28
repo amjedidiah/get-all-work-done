@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import postConnect from '../controllers/connect/post';
+import useConnect from '../controllers/connect/use';
 
 const router = Router();
 
-router.post('/:object/:action', postConnect);
+router.use('/:object/:action', useConnect);
 
 export default router;

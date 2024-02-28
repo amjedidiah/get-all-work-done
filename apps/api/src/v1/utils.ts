@@ -1,12 +1,13 @@
 import { AxiosError } from 'axios';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import { stripe } from './lib/stripe';
+import User from './models/user';
 
 type StatusError = Error & {
   status?: number;
   statusCode?: number;
 };
-
 
 export class HttpError extends Error {
   status?: number;
@@ -44,3 +45,37 @@ export const handleValidationErrors = (request: Request) => {
   if (!errors.isEmpty())
     throw new HttpError(400, errors.array()[0]?.msg || 'Bad request');
 };
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const getConnectData = async (request: Request, user: User) => {
+  const { object, action } = request.params;
+  const values = request.method === 'GET' ? request.query : request.body;
+
+  const initMethodParams = [
+    values,
+    {
+      stripeAccount: user.accountId,
+    },
+  ];
+
+  const methodParams =
+    request.method === 'PATCH'
+      ? [request.query.id, ...initMethodParams]
+      : initMethodParams;
+
+  let data;
+  if ((object as string).includes('.')) {
+    const [stripeObject, stripeObjectParam] = (object as string).split('.');
+    data = await (stripe[stripeObject as keyof typeof stripe] as any)[
+      stripeObjectParam
+    ][action](...methodParams);
+  } else {
+    data = await (stripe as Record<string, any>)[object][action](
+      ...methodParams
+    );
+  }
+
+  return data;
+};
+
+
