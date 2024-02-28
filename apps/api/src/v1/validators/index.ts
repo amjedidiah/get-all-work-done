@@ -83,3 +83,16 @@ export const refundReasonValidator = () =>
 
       return true;
     });
+
+export const validateInterval = (fields: string, name: string) =>
+  body(fields, `${name} is required`)
+    .exists()
+    .custom((value) => {
+      if (!Number.isInteger(value))
+        throw new Error(`${name} must be an integer`);
+
+      return true;
+    });
+
+export const validateGigId = () =>
+  body('gig_id', 'gig_id string is required').notEmpty().isString();

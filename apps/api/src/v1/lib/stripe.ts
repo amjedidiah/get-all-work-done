@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 import { gigs } from '@get-all-work-done/shared/constants';
 import { HttpError } from '../utils';
-import { IPData } from '../types';
+import { IPData, StripeAccount, TaxSettings } from '../types';
 import User from '../models/user';
 import { addUsersCredit } from './db';
 
@@ -80,9 +80,10 @@ const verifyAndFetchGig = (gigId: string) => {
   if (!gig) throw new HttpError(404, 'Gig not found');
 
   console.info('gig: ', gig);
-
-  const gigIsDone = gig.status === 'completed';
-  if (!gigIsDone) throw new HttpError(400, 'Gig is not completed');
+  if (gig.status === 'settled')
+    throw new HttpError(400, 'Gig is already settled');
+  if (gig.status === 'completed')
+    throw new HttpError(400, 'Gig is not completed');
 
   return gig;
 };
@@ -274,3 +275,11 @@ export const handleRefundTransfers = async (
 
   return transferReversals;
 };
+
+export const handleStripeAccountUpdated = async (
+  stripeAccount: StripeAccount
+) => console.info(stripeAccount);
+
+export const handleStripeTaxSettingsUpdated = async (
+  taxSettings: TaxSettings
+) => console.info(taxSettings);

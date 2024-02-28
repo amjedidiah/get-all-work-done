@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getConnectData, handleResponseError } from '../../utils';
+import { performConnectRequest, handleResponseError } from '../../utils';
 import { verifyAuth } from '../../lib/auth';
 import { handleGetUserById } from '../../lib/db';
 
@@ -8,9 +8,9 @@ const useConnect = async (request: Request, response: Response) => {
     const { user_id } = await verifyAuth(request);
 
     const user = await handleGetUserById(user_id);
-    const data = await getConnectData(request, user);
+    const { data, code } = await performConnectRequest(request, user);
 
-    response.status(200).json({
+    response.status(code).json({
       data,
       message: `${request.params.object} ${request.params.action}'d successfully`,
     });

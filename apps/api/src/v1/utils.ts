@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { stripe } from './lib/stripe';
 import User from './models/user';
+import { isDev } from '@get-all-work-done/shared/constants';
 
 type StatusError = Error & {
   status?: number;
@@ -47,7 +48,7 @@ export const handleValidationErrors = (request: Request) => {
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const getConnectData = async (request: Request, user: User) => {
+export const performConnectRequest = async (request: Request, user: User) => {
   const { object, action } = request.params;
   const values = request.method === 'GET' ? request.query : request.body;
 
@@ -75,7 +76,21 @@ export const getConnectData = async (request: Request, user: User) => {
     );
   }
 
-  return data;
+  return { data, code: request.method === 'POST' ? 201 : 200 };
 };
 
+export const prepWebhookEvent = (request: Request) => {
+  const sig = request.headers['stripe-signature'] as string;
+  const event = stripe.webhooks.constructEvent(
+    request.body,
+    sig,
+    process.env.STRIPE_ENDPOINT_SECRET as string
+  );
 
+  // Check if the webhook is in live mode to handle effectively
+  const isLiveMode = event.livemode;
+  if (!isDev && !isLiveMode)
+    throw new HttpError(400, 'Webhook is not in live mode');
+
+  return event;
+};

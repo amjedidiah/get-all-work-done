@@ -11,3 +11,7 @@ export type AccountWithCredit = {
   accountId: string;
   credit: number;
 };
+
+export type StripeAccount = Stripe.Account;
+
+export type TaxSettings = Stripe.TaxSettingsUpdatedEvent['data']['object'];
