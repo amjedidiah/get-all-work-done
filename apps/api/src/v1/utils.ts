@@ -2,6 +2,12 @@ import { AxiosError } from 'axios';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
+type StatusError = Error & {
+  status?: number;
+  statusCode?: number;
+};
+
+
 export class HttpError extends Error {
   status?: number;
 
@@ -24,7 +30,12 @@ export const handleResponseError = (response: Response, error: unknown) => {
 
   console.error(error);
   response
-    .status(errorObject.status || 500)
+    .status(
+      errorObject.status ||
+        (error as StatusError).status ||
+        (error as StatusError).statusCode ||
+        500
+    )
     .json({ data: null, message: errorObject.message });
 };
 
