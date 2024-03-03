@@ -19,7 +19,7 @@
     "paths": {
       "@get-all-work-done/shared/*": ["shared/src/*"]
     },
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "tmp"]
 }

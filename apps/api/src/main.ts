@@ -2,13 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import routes from './v1/routes';
 
-// Process Env
-const { HOST, PORT } = process.env;
-const host = HOST ?? 'localhost';
-const port = PORT ? Number(PORT) : 8008;
-
 // App
 const app = express();
+const host = process.env.HOST ?? 'localhost';
+const port = 8080;
 
 app.use(cors());
 app.use(express.json());

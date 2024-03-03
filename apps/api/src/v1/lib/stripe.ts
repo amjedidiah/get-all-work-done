@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 import { gigs } from '@get-all-work-done/shared/constants';
 import { HttpError } from '../utils';
-import { IPData, StripeAccount, TaxSettings } from '../types';
+import { StripeAccount, TaxSettings } from '../types';
 import User from '../models/user';
 import { addUsersCredit } from './db';
 
@@ -185,9 +185,9 @@ export const handlePaymentIntentSucceeded = async (
 
 export const calculateTax = async (amount: number) => {
   // Fetch customer's IP address for Tax calculation
-  const ipData: IPData = await fetch('https://ipapi.co/json/').then((res) =>
-    res.json()
-  );
+  const res = await fetch('https://api.ipify.org/?format=json');
+  const ipData: { ip: string } = await res.json();
+
   if (!ipData.ip) throw new HttpError(404, 'IP address not found');
 
   // Calculate tax

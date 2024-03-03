@@ -5,6 +5,7 @@ export default defineConfig({
   title: 'Get All Work Done Docs',
   sidebar: [
     { text: 'Getting Started', link: '/' },
+    { text: 'Deploying API', link: 'api-deploy' },
     { text: 'DB Setup', link: 'db-setup' },
     {
       text: 'MISCELLANEOUS',

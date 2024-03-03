@@ -4,8 +4,9 @@
   "license": "MIT",
   "scripts": {
     "api": "nx serve api",
-    "web": "nx run web:start --experimental-https",
-    "web:dev": "nx run web:dev --experimental-https",
+    "api:deploy": "nx deploy api",
+    "web": "nx start web",
+    "web:dev": "nx dev web",
     "docs:dev": "vocs dev",
     "docs:build": "vocs build",
     "docs:preview": "vocs preview",
