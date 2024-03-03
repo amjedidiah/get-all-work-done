@@ -7,9 +7,6 @@
     "api:deploy": "nx deploy api",
     "web": "nx start web",
     "web:dev": "nx dev web",
-    "docs:dev": "vocs dev",
-    "docs:build": "vocs build",
-    "docs:preview": "vocs preview",
     "db:create": "npx sequelize-cli db:create",
     "db:create:prod": "npx sequelize-cli db:create --env=production",
     "db:migrate": "npx sequelize-cli db:migrate"
@@ -33,8 +30,7 @@
     "sequelize-cli": "^6.6.2",
     "stripe": "^14.10.0",
     "tslib": "^2.6.2",
-    "uuid": "^9.0.1",
-    "vocs": "1.0.0-alpha.35"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nx/esbuild": "18.0.3",
