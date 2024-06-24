@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
-    "types": ["node"]
-  },
-  "include": ["src/**/*.ts", "src/v1/models/index.js", "src/v1/config/db.js"]
-}
