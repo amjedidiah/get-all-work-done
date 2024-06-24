@@ -1,6 +1,7 @@
 import mysql2 from 'mysql2';
 import { isDev } from '../constants';
 import { Sequelize } from 'sequelize';
+import logger from './logger';
 
 require('dotenv').config({
   debug: isDev,
@@ -14,6 +15,6 @@ export default new Sequelize(
     host: process.env.MYSQL_HOST,
     dialect: 'mysql',
     dialectModule: mysql2,
-    logging: isDev ? console.log : false,
+    logging: isDev ? logger.info : false,
   }
 );

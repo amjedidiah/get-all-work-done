@@ -11,6 +11,11 @@ import webhookRoute from './webhook.route';
 
 const router = Router();
 
+const { npm_package_name, npm_package_version } = process.env;
+router.get('/', (_req, res) =>
+  res.send({ name: npm_package_name, version: npm_package_version })
+);
+
 router.use('/auth', authRoute);
 router.use('/account', accountRoute);
 router.use('/external-account', externalAccountRoute);

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { handleResponseError, prepWebhookEvent } from '../../utils';
+import logger from '../../config/logger';
 
 const postWebhook = async (request: Request, response: Response) => {
   try {
@@ -8,7 +9,7 @@ const postWebhook = async (request: Request, response: Response) => {
     // Handle the event
     switch (event.type) {
       default:
-        console.info(`Unhandled event type ${event.type}`);
+        logger.info(`Unhandled event type ${event.type}`);
     }
 
     response.status(200);

@@ -1,17 +1,14 @@
-import { AxiosError } from 'axios';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { stripe } from './lib/stripe';
 import User from './models/user';
 import { isDev } from './constants';
+import logger from './config/logger';
 
-type StatusError = Error & {
-  status?: number;
-  statusCode?: number;
-};
+const DEFAULT_ERROR_STATUS_CODE = 500;
 
 export class HttpError extends Error {
-  status?: number;
+  status: number;
 
   constructor(status: number, message: string) {
     super(message);
@@ -20,25 +17,14 @@ export class HttpError extends Error {
   }
 }
 
-export const handleResponseError = (response: Response, error: unknown) => {
-  let errorObject = {} as HttpError;
+export const handleResponseError = (res: Response, error: any) => {
+  const code =
+    error instanceof HttpError ? error.status : DEFAULT_ERROR_STATUS_CODE;
 
-  if (typeof error === 'string') errorObject.message = error;
-  else if (error instanceof HttpError) errorObject = error;
-  else if (error instanceof AxiosError) {
-    errorObject.message = error.message;
-    errorObject.status = error.status;
-  } else if (error instanceof Error) errorObject.message = error.message;
+  logger.error(error);
 
-  console.error(error);
-  response
-    .status(
-      errorObject.status ||
-        (error as StatusError).status ||
-        (error as StatusError).statusCode ||
-        500
-    )
-    .json({ data: null, message: errorObject.message });
+  res.status(code).json({ data: null, message: (error as Error).message });
+  res.end();
 };
 
 export const handleValidationErrors = (request: Request) => {

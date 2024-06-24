@@ -1,17 +1,39 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import routes from './routes';
 import { isDev } from './constants';
+import helmet from 'helmet';
+import expressWinston from 'express-winston';
+import { handleResponseError } from './utils';
+import logger from './config/logger';
 
-// App
-const app = express();
 const host = isDev ? 'localhost' : '0.0.0.0';
 const port = isDev ? 8080 : 3000;
 
-app.use(cors());
-app.use(express.json());
-app.use('/v1', routes);
+const app = express();
 
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
+// Helmet to set secure HTTP headers
+app.use(helmet());
+
+app.use(cors()); // Cross Origin Site requests
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // Configure to accept JSON request body
+
+// Use Winston logger with Express Winston
+app.use(
+  expressWinston.logger({
+    winstonInstance: logger,
+    meta: true, // Log metadata (e.g., request headers, response status)
+    msg: 'HTTP {{req.method}} {{req.url}}', // Customize the log message format
+  })
+);
+
+app.use(routes);
+
+// Error handling middleware
+app.use((error: unknown, _req: Request, res: Response, next: NextFunction) => {
+  handleResponseError(res, error);
+  next();
 });
+
+app.listen(port, host, () => logger.info(`[ ready ] http://${host}:${port}`));

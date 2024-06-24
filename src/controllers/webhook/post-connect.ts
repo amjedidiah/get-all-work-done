@@ -6,6 +6,7 @@ import {
   handleStripeTaxSettingsUpdated,
 } from '../../lib/stripe';
 import { PaymentIntent, StripeAccount, TaxSettings } from '../../types';
+import logger from '../../config/logger';
 
 const postConnectWebhook = async (request: Request, response: Response) => {
   try {
@@ -35,7 +36,7 @@ const postConnectWebhook = async (request: Request, response: Response) => {
         break;
       }
       default:
-        console.info(`Unhandled event type ${event.type}`);
+        logger.info(`Unhandled event type ${event.type}`);
     }
 
     response.status(200);

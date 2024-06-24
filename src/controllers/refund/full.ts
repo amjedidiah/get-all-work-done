@@ -5,6 +5,7 @@ import {
   handleValidationErrors,
 } from '../../utils';
 import { handleRefundTransfers, stripe } from '../../lib/stripe';
+import logger from '../../config/logger';
 
 const postFullRefund = async (request: Request, response: Response) => {
   try {
@@ -29,7 +30,7 @@ const postFullRefund = async (request: Request, response: Response) => {
       charge: paymentIntent.latest_charge.toString(),
       reason: refund_reason,
     });
-    console.info('Charge refunded successfully: ', refund);
+    logger.info('Charge refunded successfully: ', refund);
 
     // Reverse the tax transaction
     const taxTransactionReversal = await stripe.tax.transactions.createReversal(
@@ -44,7 +45,7 @@ const postFullRefund = async (request: Request, response: Response) => {
         expand: ['line_items'],
       }
     );
-    console.info(
+    logger.info(
       'Tax transaction reversed successfully: ',
       taxTransactionReversal
     );

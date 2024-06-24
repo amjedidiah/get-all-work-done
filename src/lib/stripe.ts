@@ -4,6 +4,7 @@ import { HttpError } from '../utils';
 import { StripeAccount, TaxSettings } from '../types';
 import User from '../models/user';
 import { addUsersCredit } from './db';
+import logger from '../config/logger';
 
 type Contractor = {
   id: string;
@@ -79,7 +80,7 @@ const verifyAndFetchGig = (gigId: string) => {
   const gig = gigs.find((gig) => gig.id === gigId);
   if (!gig) throw new HttpError(404, 'Gig not found');
 
-  console.info('gig: ', gig);
+  logger.info('gig: ', gig);
   if (gig.status === 'settled')
     throw new HttpError(400, 'Gig is already settled');
   if (gig.status === 'completed')
@@ -101,7 +102,7 @@ export const handleGigTransfer = async (
   const contractors = gig.contractors;
   if (!contractors.length)
     throw new HttpError(400, 'No contractor found for this gig');
-  console.info('contractors: ', contractors);
+  logger.info('contractors: ', contractors);
 
   // Calculate amount to be shared
   const balance = Math.floor(
@@ -110,13 +111,13 @@ export const handleGigTransfer = async (
 
   // Update contractors with shares
   const updatedContractors = updateContractorsWithShares(contractors);
-  console.info('updatedContractors: ', updatedContractors);
+  logger.info('updatedContractors: ', updatedContractors);
 
   // Update contractors with credit
   const contractorsWithCredit = await updateContractorsWithCredit(
     updatedContractors
   );
-  console.info('contractorsWithCredit: ', contractorsWithCredit);
+  logger.info('contractorsWithCredit: ', contractorsWithCredit);
 
   // Make the necessary transfers
   for (const contractor of contractorsWithCredit) {
@@ -127,7 +128,7 @@ export const handleGigTransfer = async (
 
     // Console if credit
     if (recoveredCredit)
-      console.info(
+      logger.info(
         'Recovered credit: ',
         recoveredCredit,
         ' from ',
@@ -136,7 +137,7 @@ export const handleGigTransfer = async (
 
     // If share is 0, skip this contractor
     if (!updatedShared) {
-      console.info(
+      logger.info(
         'No share for ',
         contractor.id,
         ', because share: ',
@@ -158,7 +159,7 @@ export const handleGigTransfer = async (
       });
 
       // Output success
-      console.info(`transfer to ${destination}: `, transfer);
+      logger.info(`transfer to ${destination}: `, transfer);
     }
 
     // Update contractor credit in DB
@@ -203,7 +204,7 @@ export const calculateTax = async (amount: number) => {
       ip_address: ipData.ip,
     },
   });
-  console.info('Tax calculation completed: ', calculation);
+  logger.info('Tax calculation completed: ', calculation);
 
   return calculation;
 };
@@ -223,7 +224,7 @@ export const handleRefundTransfers = async (
     limit: 100,
     transfer_group,
   });
-  console.info(
+  logger.info(
     `${transfers.data.length} transfers found for this charge. Attempting reversal...`
   );
 
@@ -247,7 +248,7 @@ export const handleRefundTransfers = async (
       monitoredTransfers = monitoredTransfers.filter(
         (monitoredTransfer) => monitoredTransfer.id !== transfer.id
       );
-      console.info(
+      logger.info(
         `Transfer reversed successfully for ${transferReversals.length} transfer: `,
         transferReversal
       );
@@ -276,10 +277,8 @@ export const handleRefundTransfers = async (
   return transferReversals;
 };
 
-export const handleStripeAccountUpdated = async (
-  stripeAccount: StripeAccount
-) => console.info(stripeAccount);
+export const handleStripeAccountUpdated = async (stripeAccount: StripeAccount) =>
+  logger.info(stripeAccount);
 
-export const handleStripeTaxSettingsUpdated = async (
-  taxSettings: TaxSettings
-) => console.info(taxSettings);
+export const handleStripeTaxSettingsUpdated = async (taxSettings: TaxSettings) =>
+  logger.info(taxSettings);
