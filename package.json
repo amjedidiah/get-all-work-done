@@ -1,5 +1,5 @@
 {
-  "name": "get-all-work-done-stripe-api",
+  "name": "gawd-api",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -7,10 +7,7 @@
     "build": "rm -rf dist && tsc",
     "predeploy": "yarn build",
     "deploy": "fly deploy",
-    "start": "node dist/main.js",
-    "db:create": "npx sequelize-cli db:create",
-    "db:create:prod": "npx sequelize-cli db:create --env=production",
-    "db:migrate": "npx sequelize-cli db:migrate"
+    "start": "node dist/main.js"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +21,6 @@
     "jose": "^5.2.1",
     "mysql2": "^3.9.1",
     "sequelize": "^6.37.3",
-    "sequelize-cli": "^6.6.2",
     "stripe": "^14.10.0",
     "uuid": "^9.0.1"
   },
