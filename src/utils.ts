@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { stripe } from './lib/stripe';
 import User from './models/user';
-import { isDev } from '@get-all-work-done/shared/constants';
+import { isDev } from './constants';
 
 type StatusError = Error & {
   status?: number;

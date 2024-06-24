@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "NodeNext" /* Specify what module code is generated. */,
     "rootDir": "src" /* Specify how TypeScript looks up a file from a given module specifier. */,
     "baseUrl": "." /* Specify a file that bundles all outputs into one JavaScript file. If `declaration` is true, also designates a file that bundles all .d.ts output. */,
@@ -9,7 +9,9 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true /* Skip type checking .d.ts files that are included with TypeScript. */,
     "skipLibCheck": true,
-    "isolatedModules": true /* Skip type checking all .d.ts files. */
+    "isolatedModules": true, /* Skip type checking all .d.ts files. */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src"],
   "exclude": ["dist"]

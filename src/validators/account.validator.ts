@@ -1,3 +1,3 @@
-import { accountIdValidator } from '.';
+import { accountIdValidator } from './';
 
 export const accountSessionValidator = [accountIdValidator()];

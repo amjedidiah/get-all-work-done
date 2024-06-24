@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { gigs } from '@get-all-work-done/shared/constants';
+import { gigs } from '../constants';
 import { HttpError } from '../utils';
 import { StripeAccount, TaxSettings } from '../types';
 import User from '../models/user';

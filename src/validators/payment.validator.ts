@@ -2,7 +2,7 @@ import {
   amountValidator,
   paymentIntentValidator,
   transferGroupValidator,
-} from '.';
+} from './';
 
 export const postPaymentValidator = [
   amountValidator(),

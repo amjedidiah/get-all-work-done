@@ -1,4 +1,7 @@
-import { externalAccountTokenValidator, externalAccountTypeValidator } from '.';
+import {
+  externalAccountTokenValidator,
+  externalAccountTypeValidator,
+} from './';
 
 export const postExternalAccountValidator = [externalAccountTokenValidator()];
 

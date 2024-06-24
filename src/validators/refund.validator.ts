@@ -2,7 +2,7 @@ import {
   amountValidator,
   paymentIntentValidator,
   refundReasonValidator,
-} from '.';
+} from './';
 
 export const fullRefundValidator = [
   refundReasonValidator(),

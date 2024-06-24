@@ -1,7 +1,7 @@
 import { body, header, query } from 'express-validator';
 import { validate } from 'deep-email-validator';
 import { getUserByEmail } from '../lib/db';
-import { isDev, refundReasons } from '@get-all-work-done/shared/constants';
+import { isDev, refundReasons } from '../constants';
 import { ExternalAccountObject } from '../types';
 
 export const emailValidator = () =>
