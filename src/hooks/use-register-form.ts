@@ -92,12 +92,12 @@ export default function useRegisterForm() {
       const resp = await login(person.email);
       console.info("Logged in successfully");
 
-      // 5.Save Token
+      // 5. Save Token
       if (!resp?.token) throw new Error("Invalid token");
       storeUserToken(resp.token);
       console.info("Token saved");
 
-      // 5. Create account
+      // 6. Create account
       const data = await authFetch(
         "/auth/register",
         {
@@ -113,7 +113,7 @@ export default function useRegisterForm() {
       );
       console.info("Account created: ", data);
 
-      // 6. Redirect to onboarding
+      // 7. Redirect to onboarding
       router.push("/onboarding");
     } catch (error: any) {
       setFormResponse(error?.message ?? "Something went wrong");

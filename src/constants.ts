@@ -134,16 +134,52 @@ export const gigs = [
     status: "settled",
   },
   {
-    id: "gig_gt3q1q",
-    title: "Stump cutting",
+    id: "gig_8hcn8s",
+    title: "Tree felling",
     price: 12000,
     platformFeePercentage: 0.12,
     contractors: [
-      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: false },
-      { id: "acct_1OZHXtIZ3hc5uLXA", isSettled: false },
-      { id: "acct_1OZhkwIGWz9N1AyF", isSettled: false },
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: true },
+      { id: "acct_1OZHXtIZ3hc5uLXA", isSettled: true },
+      { id: "acct_1OZF0aRH70YkBmCp", isSettled: true },
     ],
-    status: "in progress",
+    status: "settled",
+  },
+  {
+    id: "gig_nh0294",
+    title: "Gold mining",
+    price: 12000,
+    platformFeePercentage: 0.12,
+    contractors: [
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: true },
+      { id: "acct_1PVa09IZTkXZzck1", isSettled: true },
+      { id: "acct_1OZF0aRH70YkBmCp", isSettled: true },
+    ],
+    status: "settled",
+  },
+  {
+    id: "gig_ft2c1y",
+    title: "Snow analysing",
+    price: 12000,
+    platformFeePercentage: 0.12,
+    contractors: [
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: true },
+      { id: "acct_1PVb2xIijAsQfvQN", isSettled: true },
+      { id: "acct_1OZF0aRH70YkBmCp", isSettled: true },
+    ],
+    status: "settled",
+  },
+  {
+    id: "gig_huwo02",
+    title: "Light repairs",
+    price: 20000,
+    platformFeePercentage: 0.1,
+    contractors: [
+      { id: "acct_1OiyiTIYwDu4c6Uw", isSettled: false },
+      { id: "acct_1PVb2xIijAsQfvQN", isSettled: false },
+      { id: "acct_1OZF0aRH70YkBmCp", isSettled: false },
+    ],
+    status: "completed",
   },
 ];
 

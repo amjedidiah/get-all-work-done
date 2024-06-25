@@ -92,4 +92,7 @@ export const swrFetcher = ({
   fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
     method,
     body,
+    headers: {
+      "content-type": "application/json",
+    },
   }).then((res) => res.json());

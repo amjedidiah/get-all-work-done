@@ -20,7 +20,7 @@ export default function usePayForm({ price, paymentIntentId }: PayFormProps) {
           url: "/payment",
           body: JSON.stringify({
             amount: discountedPrice,
-            paymentIntentId,
+            payment_intent_id: paymentIntentId,
           }),
           method: "PATCH",
         }
