@@ -26,7 +26,7 @@ const updateContractorsWithCredit = async (
 ) => {
   const users = await User.findAll({
     where: {
-      id: contractors.map(({ id }) => id),
+      accountId: contractors.map(({ id }) => id),
     },
   });
 
@@ -80,10 +80,10 @@ const verifyAndFetchGig = (gigId: string) => {
   const gig = gigs.find((gig) => gig.id === gigId);
   if (!gig) throw new HttpError(404, 'Gig not found');
 
-  logger.info('gig: ', gig);
+  logger.info(`gig: ${JSON.stringify(gig)}`);
   if (gig.status === 'settled')
     throw new HttpError(400, 'Gig is already settled');
-  if (gig.status === 'completed')
+  if (gig.status !== 'completed')
     throw new HttpError(400, 'Gig is not completed');
 
   return gig;
@@ -102,7 +102,7 @@ export const handleGigTransfer = async (
   const contractors = gig.contractors;
   if (!contractors.length)
     throw new HttpError(400, 'No contractor found for this gig');
-  logger.info('contractors: ', contractors);
+  logger.info(`contractors: ${JSON.stringify(contractors)}`);
 
   // Calculate amount to be shared
   const balance = Math.floor(
@@ -111,39 +111,31 @@ export const handleGigTransfer = async (
 
   // Update contractors with shares
   const updatedContractors = updateContractorsWithShares(contractors);
-  logger.info('updatedContractors: ', updatedContractors);
+  logger.info(`updatedContractors: ${JSON.stringify(updatedContractors)}`);
 
   // Update contractors with credit
   const contractorsWithCredit = await updateContractorsWithCredit(
     updatedContractors
   );
-  logger.info('contractorsWithCredit: ', contractorsWithCredit);
+  logger.info(
+    `contractorsWithCredit: ${JSON.stringify(contractorsWithCredit)}`
+  );
 
   // Make the necessary transfers
   for (const contractor of contractorsWithCredit) {
     // Get contractor share
     const share = Math.floor(contractor.percentageShare * balance);
     const updatedShared = share - contractor.credit;
-    const recoveredCredit = Math.min(updatedShared, contractor.credit);
+    const recoveredCredit = Math.min(share, contractor.credit);
 
     // Console if credit
     if (recoveredCredit)
-      logger.info(
-        'Recovered credit: ',
-        recoveredCredit,
-        ' from ',
-        contractor.id
-      );
+      logger.info(`Recovered credit: ${recoveredCredit} from ${contractor.id}`);
 
     // If share is 0, skip this contractor
-    if (!updatedShared) {
+    if (updatedShared <= 0) {
       logger.info(
-        'No share for ',
-        contractor.id,
-        ', because share: ',
-        share,
-        ' is same as credit: ',
-        contractor.credit
+        `No share for ${contractor.id}, because share: ${share} is same as or less than credit: ${contractor.credit}`
       );
     } else {
       // Set destination account ID
@@ -159,13 +151,13 @@ export const handleGigTransfer = async (
       });
 
       // Output success
-      logger.info(`transfer to ${destination}: `, transfer);
+      logger.info(`transfer to ${destination}: ${JSON.stringify(transfer)}`);
     }
 
     // Update contractor credit in DB
     await User.decrement(
-      { credit: recoveredCredit },
-      { where: { id: contractor.id } }
+      { credit: Math.abs(recoveredCredit) },
+      { where: { accountId: contractor.id } }
     );
 
     // * DB call to update contractors status in gig to settled
@@ -204,7 +196,7 @@ export const calculateTax = async (amount: number) => {
       ip_address: ipData.ip,
     },
   });
-  logger.info('Tax calculation completed: ', calculation);
+  logger.info(`Tax calculation completed: ${JSON.stringify(calculation)}`);
 
   return calculation;
 };
@@ -249,8 +241,9 @@ export const handleRefundTransfers = async (
         (monitoredTransfer) => monitoredTransfer.id !== transfer.id
       );
       logger.info(
-        `Transfer reversed successfully for ${transferReversals.length} transfer: `,
-        transferReversal
+        `Transfer reversed successfully for ${
+          transferReversals.length
+        } transfer: ${JSON.stringify(transferReversal)}`
       );
     }
   } catch (error) {
@@ -277,8 +270,10 @@ export const handleRefundTransfers = async (
   return transferReversals;
 };
 
-export const handleStripeAccountUpdated = async (stripeAccount: StripeAccount) =>
-  logger.info(stripeAccount);
+export const handleStripeAccountUpdated = async (
+  stripeAccount: StripeAccount
+) => logger.info(JSON.stringify(stripeAccount));
 
-export const handleStripeTaxSettingsUpdated = async (taxSettings: TaxSettings) =>
-  logger.info(taxSettings);
+export const handleStripeTaxSettingsUpdated = async (
+  taxSettings: TaxSettings
+) => logger.info(JSON.stringify(taxSettings));

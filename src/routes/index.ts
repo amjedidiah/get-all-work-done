@@ -7,7 +7,6 @@ import refundRoute from './refund.route';
 import connectRoute from './connect.route';
 import taxReportRoute from './tax-report.route';
 import transferRoute from './transfer.route';
-import webhookRoute from './webhook.route';
 
 const router = Router();
 
@@ -24,6 +23,5 @@ router.use('/refund', refundRoute);
 router.use('/connect', connectRoute);
 router.use('/tax-report', taxReportRoute);
 router.use('/transfer', transferRoute);
-router.use('/webhook', webhookRoute);
 
 export default router;

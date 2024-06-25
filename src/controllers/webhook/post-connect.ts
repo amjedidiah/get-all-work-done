@@ -10,7 +10,10 @@ import logger from '../../config/logger';
 
 const postConnectWebhook = async (request: Request, response: Response) => {
   try {
-    const event = prepWebhookEvent(request);
+    const event = prepWebhookEvent(
+      request,
+      process.env.STRIPE_ENDPOINT_SECRET_CONNECT
+    );
 
     // Handle the event
     switch (event.type) {

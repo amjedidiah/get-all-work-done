@@ -1,0 +1,1141 @@
+{
+	"info": {
+		"_postman_id": "dcd8d6d0-6e20-4f6a-95d6-fcfffc02295f",
+		"name": "Get All Work Done",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12127664"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Register an Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "account-token",
+								"value": "ct_1OimcbI8t6XbCC5YtTj3cVAf",
+								"type": "text"
+							},
+							{
+								"key": "person-token",
+								"value": "cpt_1OVJSyI8t6XbCC5YIdbrrG7d",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"pale@yopmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/auth/register",
+						"description": "This request creates a new platform account on Stripe as well as on the DB.\n\n## Request Body\n\nAn email is required in the request body to save the user's email to the DB\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\nAn \\`account-token\\` returned from Stripe on the FE is required to associate the Stripe account to the user's email in the DB.\n\nA \\`person-token\\` returned from Stripe on the FE is only required if the user does not select \\`individual\\` when creating a new account on the platform\n\n## Response\n\n### Error - 400 - Bad Request\n\nAn error response of 400 implies one or more of the required Request Body or Headers has an error\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 201\n\nA successful response, returns:\n\n- a \\`user_id\\`, the unique identifier for the user in the DB \\`users\\` table\n- a Stripe \\`account\\` object\n    \n\n``` json\n{\n    \"data\": {\n        \"user_id\": \"did:ethr:0xee24477867a5783Eef662dEb6D33cb10D5914a77\",\n        \"account\": {\n            \"id\": \"acct_1OimlBRPdM6xpY6t\",\n            \"object\": \"account\",\n            \"business_profile\": {\n                \"annual_revenue\": null,\n                \"estimated_worker_count\": null,\n                \"mcc\": null,\n                \"name\": null,\n                \"product_description\": null,\n                \"support_address\": null,\n                \"support_email\": null,\n                \"support_phone\": null,\n                \"support_url\": null,\n                \"url\": null\n            },\n            \"business_type\": \"individual\",\n            \"capabilities\": {\n                \"bank_transfer_payments\": \"inactive\",\n                \"card_payments\": \"inactive\",\n                \"tax_reporting_us_1099_misc\": \"active\",\n                \"transfers\": \"inactive\"\n            },\n            \"charges_enabled\": false,\n            \"company\": {\n                \"address\": {\n                    \"city\": null,\n                    \"country\": \"US\",\n                    \"line1\": null,\n                    \"line2\": null,\n                    \"postal_code\": null,\n                    \"state\": null\n                },\n                \"directors_provided\": true,\n                \"executives_provided\": true,\n                \"name\": null,\n                \"owners_provided\": true,\n                \"tax_id_provided\": false,\n                \"verification\": {\n                    \"document\": {\n                        \"back\": null,\n                        \"details\": null,\n                        \"details_code\": null,\n                        \"front\": null\n                    }\n                }\n            },\n            \"country\": \"US\",\n            \"created\": 1707695314,\n            \"default_currency\": \"usd\",\n            \"details_submitted\": false,\n            \"email\": null,\n            \"external_accounts\": {\n                \"object\": \"list\",\n                \"data\": [],\n                \"has_more\": false,\n                \"total_count\": 0,\n                \"url\": \"/v1/accounts/acct_1OimlBRPdM6xpY6t/external_accounts\"\n            },\n            \"future_requirements\": {\n                \"alternatives\": [],\n                \"current_deadline\": 1713294000,\n                \"currently_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"disabled_reason\": null,\n                \"errors\": [],\n                \"eventually_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.id_number\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"past_due\": [\n                    \"business_profile.url\",\n                    \"external_account\",\n                    \"individual.first_name\",\n                    \"individual.last_name\"\n                ],\n                \"pending_verification\": []\n            },\n            \"individual\": {\n                \"id\": \"person_1OimlBRPdM6xpY6tvCO67TUV\",\n                \"object\": \"person\",\n                \"account\": \"acct_1OimlBRPdM6xpY6t\",\n                \"address\": {\n                    \"city\": null,\n                    \"country\": \"US\",\n                    \"line1\": null,\n                    \"line2\": null,\n                    \"postal_code\": null,\n                    \"state\": null\n                },\n                \"created\": 1707695313,\n                \"dob\": {\n                    \"day\": 1,\n                    \"month\": 1,\n                    \"year\": 2001\n                },\n                \"email\": \"pale@yopmail.com\",\n                \"first_name\": null,\n                \"future_requirements\": {\n                    \"alternatives\": [],\n                    \"currently_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"errors\": [],\n                    \"eventually_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"id_number\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"past_due\": [\n                        \"first_name\",\n                        \"last_name\"\n                    ],\n                    \"pending_verification\": []\n                },\n                \"id_number_provided\": false,\n                \"last_name\": null,\n                \"metadata\": {},\n                \"relationship\": {\n                    \"director\": false,\n                    \"executive\": false,\n                    \"legal_guardian\": false,\n                    \"owner\": false,\n                    \"percent_ownership\": null,\n                    \"representative\": true,\n                    \"title\": null\n                },\n                \"requirements\": {\n                    \"alternatives\": [],\n                    \"currently_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"errors\": [],\n                    \"eventually_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"id_number\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"past_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"pending_verification\": []\n                },\n                \"ssn_last_4_provided\": false,\n                \"verification\": {\n                    \"additional_document\": {\n                        \"back\": null,\n                        \"details\": null,\n                        \"details_code\": null,\n                        \"front\": null\n                    },\n                    \"details\": null,\n                    \"details_code\": null,\n                    \"document\": {\n                        \"back\": null,\n                        \"details\": null,\n                        \"details_code\": null,\n                        \"front\": null\n                    },\n                    \"status\": \"unverified\"\n                }\n            },\n            \"metadata\": {\n                \"user_id\": \"did:ethr:0xee24477867a5783Eef662dEb6D33cb10D5914a77\"\n            },\n            \"payouts_enabled\": false,\n            \"requirements\": {\n                \"alternatives\": [],\n                \"current_deadline\": null,\n                \"currently_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"company.address.city\",\n                    \"company.address.line1\",\n                    \"company.address.postal_code\",\n                    \"company.address.state\",\n                    \"company.name\",\n                    \"company.tax_id\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"disabled_reason\": \"requirements.past_due\",\n                \"errors\": [],\n                \"eventually_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"company.address.city\",\n                    \"company.address.line1\",\n                    \"company.address.postal_code\",\n                    \"company.address.state\",\n                    \"company.name\",\n                    \"company.tax_id\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.id_number\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"past_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"company.address.city\",\n                    \"company.address.line1\",\n                    \"company.address.postal_code\",\n                    \"company.address.state\",\n                    \"company.name\",\n                    \"company.tax_id\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"pending_verification\": []\n            },\n            \"settings\": {\n                \"bacs_debit_payments\": {\n                    \"display_name\": null,\n                    \"service_user_number\": null\n                },\n                \"branding\": {\n                    \"icon\": null,\n                    \"logo\": null,\n                    \"primary_color\": null,\n                    \"secondary_color\": null\n                },\n                \"card_issuing\": {\n                    \"tos_acceptance\": {\n                        \"date\": null,\n                        \"ip\": null\n                    }\n                },\n                \"card_payments\": {\n                    \"decline_on\": {\n                        \"avs_failure\": false,\n                        \"cvc_failure\": false\n                    },\n                    \"statement_descriptor_prefix\": null,\n                    \"statement_descriptor_prefix_kana\": null,\n                    \"statement_descriptor_prefix_kanji\": null\n                },\n                \"dashboard\": {\n                    \"display_name\": null,\n                    \"timezone\": \"Etc/UTC\"\n                },\n                \"invoices\": {\n                    \"default_account_tax_ids\": null\n                },\n                \"payments\": {\n                    \"statement_descriptor\": null,\n                    \"statement_descriptor_kana\": null,\n                    \"statement_descriptor_kanji\": null\n                },\n                \"payouts\": {\n                    \"debit_negative_balances\": false,\n                    \"schedule\": {\n                        \"delay_days\": 3,\n                        \"interval\": \"weekly\",\n                        \"weekly_anchor\": \"friday\"\n                    },\n                    \"statement_descriptor\": null\n                },\n                \"sepa_debit_payments\": {}\n            },\n            \"tos_acceptance\": {\n                \"date\": 1707694781,\n                \"ip\": \"102.88.33.22\",\n                \"user_agent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\"\n            },\n            \"type\": \"custom\"\n        }\n    },\n    \"message\": \"Connected account created\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout of an Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"name": "cache-control",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"name": "postman-token",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "content-type",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"name": "content-length",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"name": "host",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.32.1",
+								"name": "user-agent",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"name": "accept",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"name": "accept-encoding",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"name": "connection",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/auth/logout",
+						"description": "This request logs a platform user out of their Platform account.\n\n## Request Body\n\nnone\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token was received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n``` json\n{\n    \"message\": \"Logged out successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Login to an Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "WyIweGIzZDNlZDhkODI3OTQ0MTFlMjg2ZTUwNmExNjc1OWZjMDEwMWMwMGI2YzRjYTU4NzY4ZDE5ODI5YmE1ZDQwNGM3NzAxMGQ5MGU2NzdmZTFjYjM5OTE4NTA5ZmJhMWE5YTg1NGU2NGQ2OWVhYjBjYzllMDAyMTllMzVmOWExNzAwMWIiLCJ7XCJpYXRcIjoxNzE5MjE0ODYyLFwiZXh0XCI6MTcxOTIxNTc2MixcImlzc1wiOlwiZGlkOmV0aHI6MHg0YTU1Nzc4ZjliMjFBYTZlMGMxNjM1NTE1NWY4MTc3Qjc4NjlBODk5XCIsXCJzdWJcIjpcIlE3YlY5NDZ5TUJUWXpRNm1pem95TXphOF9Sbi12WlNnT3VNYy02NERKdTQ9XCIsXCJhdWRcIjpcImJ3eEtmU3l5WF9WaUFKcTVSS241RllxWERfb0lnbGpxaHBxcmxSaGJBODA9XCIsXCJuYmZcIjoxNzE5MjE0ODYyLFwidGlkXCI6XCJhYmVkOGM5Ny1hMmZkLTQ4NzctYWVmYS1jZmUyODQ4MjE2MDlcIixcImFkZFwiOlwiMHhjMzBhZjQ2YmI2OGFiMDNhZGQ1ZTczNDQzOTdlOGQzYzBjZmY2MWYzZTc4ZjdiMzhjNGFkM2U4YTk5ZWE4ZTRjNzYwZDgzNjZlODYxNjczMzFkNTdiMmQ3ZGQ1YTg0M2EwYmU3NjNlNzAxN2E5ODQ1OTdhYTA0Mzg0ZjAxOGQ0YTFjXCJ9Il0="
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZGlkOmV0aHI6MHhlZTI0NDc3ODY3YTU3ODNFZWY2NjJkRWI2RDMzY2IxMEQ1OTE0YTc3IiwianRpIjoiUGJPM3ZmWlZpM0cyZGJRTEplNXZ1IiwiaWF0IjoxNzA3Njk0NzQzLCJleHAiOjE3MDc3ODExNDN9.ODBoYa1pd7tfQAg5i-yxq4n9xrp7EkUC07Hh1Gptj7s",
+								"type": "text"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.32.1",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/auth/login",
+						"description": "This request logs an existing user into their platform account.\n\n## Request Body\n\nnone\n\n## Request Headers\n\nA DID Bearer token is required.  \nThis token is generated after successful authentication using magic.link on the FE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the DID Bearer token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`user_id\\`, the unique identifier for the user in the DB \\`users\\` table\n- an JWT auth \\`token\\` for authenticating future requests\n    \n\n``` json\n{\n    \"data\": {\n        \"user_id\": \"did:ethr:0xee24477867a5783Eef662dEb6D33cb10D5914a77\",\n        \"account\": {\n            \"id\": \"acct_1OimlBRPdM6xpY6t\",\n            \"object\": \"account\",\n            \"business_profile\": {\n                \"annual_revenue\": null,\n                \"estimated_worker_count\": null,\n                \"mcc\": null,\n                \"name\": null,\n                \"product_description\": null,\n                \"support_address\": null,\n                \"support_email\": null,\n                \"support_phone\": null,\n                \"support_url\": null,\n                \"url\": null\n            },\n            \"business_type\": \"individual\",\n            \"capabilities\": {\n                \"bank_transfer_payments\": \"inactive\",\n                \"card_payments\": \"inactive\",\n                \"tax_reporting_us_1099_misc\": \"active\",\n                \"transfers\": \"inactive\"\n            },\n            \"charges_enabled\": false,\n            \"company\": {\n                \"address\": {\n                    \"city\": null,\n                    \"country\": \"US\",\n                    \"line1\": null,\n                    \"line2\": null,\n                    \"postal_code\": null,\n                    \"state\": null\n                },\n                \"directors_provided\": true,\n                \"executives_provided\": true,\n                \"name\": null,\n                \"owners_provided\": true,\n                \"tax_id_provided\": false,\n                \"verification\": {\n                    \"document\": {\n                        \"back\": null,\n                        \"details\": null,\n                        \"details_code\": null,\n                        \"front\": null\n                    }\n                }\n            },\n            \"country\": \"US\",\n            \"created\": 1707695314,\n            \"default_currency\": \"usd\",\n            \"details_submitted\": false,\n            \"email\": null,\n            \"external_accounts\": {\n                \"object\": \"list\",\n                \"data\": [],\n                \"has_more\": false,\n                \"total_count\": 0,\n                \"url\": \"/v1/accounts/acct_1OimlBRPdM6xpY6t/external_accounts\"\n            },\n            \"future_requirements\": {\n                \"alternatives\": [],\n                \"current_deadline\": 1713294000,\n                \"currently_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"disabled_reason\": null,\n                \"errors\": [],\n                \"eventually_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.id_number\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"past_due\": [\n                    \"business_profile.url\",\n                    \"external_account\",\n                    \"individual.first_name\",\n                    \"individual.last_name\"\n                ],\n                \"pending_verification\": []\n            },\n            \"individual\": {\n                \"id\": \"person_1OimlBRPdM6xpY6tvCO67TUV\",\n                \"object\": \"person\",\n                \"account\": \"acct_1OimlBRPdM6xpY6t\",\n                \"address\": {\n                    \"city\": null,\n                    \"country\": \"US\",\n                    \"line1\": null,\n                    \"line2\": null,\n                    \"postal_code\": null,\n                    \"state\": null\n                },\n                \"created\": 1707695313,\n                \"dob\": {\n                    \"day\": 1,\n                    \"month\": 1,\n                    \"year\": 2001\n                },\n                \"email\": \"pale@yopmail.com\",\n                \"first_name\": null,\n                \"future_requirements\": {\n                    \"alternatives\": [],\n                    \"currently_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"errors\": [],\n                    \"eventually_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"id_number\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"past_due\": [\n                        \"first_name\",\n                        \"last_name\"\n                    ],\n                    \"pending_verification\": []\n                },\n                \"id_number_provided\": false,\n                \"last_name\": null,\n                \"metadata\": {},\n                \"relationship\": {\n                    \"director\": false,\n                    \"executive\": false,\n                    \"legal_guardian\": false,\n                    \"owner\": false,\n                    \"percent_ownership\": null,\n                    \"representative\": true,\n                    \"title\": null\n                },\n                \"requirements\": {\n                    \"alternatives\": [],\n                    \"currently_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"errors\": [],\n                    \"eventually_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"id_number\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"past_due\": [\n                        \"address.city\",\n                        \"address.line1\",\n                        \"address.postal_code\",\n                        \"address.state\",\n                        \"first_name\",\n                        \"last_name\",\n                        \"phone\",\n                        \"ssn_last_4\"\n                    ],\n                    \"pending_verification\": []\n                },\n                \"ssn_last_4_provided\": false,\n                \"verification\": {\n                    \"additional_document\": {\n                        \"back\": null,\n                        \"details\": null,\n                        \"details_code\": null,\n                        \"front\": null\n                    },\n                    \"details\": null,\n                    \"details_code\": null,\n                    \"document\": {\n                        \"back\": null,\n                        \"details\": null,\n                        \"details_code\": null,\n                        \"front\": null\n                    },\n                    \"status\": \"unverified\"\n                }\n            },\n            \"metadata\": {\n                \"user_id\": \"did:ethr:0xee24477867a5783Eef662dEb6D33cb10D5914a77\"\n            },\n            \"payouts_enabled\": false,\n            \"requirements\": {\n                \"alternatives\": [],\n                \"current_deadline\": null,\n                \"currently_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"company.address.city\",\n                    \"company.address.line1\",\n                    \"company.address.postal_code\",\n                    \"company.address.state\",\n                    \"company.name\",\n                    \"company.tax_id\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"disabled_reason\": \"requirements.past_due\",\n                \"errors\": [],\n                \"eventually_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"company.address.city\",\n                    \"company.address.line1\",\n                    \"company.address.postal_code\",\n                    \"company.address.state\",\n                    \"company.name\",\n                    \"company.tax_id\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.id_number\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"past_due\": [\n                    \"business_profile.mcc\",\n                    \"business_profile.url\",\n                    \"company.address.city\",\n                    \"company.address.line1\",\n                    \"company.address.postal_code\",\n                    \"company.address.state\",\n                    \"company.name\",\n                    \"company.tax_id\",\n                    \"external_account\",\n                    \"individual.address.city\",\n                    \"individual.address.line1\",\n                    \"individual.address.postal_code\",\n                    \"individual.address.state\",\n                    \"individual.first_name\",\n                    \"individual.last_name\",\n                    \"individual.phone\",\n                    \"individual.ssn_last_4\",\n                    \"settings.payments.statement_descriptor\"\n                ],\n                \"pending_verification\": []\n            },\n            \"settings\": {\n                \"bacs_debit_payments\": {\n                    \"display_name\": null,\n                    \"service_user_number\": null\n                },\n                \"branding\": {\n                    \"icon\": null,\n                    \"logo\": null,\n                    \"primary_color\": null,\n                    \"secondary_color\": null\n                },\n                \"card_issuing\": {\n                    \"tos_acceptance\": {\n                        \"date\": null,\n                        \"ip\": null\n                    }\n                },\n                \"card_payments\": {\n                    \"decline_on\": {\n                        \"avs_failure\": false,\n                        \"cvc_failure\": false\n                    },\n                    \"statement_descriptor_prefix\": null,\n                    \"statement_descriptor_prefix_kana\": null,\n                    \"statement_descriptor_prefix_kanji\": null\n                },\n                \"dashboard\": {\n                    \"display_name\": null,\n                    \"timezone\": \"Etc/UTC\"\n                },\n                \"invoices\": {\n                    \"default_account_tax_ids\": null\n                },\n                \"payments\": {\n                    \"statement_descriptor\": null,\n                    \"statement_descriptor_kana\": null,\n                    \"statement_descriptor_kanji\": null\n                },\n                \"payouts\": {\n                    \"debit_negative_balances\": false,\n                    \"schedule\": {\n                        \"delay_days\": 3,\n                        \"interval\": \"weekly\",\n                        \"weekly_anchor\": \"friday\"\n                    },\n                    \"statement_descriptor\": null\n                },\n                \"sepa_debit_payments\": {}\n            },\n            \"tos_acceptance\": {\n                \"date\": 1707694781,\n                \"ip\": \"102.88.33.22\",\n                \"user_agent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\"\n            },\n            \"type\": \"custom\"\n        }\n    },\n    \"message\": \"Connected account created\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "Fetch an account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/account",
+						"description": "This request fetches an existing user account from Stripe and the DB.\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error - 404 - Not Found\n\nAn error response of 404 implies either:\n\n- the user was not found in the db\n- the user's Stripe account was not found\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`user\\`, the user object for the user in the DB \\`users\\` table\n- a Stripe \\`account\\` object\n    \n\n``` json\n{\n    \"data\": {\n        \"user\": {\n            \"id\": \"did:ethr:0x28910D179c68967256def3abbb85d5CF5cd5A2B6\",\n            \"accountId\": \"acct_1OZHXtIZ3hc5uLXA\",\n            \"email\": \"pani@yopmail.com\",\n            \"isOnboarded\": true,\n            \"isVerified\": false,\n            \"credit\": 13365,\n            \"createdAt\": \"2024-01-16T18:39:38.000Z\",\n            \"updatedAt\": \"2024-02-14T13:48:35.000Z\"\n        },\n        \"account\": {\n            \"id\": \"acct_1OZHXtIZ3hc5uLXA\",\n            \"object\": \"account\",\n            \"business_profile\": {\n                \"annual_revenue\": null,\n                \"estimated_worker_count\": null,\n                \"mcc\": \"5734\",\n                \"name\": \"Paint Inc\",\n                \"product_description\": \"sdjkcac sddcasdc\",\n                \"support_address\": null,\n                \"support_email\": null,\n                \"support_phone\": null,\n                \"support_url\": null,\n                \"url\": null\n            },\n            \"business_type\": \"company\",\n            \"capabilities\": {\n                \"bank_transfer_payments\": \"active\",\n                \"card_payments\": \"active\",\n                \"tax_reporting_us_1099_misc\": \"active\",\n                \"transfers\": \"active\"\n            },\n            \"charges_enabled\": true,\n            \"company\": {\n                \"address\": {\n                    \"city\": \"Middletown\",\n                    \"country\": \"US\",\n                    \"line1\": \"Broad Str\",\n                    \"line2\": null,\n                    \"postal_code\": \"19709\",\n                    \"state\": \"DE\"\n                },\n                \"directors_provided\": false,\n                \"executives_provided\": false,\n                \"name\": \"Paint Inc\",\n                \"owners_provided\": true,\n                \"phone\": \"+12095678901\",\n                \"tax_id_provided\": true,\n                \"verification\": {\n                    \"document\": {\n                        \"back\": null,\n                        \"details\": null,\n                        \"details_code\": null,\n                        \"front\": null\n                    }\n                }\n            },\n            \"country\": \"US\",\n            \"created\": 1705430373,\n            \"default_currency\": \"usd\",\n            \"details_submitted\": true,\n            \"email\": null,\n            \"external_accounts\": {\n                \"object\": \"list\",\n                \"data\": [\n                    {\n                        \"id\": \"ba_1OZeGZIZ3hc5uLXADfoVQvvK\",\n                        \"object\": \"bank_account\",\n                        \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                        \"account_holder_name\": null,\n                        \"account_holder_type\": null,\n                        \"account_type\": null,\n                        \"available_payout_methods\": [\n                            \"standard\",\n                            \"instant\"\n                        ],\n                        \"bank_name\": \"STRIPE TEST BANK\",\n                        \"country\": \"US\",\n                        \"currency\": \"usd\",\n                        \"default_for_currency\": false,\n                        \"fingerprint\": \"iZL7YFXhgbxflwAC\",\n                        \"future_requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"last4\": \"6789\",\n                        \"metadata\": {},\n                        \"requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"routing_number\": \"110000000\",\n                        \"status\": \"new\"\n                    },\n                    {\n                        \"id\": \"ba_1OZVktIZ3hc5uLXAULScPgB7\",\n                        \"object\": \"bank_account\",\n                        \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                        \"account_holder_name\": null,\n                        \"account_holder_type\": null,\n                        \"account_type\": null,\n                        \"available_payout_methods\": [\n                            \"standard\",\n                            \"instant\"\n                        ],\n                        \"bank_name\": \"STRIPE TEST BANK\",\n                        \"country\": \"US\",\n                        \"currency\": \"usd\",\n                        \"default_for_currency\": false,\n                        \"fingerprint\": \"i6LAXhs6t5YEQOKz\",\n                        \"future_requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"last4\": \"2227\",\n                        \"metadata\": {},\n                        \"requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"routing_number\": \"110000000\",\n                        \"status\": \"new\"\n                    },\n                    {\n                        \"id\": \"ba_1OZVkCIZ3hc5uLXAk5fDPwy8\",\n                        \"object\": \"bank_account\",\n                        \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                        \"account_holder_name\": null,\n                        \"account_holder_type\": null,\n                        \"account_type\": null,\n                        \"available_payout_methods\": [\n                            \"standard\"\n                        ],\n                        \"bank_name\": \"STRIPE TEST BANK\",\n                        \"country\": \"US\",\n                        \"currency\": \"usd\",\n                        \"default_for_currency\": false,\n                        \"fingerprint\": \"10TBJEXwjEQU10Ld\",\n                        \"future_requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"last4\": \"8883\",\n                        \"metadata\": {},\n                        \"requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"routing_number\": \"110000000\",\n                        \"status\": \"new\"\n                    },\n                    {\n                        \"id\": \"card_1ObQf2IZ3hc5uLXAMUnadm90\",\n                        \"object\": \"card\",\n                        \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                        \"address_city\": null,\n                        \"address_country\": null,\n                        \"address_line1\": null,\n                        \"address_line1_check\": null,\n                        \"address_line2\": null,\n                        \"address_state\": null,\n                        \"address_zip\": \"42424\",\n                        \"address_zip_check\": \"pass\",\n                        \"available_payout_methods\": [\n                            \"standard\",\n                            \"instant\"\n                        ],\n                        \"brand\": \"Visa\",\n                        \"country\": \"US\",\n                        \"currency\": \"usd\",\n                        \"cvc_check\": \"pass\",\n                        \"default_for_currency\": true,\n                        \"dynamic_last4\": null,\n                        \"exp_month\": 4,\n                        \"exp_year\": 2024,\n                        \"fingerprint\": \"wGxaSUC5UVMPh7lh\",\n                        \"funding\": \"debit\",\n                        \"last4\": \"5556\",\n                        \"metadata\": {},\n                        \"name\": null,\n                        \"status\": \"new\",\n                        \"tokenization_method\": null,\n                        \"wallet\": null\n                    }\n                ],\n                \"has_more\": false,\n                \"total_count\": 4,\n                \"url\": \"/v1/accounts/acct_1OZHXtIZ3hc5uLXA/external_accounts\"\n            },\n            \"future_requirements\": {\n                \"alternatives\": [],\n                \"current_deadline\": 1713294000,\n                \"currently_due\": [],\n                \"disabled_reason\": null,\n                \"errors\": [],\n                \"eventually_due\": [\n                    \"person_1OZHXxIZ3hc5uLXAVFg4uHot.id_number\"\n                ],\n                \"past_due\": [],\n                \"pending_verification\": []\n            },\n            \"metadata\": {},\n            \"payouts_enabled\": true,\n            \"requirements\": {\n                \"alternatives\": [],\n                \"current_deadline\": null,\n                \"currently_due\": [],\n                \"disabled_reason\": null,\n                \"errors\": [],\n                \"eventually_due\": [\n                    \"person_1OZHXxIZ3hc5uLXAVFg4uHot.id_number\"\n                ],\n                \"past_due\": [],\n                \"pending_verification\": []\n            },\n            \"settings\": {\n                \"bacs_debit_payments\": {\n                    \"display_name\": null,\n                    \"service_user_number\": null\n                },\n                \"branding\": {\n                    \"icon\": null,\n                    \"logo\": null,\n                    \"primary_color\": null,\n                    \"secondary_color\": null\n                },\n                \"card_issuing\": {\n                    \"tos_acceptance\": {\n                        \"date\": null,\n                        \"ip\": null\n                    }\n                },\n                \"card_payments\": {\n                    \"decline_on\": {\n                        \"avs_failure\": false,\n                        \"cvc_failure\": false\n                    },\n                    \"statement_descriptor_prefix\": \"PAINT INC\",\n                    \"statement_descriptor_prefix_kana\": null,\n                    \"statement_descriptor_prefix_kanji\": null\n                },\n                \"dashboard\": {\n                    \"display_name\": null,\n                    \"timezone\": \"Etc/UTC\"\n                },\n                \"invoices\": {\n                    \"default_account_tax_ids\": null\n                },\n                \"payments\": {\n                    \"statement_descriptor\": \"PAINT INC\",\n                    \"statement_descriptor_kana\": null,\n                    \"statement_descriptor_kanji\": null\n                },\n                \"payouts\": {\n                    \"debit_negative_balances\": true,\n                    \"schedule\": {\n                        \"delay_days\": 2,\n                        \"interval\": \"weekly\",\n                        \"weekly_anchor\": \"friday\"\n                    },\n                    \"statement_descriptor\": null\n                },\n                \"sepa_debit_payments\": {}\n            },\n            \"tos_acceptance\": {\n                \"date\": 1705430369,\n                \"ip\": \"102.67.1.21\",\n                \"user_agent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\"\n            },\n            \"type\": \"custom\"\n        }\n    },\n    \"message\": \"User retrieved successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update An Account",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dbUpdate\": {\n        \"email\": \"jane.doe@yopmail.com\"\n    },\n    \"stripeUpdate\": {\n        \"email\": \"jane.doe@yopmail.com\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/account",
+						"description": "This request updates an existing user account on Stripe and/or in the DB.\n\n## Request Body\n\n### \\`dbUpdate\\`\n\nThis is an object that can have values for any of the following keys:\n\n- email: string\n- isOnboarded: boolean\n- isVerified: boolean\n- credit: number (amount in cents)\n    \n\n### \\`stripeUpdate\\`\n\nFor information about this object, check out this link: [https://docs.stripe.com/api/accounts/update](https://docs.stripe.com/api/accounts/update)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error - 404 - Not Found\n\nAn error response of 404 implies either:\n\n- the user was not found in the db\n- the user's Stripe account was not found\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`user\\`, the user object for the user in the DB \\`users\\` table\n- a Stripe \\`account\\` object\n    \n\n``` json\n{\n    \"data\": {\n        \"user\": {\n            \"id\": \"did:ethr:0x28910D179c68967256def3abbb85d5CF5cd5A2B6\",\n            \"accountId\": \"acct_1OZHXtIZ3hc5uLXA\",\n            \"email\": \"pani@yopmail.com\",\n            \"isOnboarded\": true,\n            \"isVerified\": false,\n            \"credit\": 13365,\n            \"createdAt\": \"2024-01-16T18:39:38.000Z\",\n            \"updatedAt\": \"2024-02-14T13:48:35.000Z\"\n        },\n        \"account\": {\n            \"id\": \"acct_1OZHXtIZ3hc5uLXA\",\n            \"object\": \"account\",\n            \"business_profile\": {\n                \"annual_revenue\": null,\n                \"estimated_worker_count\": null,\n                \"mcc\": \"5734\",\n                \"name\": \"Paint Inc\",\n                \"product_description\": \"sdjkcac sddcasdc\",\n                \"support_address\": null,\n                \"support_email\": null,\n                \"support_phone\": null,\n                \"support_url\": null,\n                \"url\": null\n            },\n            \"business_type\": \"company\",\n            \"capabilities\": {\n                \"bank_transfer_payments\": \"active\",\n                \"card_payments\": \"active\",\n                \"tax_reporting_us_1099_misc\": \"active\",\n                \"transfers\": \"active\"\n            },\n            \"charges_enabled\": true,\n            \"company\": {\n                \"address\": {\n                    \"city\": \"Middletown\",\n                    \"country\": \"US\",\n                    \"line1\": \"Broad Str\",\n                    \"line2\": null,\n                    \"postal_code\": \"19709\",\n                    \"state\": \"DE\"\n                },\n                \"directors_provided\": false,\n                \"executives_provided\": false,\n                \"name\": \"Paint Inc\",\n                \"owners_provided\": true,\n                \"phone\": \"+12095678901\",\n                \"tax_id_provided\": true,\n                \"verification\": {\n                    \"document\": {\n                        \"back\": null,\n                        \"details\": null,\n                        \"details_code\": null,\n                        \"front\": null\n                    }\n                }\n            },\n            \"country\": \"US\",\n            \"created\": 1705430373,\n            \"default_currency\": \"usd\",\n            \"details_submitted\": true,\n            \"email\": null,\n            \"external_accounts\": {\n                \"object\": \"list\",\n                \"data\": [\n                    {\n                        \"id\": \"ba_1OZeGZIZ3hc5uLXADfoVQvvK\",\n                        \"object\": \"bank_account\",\n                        \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                        \"account_holder_name\": null,\n                        \"account_holder_type\": null,\n                        \"account_type\": null,\n                        \"available_payout_methods\": [\n                            \"standard\",\n                            \"instant\"\n                        ],\n                        \"bank_name\": \"STRIPE TEST BANK\",\n                        \"country\": \"US\",\n                        \"currency\": \"usd\",\n                        \"default_for_currency\": false,\n                        \"fingerprint\": \"iZL7YFXhgbxflwAC\",\n                        \"future_requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"last4\": \"6789\",\n                        \"metadata\": {},\n                        \"requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"routing_number\": \"110000000\",\n                        \"status\": \"new\"\n                    },\n                    {\n                        \"id\": \"ba_1OZVktIZ3hc5uLXAULScPgB7\",\n                        \"object\": \"bank_account\",\n                        \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                        \"account_holder_name\": null,\n                        \"account_holder_type\": null,\n                        \"account_type\": null,\n                        \"available_payout_methods\": [\n                            \"standard\",\n                            \"instant\"\n                        ],\n                        \"bank_name\": \"STRIPE TEST BANK\",\n                        \"country\": \"US\",\n                        \"currency\": \"usd\",\n                        \"default_for_currency\": false,\n                        \"fingerprint\": \"i6LAXhs6t5YEQOKz\",\n                        \"future_requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"last4\": \"2227\",\n                        \"metadata\": {},\n                        \"requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"routing_number\": \"110000000\",\n                        \"status\": \"new\"\n                    },\n                    {\n                        \"id\": \"ba_1OZVkCIZ3hc5uLXAk5fDPwy8\",\n                        \"object\": \"bank_account\",\n                        \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                        \"account_holder_name\": null,\n                        \"account_holder_type\": null,\n                        \"account_type\": null,\n                        \"available_payout_methods\": [\n                            \"standard\"\n                        ],\n                        \"bank_name\": \"STRIPE TEST BANK\",\n                        \"country\": \"US\",\n                        \"currency\": \"usd\",\n                        \"default_for_currency\": false,\n                        \"fingerprint\": \"10TBJEXwjEQU10Ld\",\n                        \"future_requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"last4\": \"8883\",\n                        \"metadata\": {},\n                        \"requirements\": {\n                            \"currently_due\": [],\n                            \"errors\": [],\n                            \"past_due\": [],\n                            \"pending_verification\": []\n                        },\n                        \"routing_number\": \"110000000\",\n                        \"status\": \"new\"\n                    },\n                    {\n                        \"id\": \"card_1ObQf2IZ3hc5uLXAMUnadm90\",\n                        \"object\": \"card\",\n                        \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                        \"address_city\": null,\n                        \"address_country\": null,\n                        \"address_line1\": null,\n                        \"address_line1_check\": null,\n                        \"address_line2\": null,\n                        \"address_state\": null,\n                        \"address_zip\": \"42424\",\n                        \"address_zip_check\": \"pass\",\n                        \"available_payout_methods\": [\n                            \"standard\",\n                            \"instant\"\n                        ],\n                        \"brand\": \"Visa\",\n                        \"country\": \"US\",\n                        \"currency\": \"usd\",\n                        \"cvc_check\": \"pass\",\n                        \"default_for_currency\": true,\n                        \"dynamic_last4\": null,\n                        \"exp_month\": 4,\n                        \"exp_year\": 2024,\n                        \"fingerprint\": \"wGxaSUC5UVMPh7lh\",\n                        \"funding\": \"debit\",\n                        \"last4\": \"5556\",\n                        \"metadata\": {},\n                        \"name\": null,\n                        \"status\": \"new\",\n                        \"tokenization_method\": null,\n                        \"wallet\": null\n                    }\n                ],\n                \"has_more\": false,\n                \"total_count\": 4,\n                \"url\": \"/v1/accounts/acct_1OZHXtIZ3hc5uLXA/external_accounts\"\n            },\n            \"future_requirements\": {\n                \"alternatives\": [],\n                \"current_deadline\": 1713294000,\n                \"currently_due\": [],\n                \"disabled_reason\": null,\n                \"errors\": [],\n                \"eventually_due\": [\n                    \"person_1OZHXxIZ3hc5uLXAVFg4uHot.id_number\"\n                ],\n                \"past_due\": [],\n                \"pending_verification\": []\n            },\n            \"metadata\": {},\n            \"payouts_enabled\": true,\n            \"requirements\": {\n                \"alternatives\": [],\n                \"current_deadline\": null,\n                \"currently_due\": [],\n                \"disabled_reason\": null,\n                \"errors\": [],\n                \"eventually_due\": [\n                    \"person_1OZHXxIZ3hc5uLXAVFg4uHot.id_number\"\n                ],\n                \"past_due\": [],\n                \"pending_verification\": []\n            },\n            \"settings\": {\n                \"bacs_debit_payments\": {\n                    \"display_name\": null,\n                    \"service_user_number\": null\n                },\n                \"branding\": {\n                    \"icon\": null,\n                    \"logo\": null,\n                    \"primary_color\": null,\n                    \"secondary_color\": null\n                },\n                \"card_issuing\": {\n                    \"tos_acceptance\": {\n                        \"date\": null,\n                        \"ip\": null\n                    }\n                },\n                \"card_payments\": {\n                    \"decline_on\": {\n                        \"avs_failure\": false,\n                        \"cvc_failure\": false\n                    },\n                    \"statement_descriptor_prefix\": \"PAINT INC\",\n                    \"statement_descriptor_prefix_kana\": null,\n                    \"statement_descriptor_prefix_kanji\": null\n                },\n                \"dashboard\": {\n                    \"display_name\": null,\n                    \"timezone\": \"Etc/UTC\"\n                },\n                \"invoices\": {\n                    \"default_account_tax_ids\": null\n                },\n                \"payments\": {\n                    \"statement_descriptor\": \"PAINT INC\",\n                    \"statement_descriptor_kana\": null,\n                    \"statement_descriptor_kanji\": null\n                },\n                \"payouts\": {\n                    \"debit_negative_balances\": true,\n                    \"schedule\": {\n                        \"delay_days\": 2,\n                        \"interval\": \"weekly\",\n                        \"weekly_anchor\": \"friday\"\n                    },\n                    \"statement_descriptor\": null\n                },\n                \"sepa_debit_payments\": {}\n            },\n            \"tos_acceptance\": {\n                \"date\": 1705430369,\n                \"ip\": \"102.67.1.21\",\n                \"user_agent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\"\n            },\n            \"type\": \"custom\"\n        }\n    },\n    \"message\": \"User has been updated successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Onboard Account",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dbUpdate\": {\n        \"isOnboarded\": true\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/account",
+						"description": "This request updates an existing user account's onboarded status on the DB.\n\n## Request Body\n\n### \\`dbUpdate.isOnboarded\\`\n\nSet this value to true\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error - 404 - Not Found\n\nAn error response of 404 implies either:\n\n- the user was not found in the db\n- the user's Stripe account was not found\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`user\\`, the user object for the user in the DB \\`users\\` table\n- a Stripe \\`account\\` object\n    \n\n``` json\n{\n    \"data\": {\n        \"user\": {\n            ...\n            \"isOnboarded\": true,\n            ...\n        },\n        \"account\": {...}\n    },\n    \"message\": \"User has been updated successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Account Verification Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dbUpdate\": {\n        \"isVerified\": true\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/account",
+						"description": "This request updates an existing user account's isVerified status in the DB.\n\n## Request Body\n\n### \\`dbUpdate.isVerified\\`\n\nSet this value to true\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error - 404 - Not Found\n\nAn error response of 404 implies either:\n\n- the user was not found in the db\n- the user's Stripe account was not found\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`user\\`, the user object for the user in the DB \\`users\\` table\n- a Stripe \\`account\\` object\n    \n\n``` json\n{\n    \"data\": {\n        \"user\": {\n            ...\n            \"isVerified\": true,\n            ...\n        },\n        \"account\": {...}\n    },\n    \"message\": \"User has been updated successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Account Credit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dbUpdate\": {\n        \"credit\": 1000\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/account",
+						"description": "This request updates an existing user account's credit in the DB.\n\n## Request Body\n\n### \\`dbUpdate.credit\\`\n\nA number value representing the EXTRA amount the connect account is owing in CENTS.\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error - 404 - Not Found\n\nAn error response of 404 implies either:\n\n- the user was not found in the db\n- the user's Stripe account was not found\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`user\\`, the user object for the user in the DB \\`users\\` table\n- a Stripe \\`account\\` object\n    \n\n``` json\n{\n    \"data\": {\n        \"user\": {\n            ...\n            \"credit\": 4000,\n            ...\n        },\n        \"account\": {...}\n    },\n    \"message\": \"User has been updated successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Account Session",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account_id\": \"acct_1OUfBTIB3T4JGK6B\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/account/session",
+						"description": "This request creates a Stripe account session that allows a Connect platform to grant access to a connected account in Connect embedded components.\n\n## Request Body\n\n### \\`account_id\\`\n\nA string value representing the Stripe account id of the account.\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 201\n\nA successful response, returns:\n\n- a \\`client_secret\\`\n    \n\n``` json\n{\n    \"data\": {\n        \"client_secret\": \"_OXIKXxEihJokDBnDoe2sgG5OGSO2Q12shKvbeboxpALZGng\"\n    },\n    \"message\": \"Account session created successfully for acct_1OUfBTIB3T4JGK6B\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "external account",
+			"item": [
+				{
+					"name": "Fetch external accounts",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const params = [\"card\", \"bank_account\"];",
+									"const random = Math.floor(Math.random() * params.length);",
+									"",
+									"pm.request.addQueryParams(`type=${params[random]}`);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/external-account",
+						"description": "This request fetches all existing bank accounts or debit cards of the user from Stripe.\n\n## Request Query\n\n### \\`type\\`\n\nAn external account type can either be \\`bank_account\\` or \\`card\\`\n\n> Look in the \\`Pre-request Script\\` tab of this request for more details \n  \n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Invalid Request\n\nAn error response of 400 implies either:\n\n- the query field \\`type\\` does not exist\n- the query field \\`type\\` is invalid\n    \n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- an \\`externalAccountsType\\` array of a particular type of external accounts, whether cards or bank accounts\n    \n\n``` json\n{\n    \"data\": {\n        \"externalAccountsType\": [\n            {\n                \"id\": \"ba_1OZeGZIZ3hc5uLXADfoVQvvK\",\n                \"object\": \"bank_account\",\n                \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                \"account_holder_name\": null,\n                \"account_holder_type\": null,\n                \"account_type\": null,\n                \"available_payout_methods\": [\n                    \"standard\",\n                    \"instant\"\n                ],\n                \"bank_name\": \"STRIPE TEST BANK\",\n                \"country\": \"US\",\n                \"currency\": \"usd\",\n                \"default_for_currency\": false,\n                \"fingerprint\": \"iZL7YFXhgbxflwAC\",\n                \"future_requirements\": {\n                    \"currently_due\": [],\n                    \"errors\": [],\n                    \"past_due\": [],\n                    \"pending_verification\": []\n                },\n                \"last4\": \"6789\",\n                \"metadata\": {},\n                \"requirements\": {\n                    \"currently_due\": [],\n                    \"errors\": [],\n                    \"past_due\": [],\n                    \"pending_verification\": []\n                },\n                \"routing_number\": \"110000000\",\n                \"status\": \"new\"\n            },\n            {\n                \"id\": \"ba_1OZVktIZ3hc5uLXAULScPgB7\",\n                \"object\": \"bank_account\",\n                \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                \"account_holder_name\": null,\n                \"account_holder_type\": null,\n                \"account_type\": null,\n                \"available_payout_methods\": [\n                    \"standard\",\n                    \"instant\"\n                ],\n                \"bank_name\": \"STRIPE TEST BANK\",\n                \"country\": \"US\",\n                \"currency\": \"usd\",\n                \"default_for_currency\": false,\n                \"fingerprint\": \"i6LAXhs6t5YEQOKz\",\n                \"future_requirements\": {\n                    \"currently_due\": [],\n                    \"errors\": [],\n                    \"past_due\": [],\n                    \"pending_verification\": []\n                },\n                \"last4\": \"2227\",\n                \"metadata\": {},\n                \"requirements\": {\n                    \"currently_due\": [],\n                    \"errors\": [],\n                    \"past_due\": [],\n                    \"pending_verification\": []\n                },\n                \"routing_number\": \"110000000\",\n                \"status\": \"new\"\n            },\n            {\n                \"id\": \"ba_1OZVkCIZ3hc5uLXAk5fDPwy8\",\n                \"object\": \"bank_account\",\n                \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                \"account_holder_name\": null,\n                \"account_holder_type\": null,\n                \"account_type\": null,\n                \"available_payout_methods\": [\n                    \"standard\"\n                ],\n                \"bank_name\": \"STRIPE TEST BANK\",\n                \"country\": \"US\",\n                \"currency\": \"usd\",\n                \"default_for_currency\": false,\n                \"fingerprint\": \"10TBJEXwjEQU10Ld\",\n                \"future_requirements\": {\n                    \"currently_due\": [],\n                    \"errors\": [],\n                    \"past_due\": [],\n                    \"pending_verification\": []\n                },\n                \"last4\": \"8883\",\n                \"metadata\": {},\n                \"requirements\": {\n                    \"currently_due\": [],\n                    \"errors\": [],\n                    \"past_due\": [],\n                    \"pending_verification\": []\n                },\n                \"routing_number\": \"110000000\",\n                \"status\": \"new\"\n            }\n        ]\n    },\n    \"message\": \"bank_accounts retrieved successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Make an external account default",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/external-account/:slug",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"external-account",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": "ba_1OZeGZIZ3hc5uLXADfoVQvvK",
+									"type": "string"
+								}
+							]
+						},
+						"description": "This request sets an external account, whether card or bank acount, as the default payout method for a contractor on Stripe.\n\n## Request Params\n\n### \\`slug\\`\n\nAn external account id\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- an \\`updated\\` object representing the particular external account with the \\`default_for_currency\\` field set to \\`true\\`\n    \n\n``` json\n{\n    \"data\": {\n        \"updated\": {\n            \"id\": \"ba_1OZeGZIZ3hc5uLXADfoVQvvK\",\n            ...\n            \"default_for_currency\": true,\n            ...\n        }\n    },\n    \"message\": \"External account has been made default\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an external account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/external-account/:slug",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"external-account",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": "ba_1OZVktIZ3hc5uLXAULScPgB7",
+									"type": "string"
+								}
+							]
+						},
+						"description": "This request deletes an external account, whether card or bank acount.\n\n> You cannot delete the default external account \n  \n\n## Request Params\n\n### \\`slug\\`\n\nAn external account id\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`deleted\\` object representing the particular external account that was deleted\n    \n\n``` json\n{\n    \"data\": {\n        \"deleted\": {\n            \"id\": \"ba_1OZVktIZ3hc5uLXAULScPgB7\",\n            \"object\": \"bank_account\",\n            \"currency\": \"usd\",\n            \"deleted\": true\n        }\n    },\n    \"message\": \"External account deleted successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Create an external account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"name": "cache-control",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"name": "postman-token",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "0",
+								"name": "content-length",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"name": "host",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.32.1",
+								"name": "user-agent",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"name": "accept",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"name": "accept-encoding",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"name": "connection",
+								"type": "text"
+							},
+							{
+								"key": "external-account-token",
+								"value": "btok_1Oo5WfI8t6XbCC5YZQL6g1wo",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/external-account",
+						"description": "This request creates a new bank account or debit card for the user in Stripe.\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Invalid Request\n\nAn error response of 400 implies one or more of:\n\n- the header field \\`external-account-token\\` does not exist or is invalid\n    \n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- an \\`externalAccount\\` object of a particular type of external account, whether card or bank account\n    \n\n``` json\n{\n    \"data\": {\n        \"externalAccount\": {\n            \"id\": \"ba_1Oo5XDIZ3hc5uLXAlg19nLsU\",\n            \"object\": \"bank_account\",\n            \"account\": \"acct_1OZHXtIZ3hc5uLXA\",\n            \"account_holder_name\": null,\n            \"account_holder_type\": null,\n            \"account_type\": null,\n            \"available_payout_methods\": [\n                \"standard\",\n                \"instant\"\n            ],\n            \"bank_name\": \"STRIPE TEST BANK\",\n            \"country\": \"US\",\n            \"currency\": \"usd\",\n            \"default_for_currency\": false,\n            \"fingerprint\": \"iZL7YFXhgbxflwAC\",\n            \"future_requirements\": {\n                \"currently_due\": [],\n                \"errors\": [],\n                \"past_due\": [],\n                \"pending_verification\": []\n            },\n            \"last4\": \"6789\",\n            \"metadata\": {},\n            \"requirements\": {\n                \"currently_due\": [],\n                \"errors\": [],\n                \"past_due\": [],\n                \"pending_verification\": []\n            },\n            \"routing_number\": \"110000000\",\n            \"status\": \"new\"\n        }\n    },\n    \"message\": \"External account created successfully\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payment",
+			"item": [
+				{
+					"name": "Apply discount to a payment",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 4000,\n    \"payment_intent_id\": \"pi_3Oo7PUI8t6XbCC5Y0SdEGgwd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/payment",
+						"description": "This request applies a discount to an existing payment intent on Stripe in preparation to collect a client's credit card details for payment.\n\n## Request Body\n\n- amount: the new amount the particular gig costs in CENTS, after applying the discount\n- payment_intent_id: the unique id of the payment\n    \n\n## Response\n\n### Error - 400 - Invalid Request\n\nAn error response of 400 implies one or more of:\n\n- the \\`amount\\` field is invalid\n- the \\`payment_intent_id\\` field is invalid\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- \\`status: requires_payment_method\\` showing the payment is ready for the client's card details\n    \n\n``` json\n{\n    \"data\": {\n        \"status\": \"requires_payment_method\"\n    },\n    \"message\": \"Payment intent updated successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a payment",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"name": "cache-control",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"name": "postman-token",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "content-type",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"name": "content-length",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"name": "host",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.32.1",
+								"name": "user-agent",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"name": "accept",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"name": "accept-encoding",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"name": "connection",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 5000,\n    \"transfer_group\": \"gig_gt3q1q\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/payment",
+						"description": "This request creates a new payment intent on Stripe in preparation to collect a client's credit card details for payment.\n\n## Request Body\n\n- amount: the amount a particular gig costs in CENTS\n    \n- transfer_group: the id of a particular gig\n    \n\n## Response\n\n### Error - 400 - Invalid Request\n\nAn error response of 400 implies one or more of:\n\n- the \\`amount\\` field is invalid\n    \n- the \\`transfer_group\\` field is invalid\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 201\n\nA successful response, returns:\n\n- a \\`payment_intent\\` object from Stripe representing the intended payment\n    \n\n``` json\n{\n    \"data\": {\n        \"payment_intent\": {\n            \"id\": \"pi_3Oo7PUI8t6XbCC5Y0SdEGgwd\",\n            \"object\": \"payment_intent\",\n            \"amount\": 5000,\n            \"amount_capturable\": 0,\n            \"amount_details\": {\n                \"tip\": {}\n            },\n            \"amount_received\": 0,\n            \"application\": null,\n            \"application_fee_amount\": null,\n            \"automatic_payment_methods\": {\n                \"allow_redirects\": \"always\",\n                \"enabled\": true\n            },\n            \"canceled_at\": null,\n            \"cancellation_reason\": null,\n            \"capture_method\": \"automatic\",\n            \"client_secret\": \"pi_3Oo7PUI8t6XbCC5Y0SdEGgwd_secret_9p6wCwR0s6c6abahQFzHmLTBQ\",\n            \"confirmation_method\": \"automatic\",\n            \"created\": 1708966332,\n            \"currency\": \"usd\",\n            \"customer\": null,\n            \"description\": null,\n            \"invoice\": null,\n            \"last_payment_error\": null,\n            \"latest_charge\": null,\n            \"livemode\": false,\n            \"metadata\": {\n                \"gigId\": \"gig_gt3q1q\",\n                \"tax_calculation\": \"taxcalc_1Oo7PTI8t6XbCC5YWIseGugx\"\n            },\n            \"next_action\": null,\n            \"on_behalf_of\": null,\n            \"payment_method\": null,\n            \"payment_method_configuration_details\": null,\n            \"payment_method_options\": {\n                \"card\": {\n                    \"installments\": null,\n                    \"mandate_options\": null,\n                    \"network\": null,\n                    \"request_three_d_secure\": \"automatic\"\n                }\n            },\n            \"payment_method_types\": [\n                \"card\"\n            ],\n            \"processing\": null,\n            \"receipt_email\": null,\n            \"review\": null,\n            \"setup_future_usage\": null,\n            \"shipping\": null,\n            \"source\": null,\n            \"statement_descriptor\": null,\n            \"statement_descriptor_suffix\": null,\n            \"status\": \"requires_payment_method\",\n            \"transfer_data\": null,\n            \"transfer_group\": \"gig_gt3q1q\"\n        }\n    },\n    \"message\": \"Payment intent created successfully\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "refund",
+			"item": [
+				{
+					"name": "Full refund",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const reasons = [",
+									"  'duplicate',",
+									"  'fraudulent',",
+									"  'requested_by_customer',",
+									"];",
+									"const random = Math.floor(Math.random() * reasons.length);",
+									"",
+									"const body = {",
+									"    \"refund_reason\": reasons[random],",
+									"    \"payment_intent_id\": \"pi_3Oo7PUI8t6XbCC5Y0SdEGgwd\"",
+									"}",
+									"",
+									"pm.collectionVariables.set('full_refund_req_body', JSON.stringify(body));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"name": "cache-control",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"name": "postman-token",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "content-type",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"name": "content-length",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"name": "host",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.32.1",
+								"name": "user-agent",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"name": "accept",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"name": "accept-encoding",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"name": "connection",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{full_refund_req_body}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/refund/full",
+						"description": "This request creates a full refund for a successful client payment on Stripe.\n\n## Request Body\n\n- transfer_group: the id of a particular gig\n- refund_reason: the reason for the transfer\n    \n\n> Look in the \\`Pre-request Script\\` tab of this request for more details \n  \n\n## Response\n\n### Error - 400 - Invalid Request\n\nAn error response of 400 implies one or more of:\n\n- the \\`refund_reason\\` field is invalid\n- the \\`transfer_group\\` field is invalid\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`refund\\` object from Stripe representing the refund for the payment\n- a \\`tax_transaction_reversal\\` object representing the tax transaction refund from Stripe\n- a \\`transfer_reversals\\` array showing the transfer reversals for all contractors that benefitted from this payment\n    \n\n``` json\n{\n    \"data\": {\n        \"refund\": {...},\n        \"tax_transaction_reversal\": {...},\n        \"transfer_reversals\": [...]\n    },\n    \"message\": \"All refunds done successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Partial refund",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const reasons = [",
+									"  'duplicate',",
+									"  'fraudulent',",
+									"  'requested_by_customer',",
+									"];",
+									"const random = Math.floor(Math.random() * reasons.length);",
+									"",
+									"const body = {",
+									"    \"refund_reason\": reasons[random],",
+									"    \"payment_intent_id\": \"pi_3Oo7PUI8t6XbCC5Y0SdEGgwd\",",
+									"    \"amount\": 3000",
+									"}",
+									"",
+									"pm.collectionVariables.set('partial_refund_req_body', JSON.stringify(body));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"name": "cache-control",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"name": "postman-token",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "content-type",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"name": "content-length",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"name": "host",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.32.1",
+								"name": "user-agent",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"name": "accept",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"name": "accept-encoding",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"name": "connection",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{partial_refund_req_body}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/refund/partial",
+						"description": "This request creates a partial refund for a successful client payment on Stripe.\n\n## Request Body\n\n- transfer_group: the id of a particular gig\n- amount: the amoun to refund in CENTS\n- refund_reason: the reason for the transfer\n    \n\n> Look in the \\`Pre-request Script\\` tab of this request for more details \n  \n\n## Response\n\n### Error - 400 - Invalid Request\n\nAn error response of 400 implies one or more of:\n\n- the \\`refund_reason\\` field is invalid\n- the \\`transfer_group\\` field is invalid\n- the \\`amount\\` field is invalid\n    \n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a \\`refund\\` object from Stripe representing the refund for the payment\n- a \\`tax_transaction_reversal\\` object representing the tax transaction refund from Stripe\n    \n\nIt is important to note this step only refunds the client from your Stripe platform balance.\n\nTo get back the transfers from the contractors, you have to manually call the \\`Debit Connected Account\\` endpoint for each associated contractor with the amount previously sent to the contractor.\n\nThis contractor transfer refund can fail due to contractor's insufficient balance.  \nTwo ways to solve these are:\n\n- the code: the logic to pay contractors on each successful client payment checks to see if the contractor is owing, and if so, subtracts the amount he's owing before sending to him\n- manually: try to debit the contractor again in the future, by calling \\`Debit Connected Account\\`, when the contractor has gotten some funds in their balance\n    \n\n``` json\n{\n    \"data\": {\n        \"refund\": {...},\n        \"tax_transaction_reversal\": {...}\n    },\n    \"message\": \"Charge and tax transaction reversed successfully. Don't forget to refund associated transfers.\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "connect",
+			"item": [
+				{
+					"name": "Debit Connected Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currency\": \"usd\",\n    \"amount\": 200,\n    \"destination\": \"acct_1Ga7BvI8t6XbCC5Y\"\n    // \"transfer_group\": \"gig_gt3q1q\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/connect/:object/:action",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connect",
+								":object",
+								":action"
+							],
+							"variable": [
+								{
+									"key": "object",
+									"value": "transfers",
+									"type": "string"
+								},
+								{
+									"key": "action",
+									"value": "create",
+									"type": "string"
+								}
+							]
+						},
+						"description": "This request debits a connected account's available balance on Stripe to make up for credit owed the platform\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Request Params\n\n- \\`object\\`: transfers\n- `action`: create\n    \n\n## Request Body\n\nFor request body, refer to here: [https://docs.stripe.com/api/transfers/create](https://docs.stripe.com/api/transfers/create)\n\n> The \\`transfer_group\\` is the associated gig id for the gig you are debiting the contractor for \n  \n\n## Response\n\n### Error - 400 - Bad Request\n\nAn error response of 400 implies either the request body or the request params are incorrect\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a Stripe \\`transfer\\` object for the debit\n    \n\n``` json\n{\n    \"data\": {\n        \"id\": \"tr_1OoiBNIZ3hc5uLXAowM7WtHF\",\n        \"object\": \"transfer\",\n        \"amount\": 200,\n        \"amount_reversed\": 0,\n        \"balance_transaction\": \"txn_1OoiBNIZ3hc5uLXAeWvsZcO5\",\n        \"created\": 1709107685,\n        \"currency\": \"usd\",\n        \"description\": null,\n        \"destination\": \"acct_1Ga7BvI8t6XbCC5Y\",\n        \"destination_payment\": \"py_1OoiBNI8t6XbCC5Y2VjIDEVx\",\n        \"livemode\": false,\n        \"metadata\": {},\n        \"reversals\": {\n            \"object\": \"list\",\n            \"data\": [],\n            \"has_more\": false,\n            \"total_count\": 0,\n            \"url\": \"/v1/transfers/tr_1OoiBNIZ3hc5uLXAowM7WtHF/reversals\"\n        },\n        \"reversed\": false,\n        \"source_transaction\": null,\n        \"source_type\": \"card\",\n        \"transfer_group\": null\n    },\n    \"message\": \"transfers create'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contractor Transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/connect/charges/list?limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connect",
+								"charges",
+								"list"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "This request fetches all charges associated with a connected account from Stripe.\n\n## Request Query\n\nFor a complete list of query params, refer here: [https://docs.stripe.com/api/charges/list](https://docs.stripe.com/api/charges/list)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a list of charges\n    \n\n``` json\n{\n    \"data\": {\n        \"object\": \"list\",\n        \"data\": [\n            {\n                \"id\": \"py_1OjfYwIZ3hc5uLXA6c5rN1nw\",\n                \"object\": \"charge\",\n                \"amount\": 4455,\n                \"amount_captured\": 4455,\n                \"amount_refunded\": 0,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": null,\n                \"application_fee_amount\": null,\n                \"balance_transaction\": \"txn_1OjfYwIZ3hc5uLXAP2e61JFl\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1707905974,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgbPmIL7raM6LBZoz8P3x2saNxUfr4cs83NzU9olrbNBdEWsb98ai9_NjUmPTR0atPuaB5xE\",\n                \"refunded\": false,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3OjfYSI8t6XbCC5Y0vNGRLkE\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1OjengIZ3hc5uLXA51z0xMZV\",\n                \"object\": \"charge\",\n                \"amount\": 5610,\n                \"amount_captured\": 5610,\n                \"amount_refunded\": 5610,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": null,\n                \"application_fee_amount\": null,\n                \"balance_transaction\": \"txn_1OjengIZ3hc5uLXAQXB5pJyM\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1707903044,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgZbtWhiNHY6LBa3vZn7GfnSXuM_UmzdmLowuQQP09BP0tf60I3vZLJLkSj3rsAeqU70O55x\",\n                \"refunded\": true,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3OjejBI8t6XbCC5Y1zEGPS4q\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1Oc2xTIZ3hc5uLXAdiFUI4O6\",\n                \"object\": \"charge\",\n                \"amount\": 360,\n                \"amount_captured\": 360,\n                \"amount_refunded\": 0,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": null,\n                \"application_fee_amount\": null,\n                \"balance_transaction\": \"txn_1Oc2xUIZ3hc5uLXAO58ZW20F\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1706089284,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgZ7OvZ49rY6LBbtimOwuVhCQjLZxGMgOPPN3sFRVlKwcjdTAuVLlFYXauleqX1yrkpdJK_v\",\n                \"refunded\": false,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3Oc2srI8t6XbCC5Y1fYVAiBH\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1ObsV1IZ3hc5uLXAtcU1ctLf\",\n                \"object\": \"charge\",\n                \"amount\": 2000,\n                \"amount_captured\": 2000,\n                \"amount_refunded\": 0,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": null,\n                \"application_fee_amount\": null,\n                \"balance_transaction\": \"txn_1ObsV2IZ3hc5uLXAoT45sKSV\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1706049079,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgb8vsJdGOU6LBYvnc11lj_rT6MrI72lj6KQ2K869LBCWjsO4vQ8EvRXnvibndtcnmNzMHAr\",\n                \"refunded\": false,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3ObsRRI8t6XbCC5Y19pF1kIt\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1ObrxEIZ3hc5uLXAqRmiLp3m\",\n                \"object\": \"charge\",\n                \"amount\": 2000,\n                \"amount_captured\": 2000,\n                \"amount_refunded\": 0,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": null,\n                \"application_fee_amount\": null,\n                \"balance_transaction\": \"txn_1ObrxEIZ3hc5uLXANI5cLZlp\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1706046984,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMga1lKThY5c6LBZkDWpsUFpYwJCIGC2XyuwQeCqh2kbpxZSpdJejX4MF_l3KBi0iZlNhBpE1\",\n                \"refunded\": false,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3ObrwNI8t6XbCC5Y03AV1cwG\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1ObOCZIZ3hc5uLXAQRW7tlKp\",\n                \"object\": \"charge\",\n                \"amount\": 2000,\n                \"amount_captured\": 2000,\n                \"amount_refunded\": 0,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": null,\n                \"application_fee_amount\": null,\n                \"balance_transaction\": \"txn_1ObOCZIZ3hc5uLXAHBWpuhyz\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1705932615,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgaJsNXwq1k6LBbb61RgmgfMYI7gfgMJdwhsvTxAWR5KZSNbwgneqjdGrlSancwsheTF2IHC\",\n                \"refunded\": false,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3ObOCHI8t6XbCC5Y1hzkhA0i\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1OabSwIZ3hc5uLXASCVHWn0a\",\n                \"object\": \"charge\",\n                \"amount\": 10000,\n                \"amount_captured\": 10000,\n                \"amount_refunded\": 0,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": \"fee_1OabSxIZ3hc5uLXAAhXuQNl7\",\n                \"application_fee_amount\": 1000,\n                \"balance_transaction\": \"txn_1OabSxIZ3hc5uLXAmaRtaO1B\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1705745274,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": \"1514-9643\",\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgYx7N04rG86LBaoBQAJVufKakeBBjHutaqCFKCSF0HgBXUapp3aUQB3jNLWPRyiCVLhisne\",\n                \"refunded\": false,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3OabQuI8t6XbCC5Y0UTf1hHL\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1OZhdsIZ3hc5uLXAt0EGqR67\",\n                \"object\": \"charge\",\n                \"amount\": 5000,\n                \"amount_captured\": 5000,\n                \"amount_refunded\": 5000,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": \"fee_1OZhdtIZ3hc5uLXAvzhCgywG\",\n                \"application_fee_amount\": 250,\n                \"balance_transaction\": \"txn_1OZhdtIZ3hc5uLXABmIOKaKC\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1705530689,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgYnDj2_R906LBYgjQaGAdQTnuROUuaEWCenVr_0JMhpsxvhvPrEgRpZXkvhZwHQfl8-9-od\",\n                \"refunded\": true,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3OZhbzI8t6XbCC5Y0gnEJrwy\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1OZhF8IZ3hc5uLXAXpYCPwxF\",\n                \"object\": \"charge\",\n                \"amount\": 3000,\n                \"amount_captured\": 3000,\n                \"amount_refunded\": 0,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": \"fee_1OZhF8IZ3hc5uLXAu51IXV1D\",\n                \"application_fee_amount\": 150,\n                \"balance_transaction\": \"txn_1OZhF8IZ3hc5uLXA387eIwV0\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1705529154,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgY14A1kQCQ6LBYp1Ek92lhIXc6IGWBZjl0BXKhYm9z6kc7192asjk87WHYK70iWclvRpGvF\",\n                \"refunded\": false,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3OZhEjI8t6XbCC5Y0OdtW6Ks\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            },\n            {\n                \"id\": \"py_1OZhB4IZ3hc5uLXAsYHGPRvT\",\n                \"object\": \"charge\",\n                \"amount\": 3000,\n                \"amount_captured\": 3000,\n                \"amount_refunded\": 0,\n                \"application\": \"ca_HLr8fGovbX7Ol2a212urIbbUoz0w5Gyj\",\n                \"application_fee\": \"fee_1OZhB5IZ3hc5uLXAib5sRRiP\",\n                \"application_fee_amount\": 150,\n                \"balance_transaction\": \"txn_1OZhB5IZ3hc5uLXAAkHf9bev\",\n                \"billing_details\": {\n                    \"address\": {\n                        \"city\": null,\n                        \"country\": null,\n                        \"line1\": null,\n                        \"line2\": null,\n                        \"postal_code\": null,\n                        \"state\": null\n                    },\n                    \"email\": null,\n                    \"name\": null,\n                    \"phone\": null\n                },\n                \"calculated_statement_descriptor\": null,\n                \"captured\": true,\n                \"created\": 1705528903,\n                \"currency\": \"usd\",\n                \"customer\": null,\n                \"description\": null,\n                \"destination\": null,\n                \"dispute\": null,\n                \"disputed\": false,\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"fraud_details\": {},\n                \"invoice\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"on_behalf_of\": null,\n                \"order\": null,\n                \"outcome\": null,\n                \"paid\": true,\n                \"payment_intent\": null,\n                \"payment_method\": null,\n                \"payment_method_details\": {\n                    \"stripe_account\": {},\n                    \"type\": \"stripe_account\"\n                },\n                \"receipt_email\": null,\n                \"receipt_number\": null,\n                \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xT1pIWHRJWjNoYzV1TFhBKJzq_K4GMgZClAIBcNU6LBZ3bN-9JIsuxUSdrmTNpmHkSZ8sgLU8OputnpYcqX4tgGYYojFbEpb4c7sR\",\n                \"refunded\": false,\n                \"review\": null,\n                \"shipping\": null,\n                \"source\": {\n                    \"id\": \"acct_1Ga7BvI8t6XbCC5Y\",\n                    \"object\": \"account\",\n                    \"application_icon\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfZldUOTZ6ckk1R0dhWjFBU0Y1anlzdDRt004btbgCNN\",\n                    \"application_logo\": \"\",\n                    \"application_name\": \"Get All Work Done\"\n                },\n                \"source_transfer\": \"tr_3OZhAjI8t6XbCC5Y0UkMlZxn\",\n                \"statement_descriptor\": null,\n                \"statement_descriptor_suffix\": null,\n                \"status\": \"succeeded\",\n                \"transfer_data\": null,\n                \"transfer_group\": null\n            }\n        ],\n        \"has_more\": true,\n        \"url\": \"/v1/charges\"\n    },\n    \"message\": \"charges list'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contractor Balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/connect/balance/retrieve",
+						"description": "This request fetches all charges associated with a connected account from Stripe.\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA Stripe Balance object\n\n``` json\n{\n    \"data\": {\n        \"object\": \"balance\",\n        \"available\": [\n            {\n                \"amount\": 27265,\n                \"currency\": \"usd\",\n                \"source_types\": {\n                    \"card\": 27265\n                }\n            }\n        ],\n        \"instant_available\": [\n            {\n                \"amount\": 27265,\n                \"currency\": \"usd\",\n                \"source_types\": {\n                    \"card\": 27265\n                }\n            }\n        ],\n        \"livemode\": false,\n        \"pending\": [\n            {\n                \"amount\": 0,\n                \"currency\": \"usd\",\n                \"source_types\": {\n                    \"card\": 0\n                }\n            }\n        ]\n    },\n    \"message\": \"balance retrieve'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "List Contractor Payouts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/connect/payouts/list?limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connect",
+								"payouts",
+								"list"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "This request lists all debit card and bank payouts associated with a connected account from Stripe.\n\n## Request Query\n\nFor a complete list of query params, refer here: [https://docs.stripe.com/api/payouts/list](https://docs.stripe.com/api/payouts/list)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns a list of contractor payouts\n\n``` json\n{\n    \"data\": {\n        \"object\": \"list\",\n        \"data\": [\n            {\n                \"id\": \"po_1OjR2LIZ3hc5uLXAHU8pnuKX\",\n                \"object\": \"payout\",\n                \"amount\": 1000,\n                \"arrival_date\": 1707782400,\n                \"automatic\": false,\n                \"balance_transaction\": \"txn_1OjR2LIZ3hc5uLXAkas3cPdt\",\n                \"created\": 1707850137,\n                \"currency\": \"usd\",\n                \"description\": null,\n                \"destination\": \"card_1ObQf2IZ3hc5uLXAMUnadm90\",\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"method\": \"standard\",\n                \"original_payout\": null,\n                \"reconciliation_status\": \"not_applicable\",\n                \"reversed_by\": null,\n                \"source_type\": \"card\",\n                \"statement_descriptor\": null,\n                \"status\": \"paid\",\n                \"type\": \"card\"\n            },\n            {\n                \"id\": \"po_1OjQyxIZ3hc5uLXAyQyAZPBo\",\n                \"object\": \"payout\",\n                \"amount\": 2000,\n                \"arrival_date\": 1707782400,\n                \"automatic\": false,\n                \"balance_transaction\": \"txn_1OjQyxIZ3hc5uLXAMcmxOr3E\",\n                \"created\": 1707849927,\n                \"currency\": \"usd\",\n                \"description\": null,\n                \"destination\": \"card_1ObQf2IZ3hc5uLXAMUnadm90\",\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"method\": \"standard\",\n                \"original_payout\": null,\n                \"reconciliation_status\": \"not_applicable\",\n                \"reversed_by\": null,\n                \"source_type\": \"card\",\n                \"statement_descriptor\": null,\n                \"status\": \"paid\",\n                \"type\": \"card\"\n            },\n            {\n                \"id\": \"po_1OjQvzIZ3hc5uLXAwwuyQlUR\",\n                \"object\": \"payout\",\n                \"amount\": 50,\n                \"arrival_date\": 1707782400,\n                \"automatic\": false,\n                \"balance_transaction\": \"txn_1OjQvzIZ3hc5uLXAnfp3uecZ\",\n                \"created\": 1707849743,\n                \"currency\": \"usd\",\n                \"description\": null,\n                \"destination\": \"card_1ObQf2IZ3hc5uLXAMUnadm90\",\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"method\": \"standard\",\n                \"original_payout\": null,\n                \"reconciliation_status\": \"not_applicable\",\n                \"reversed_by\": null,\n                \"source_type\": \"card\",\n                \"statement_descriptor\": null,\n                \"status\": \"paid\",\n                \"type\": \"card\"\n            },\n            {\n                \"id\": \"po_1OjQsEIZ3hc5uLXA86aK7hDC\",\n                \"object\": \"payout\",\n                \"amount\": 100,\n                \"arrival_date\": 1707782400,\n                \"automatic\": false,\n                \"balance_transaction\": \"txn_1OjQsEIZ3hc5uLXA9JtGEAsA\",\n                \"created\": 1707849510,\n                \"currency\": \"usd\",\n                \"description\": null,\n                \"destination\": \"card_1ObQf2IZ3hc5uLXAMUnadm90\",\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"method\": \"standard\",\n                \"original_payout\": null,\n                \"reconciliation_status\": \"not_applicable\",\n                \"reversed_by\": null,\n                \"source_type\": \"card\",\n                \"statement_descriptor\": null,\n                \"status\": \"paid\",\n                \"type\": \"card\"\n            },\n            {\n                \"id\": \"po_1OjBgSIZ3hc5uLXAXaORDZbl\",\n                \"object\": \"payout\",\n                \"amount\": 200,\n                \"arrival_date\": 1707782400,\n                \"automatic\": false,\n                \"balance_transaction\": \"txn_1OjBgSIZ3hc5uLXAw64EuZqk\",\n                \"created\": 1707791120,\n                \"currency\": \"usd\",\n                \"description\": null,\n                \"destination\": \"ba_1OjBgRIZ3hc5uLXAx3GVzgMZ\",\n                \"failure_balance_transaction\": null,\n                \"failure_code\": null,\n                \"failure_message\": null,\n                \"livemode\": false,\n                \"metadata\": {},\n                \"method\": \"standard\",\n                \"original_payout\": null,\n                \"reconciliation_status\": \"not_applicable\",\n                \"reversed_by\": null,\n                \"source_type\": \"card\",\n                \"statement_descriptor\": \"Test pay\",\n                \"status\": \"paid\",\n                \"type\": \"bank_account\"\n            }\n        ],\n        \"has_more\": false,\n        \"url\": \"/v1/payouts\"\n    },\n    \"message\": \"payouts list'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "List Contractor Tax Registrations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/connect/tax.registrations/list?limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connect",
+								"tax.registrations",
+								"list"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "This request lists all tax registrations associated with a connected account from Stripe.\n\n## Request Query\n\nFor a complete list of query params, refer here: [https://docs.stripe.com/api/tax/registrations/all](https://docs.stripe.com/api/tax/registrations/all)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns a list of contractor tax registrations\n\n``` json\n{\n    \"data\": {\n        \"object\": \"list\",\n        \"data\": [\n            {\n                \"id\": \"taxreg_1OonZrIGWz9N1AyFYMgG6Vgp\",\n                \"object\": \"tax.registration\",\n                \"active_from\": 1709128423,\n                \"country\": \"US\",\n                \"country_options\": {\n                    \"us\": {\n                        \"state\": \"CA\",\n                        \"type\": \"state_sales_tax\"\n                    }\n                },\n                \"created\": 1709128423,\n                \"expires_at\": 1797033600,\n                \"livemode\": false,\n                \"status\": \"active\"\n            }\n        ],\n        \"has_more\": false,\n        \"url\": \"/v1/tax/registrations\"\n    },\n    \"message\": \"tax.registrations list'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Contractor Tax Settings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/connect/tax.settings/retrieve",
+						"description": "This request lists all tax registrations associated with a connected account from Stripe.\n\n## Request Query\n\nFor a complete list of query params, refer here: [https://docs.stripe.com/api/tax/registrations/all](https://docs.stripe.com/api/tax/registrations/all)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns a list of contractor task registrations\n\n``` json\n{\n    \"data\": {\n        \"object\": \"list\",\n        \"data\": [\n            {\n                \"id\": \"taxreg_1OonZrIGWz9N1AyFYMgG6Vgp\",\n                \"object\": \"tax.registration\",\n                \"active_from\": 1709128423,\n                \"country\": \"US\",\n                \"country_options\": {\n                    \"us\": {\n                        \"state\": \"CA\",\n                        \"type\": \"state_sales_tax\"\n                    }\n                },\n                \"created\": 1709128423,\n                \"expires_at\": 1797033600,\n                \"livemode\": false,\n                \"status\": \"active\"\n            }\n        ],\n        \"has_more\": false,\n        \"url\": \"/v1/tax/registrations\"\n    },\n    \"message\": \"tax.registrations list'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contractor Tax Registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"country\": \"US\",\n    \"country_options\": {\n        \"us\": {\n            \"state\": \"NJ\",\n            \"type\": \"state_sales_tax\"\n        }\n    },\n    \"active_from\": \"now\",\n    \"expires_at\": 1738368000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/connect/tax.registrations/create",
+						"description": "This request creates a task registration for a connected account on Stripe.\n\n## Request Body\n\nFor a complete list of the request body, refer here: [https://docs.stripe.com/api/tax/registrations/create](https://docs.stripe.com/api/tax/registrations/create)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 201\n\nA successful response, returns the created tax registration\n\n``` json\n{\n    \"data\": {\n        \"id\": \"taxreg_1Ooo14IGWz9N1AyFCRKfuHaC\",\n        \"object\": \"tax.registration\",\n        \"active_from\": 1709130110,\n        \"country\": \"US\",\n        \"country_options\": {\n            \"us\": {\n                \"state\": \"NJ\",\n                \"type\": \"state_sales_tax\"\n            }\n        },\n        \"created\": 1709130110,\n        \"expires_at\": 1738368000,\n        \"livemode\": false,\n        \"status\": \"active\"\n    },\n    \"message\": \"tax.registrations create'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Contractor Document",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/mac/Downloads/3318923-flexbox-froggy-removebg-preview.png"
+								},
+								{
+									"key": "purpose",
+									"value": "business_logo",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/connect/files/create",
+						"description": "This request creates a task registration for a connected account on Stripe.\n\n## Request Body\n\nFor a complete list of the request body, refer here: [https://docs.stripe.com/api/tax/registrations/create](https://docs.stripe.com/api/tax/registrations/create)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 201\n\nA successful response, returns the created tax registration\n\n``` json\n{\n    \"data\": {\n        \"id\": \"taxreg_1Ooo14IGWz9N1AyFCRKfuHaC\",\n        \"object\": \"tax.registration\",\n        \"active_from\": 1709130110,\n        \"country\": \"US\",\n        \"country_options\": {\n            \"us\": {\n                \"state\": \"NJ\",\n                \"type\": \"state_sales_tax\"\n            }\n        },\n        \"created\": 1709130110,\n        \"expires_at\": 1738368000,\n        \"livemode\": false,\n        \"status\": \"active\"\n    },\n    \"message\": \"tax.registrations create'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Expire Contractor Tax Registration",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"expires_at\": \"now\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/connect/tax.registrations/update?id=taxreg_1OonZrIGWz9N1AyFYMgG6Vgp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connect",
+								"tax.registrations",
+								"update"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "taxreg_1OonZrIGWz9N1AyFYMgG6Vgp"
+								}
+							]
+						},
+						"description": "This request expires a task registration for a connected account on Stripe.\n\n## Request Body\n\nFor a complete list of the request body, refer here: [https://docs.stripe.com/api/tax/registrations/update](https://docs.stripe.com/api/tax/registrations/update)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns the expired tax registration\n\n``` json\n{\n    \"data\": {\n        \"id\": \"taxreg_1OonZrIGWz9N1AyFYMgG6Vgp\",\n        \"object\": \"tax.registration\",\n        \"active_from\": 1709128423,\n        \"country\": \"US\",\n        \"country_options\": {\n            \"us\": {\n                \"state\": \"CA\",\n                \"type\": \"state_sales_tax\"\n            }\n        },\n        \"created\": 1709128423,\n        \"expires_at\": 1709130421,\n        \"livemode\": false,\n        \"status\": \"expired\"\n    },\n    \"message\": \"tax.registrations update'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Contractor Tax Settings",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"defaults\": {\n        \"tax_behavior\": \"inferred_by_currency\",\n        \"tax_code\": \"txcd_10000000\"\n    },\n    \"head_office\": {\n        \"address\": {\n            \"line1\": \"333 Fremont Street\",\n            \"line2\": \"\",\n            \"city\": \"Alameda\",\n            \"state\": \"CA\",\n            \"postal_code\": \"94105\",\n            \"country\": \"US\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/connect/tax.settings/update",
+						"description": "This request expires a task registration for a connected account on Stripe.\n\n## Request Body\n\nFor a complete list of the request body, refer here: [https://docs.stripe.com/api/tax/registrations/update](https://docs.stripe.com/api/tax/registrations/update)\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns the expired tax registration\n\n``` json\n{\n    \"data\": {\n        \"id\": \"taxreg_1OonZrIGWz9N1AyFYMgG6Vgp\",\n        \"object\": \"tax.registration\",\n        \"active_from\": 1709128423,\n        \"country\": \"US\",\n        \"country_options\": {\n            \"us\": {\n                \"state\": \"CA\",\n                \"type\": \"state_sales_tax\"\n            }\n        },\n        \"created\": 1709128423,\n        \"expires_at\": 1709130421,\n        \"livemode\": false,\n        \"status\": \"expired\"\n    },\n    \"message\": \"tax.registrations update'd successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contractor Payout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 1000, // amount in cents\n    \"currency\": \"usd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/connect/payouts/create",
+						"description": "This request creates a payout to a connected account's default settlement method, whether a bank account or a debit card.\n\nFor more about this request, refer here: [https://docs.stripe.com/api/payouts/create](https://docs.stripe.com/api/payouts/create)\n\n> Note that funds ONLY become available for withdrawal after a minimum of 7 days \n  \n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error - 400 - Bad Request\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns a Stripe Payout object\n\n``` json\n{\n    \"data\": {\n        \"id\": \"po_1OooPIIZ3hc5uLXAffenxmb5\",\n        \"object\": \"payout\",\n        \"amount\": 1000,\n        \"arrival_date\": 1709078400,\n        \"automatic\": false,\n        \"balance_transaction\": \"txn_1OooPIIZ3hc5uLXA2ARY1Ti6\",\n        \"created\": 1709131612,\n        \"currency\": \"usd\",\n        \"description\": null,\n        \"destination\": \"ba_1OZVkCIZ3hc5uLXAk5fDPwy8\",\n        \"failure_balance_transaction\": null,\n        \"failure_code\": null,\n        \"failure_message\": null,\n        \"livemode\": false,\n        \"metadata\": {},\n        \"method\": \"standard\",\n        \"original_payout\": null,\n        \"reconciliation_status\": \"not_applicable\",\n        \"reversed_by\": null,\n        \"source_type\": \"card\",\n        \"statement_descriptor\": null,\n        \"status\": \"pending\",\n        \"type\": \"bank_account\"\n    },\n    \"message\": \"payouts create'd successfully\",\n    \"error\": false\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tax-report",
+			"item": [
+				{
+					"name": "List All Contractor Tax Reports",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/tax-report",
+						"description": "This request fetches all existing tax reports for a particular contractor.\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a list of all the tax reports requested by the contractor\n    \n\n``` json\n{\n    \"data\": {\n        \"reports\": [\n            {\n                \"id\": \"frr_1OomYrI8t6XbCC5YRXFpvxv9\",\n                \"object\": \"reporting.report_run\",\n                \"created\": 1709124517,\n                \"error\": null,\n                \"livemode\": false,\n                \"parameters\": {\n                    \"connected_account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                    \"interval_end\": 1708992000,\n                    \"interval_start\": 1640995200\n                },\n                \"report_type\": \"connected_account_tax.transactions.itemized.2\",\n                \"result\": {\n                    \"id\": \"file_1OomWgI8t6XbCC5Y2HE5AfIY\",\n                    \"object\": \"file\",\n                    \"created\": 1709124382,\n                    \"expires_at\": 1740660382,\n                    \"filename\": \"frr_1OomWYI8t6XbCC5YN908YScg.csv\",\n                    \"links\": {\n                        \"object\": \"list\",\n                        \"data\": [],\n                        \"has_more\": false,\n                        \"url\": \"/v1/file_links?file=file_1OomWgI8t6XbCC5Y2HE5AfIY\"\n                    },\n                    \"purpose\": \"finance_report_run\",\n                    \"size\": 592,\n                    \"title\": \"FinanceReportRun frr_1OomWYI8t6XbCC5YN908YScg\",\n                    \"type\": \"csv\",\n                    \"url\": \"https://files.stripe.com/v1/files/file_1OomWgI8t6XbCC5Y2HE5AfIY/contents\"\n                },\n                \"status\": \"succeeded\",\n                \"succeeded_at\": 1709124517\n            },\n            {\n                \"id\": \"frr_1OomWYI8t6XbCC5YN908YScg\",\n                \"object\": \"reporting.report_run\",\n                \"created\": 1709124374,\n                \"error\": null,\n                \"livemode\": false,\n                \"parameters\": {\n                    \"connected_account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                    \"interval_end\": 1708992000,\n                    \"interval_start\": 1640995200\n                },\n                \"report_type\": \"connected_account_tax.transactions.itemized.2\",\n                \"result\": {\n                    \"id\": \"file_1OomWgI8t6XbCC5Y2HE5AfIY\",\n                    \"object\": \"file\",\n                    \"created\": 1709124382,\n                    \"expires_at\": 1740660382,\n                    \"filename\": \"frr_1OomWYI8t6XbCC5YN908YScg.csv\",\n                    \"links\": {\n                        \"object\": \"list\",\n                        \"data\": [],\n                        \"has_more\": false,\n                        \"url\": \"/v1/file_links?file=file_1OomWgI8t6XbCC5Y2HE5AfIY\"\n                    },\n                    \"purpose\": \"finance_report_run\",\n                    \"size\": 592,\n                    \"title\": \"FinanceReportRun frr_1OomWYI8t6XbCC5YN908YScg\",\n                    \"type\": \"csv\",\n                    \"url\": \"https://files.stripe.com/v1/files/file_1OomWgI8t6XbCC5Y2HE5AfIY/contents\"\n                },\n                \"status\": \"succeeded\",\n                \"succeeded_at\": 1709124382\n            }\n        ]\n    },\n    \"message\": \"Tax reports fetched successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Single Contractor Tax Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tax-report/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tax-report",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "frr_1OomWYI8t6XbCC5YN908YScg",
+									"type": "string"
+								}
+							]
+						},
+						"description": "This request fetches a single existing tax report for a particular contractor.\n\n## Request Params\n\n### \\`id\\`\n\nThe unique ID of the particular tax report\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Response\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 403 - Forbidden\n\nAn error response of 403 implies the user requesting the report is not the owner of the report\n\n### Error 404 - Not Found\n\nAn error response of 404 implies a tax report with the particular id was not found\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a single tax report requested by the contractor\n    \n\n``` json\n{\n    \"data\": {\n        \"fileLink\": {\n            \"id\": \"link_1OomenI8t6XbCC5YdZRG8KDr\",\n            \"object\": \"file_link\",\n            \"created\": 1709124885,\n            \"expired\": false,\n            \"expires_at\": null,\n            \"file\": \"file_1OomWgI8t6XbCC5Y2HE5AfIY\",\n            \"livemode\": false,\n            \"metadata\": {},\n            \"url\": \"https://files.stripe.com/links/MDB8YWNjdF8xR2E3QnZJOHQ2WGJDQzVZfGZsX3Rlc3RfQ2VDZUpaNGUxV21zRU5IZVBCVENaaTBE002w3l9216\"\n        }\n    },\n    \"message\": \"Tax report generated successfully\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Request Contractor Tax Report",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"interval_end\": 1708991000,\n    \"interval_start\": 1640995200\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/tax-report",
+						"description": "This request requests a tax report for a particular contractor from Stripe\n\n## Request Headers\n\nA JWT token paased as an API key in the header field: \\`gak-Iue-aty-dh\\` is required.  \nThis JWT token is received and saved on the FE after successful authentication using magic.link on the FE and BE.  \nFor more details check out: [https://magic.link/docs/home/welcome](https://magic.link/docs/home/welcome)\n\n## Request Body\n\n- \\`interval_start\\`: a timestamp from when the report should start\n- \\`interval end\\`: a timestamp when the report should end\n    \n\n> Interval end cannot be more than yesterday's timestamp \n  \n\n## Response\n\n### Error - 400 - Bad Request\n\nAn error response of 400 implies the request body is invalid\n\n### Error 401 - Unauthorized\n\nAn error response of 401 implies there's an issue with verifying the JWT token\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n- a Stripe \\`report run\\` object for the contractor\n    \n\n``` json\n{\n    \"data\": {\n        \"report\": {\n            \"id\": \"frr_1OomYrI8t6XbCC5YRXFpvxv9\",\n            \"object\": \"reporting.report_run\",\n            \"created\": 1709124517,\n            \"error\": null,\n            \"livemode\": false,\n            \"parameters\": {\n                \"connected_account\": \"acct_1OZHXtIZ3hc5uLXA\",\n                \"interval_end\": 1708992000,\n                \"interval_start\": 1640995200\n            },\n            \"report_type\": \"connected_account_tax.transactions.itemized.2\",\n            \"result\": {\n                \"id\": \"file_1OomWgI8t6XbCC5Y2HE5AfIY\",\n                \"object\": \"file\",\n                \"created\": 1709124382,\n                \"expires_at\": 1740660382,\n                \"filename\": \"frr_1OomWYI8t6XbCC5YN908YScg.csv\",\n                \"links\": {\n                    \"object\": \"list\",\n                    \"data\": [],\n                    \"has_more\": false,\n                    \"url\": \"/v1/file_links?file=file_1OomWgI8t6XbCC5Y2HE5AfIY\"\n                },\n                \"purpose\": \"finance_report_run\",\n                \"size\": 592,\n                \"title\": \"FinanceReportRun frr_1OomWYI8t6XbCC5YN908YScg\",\n                \"type\": \"csv\",\n                \"url\": \"https://files.stripe.com/v1/files/file_1OomWgI8t6XbCC5Y2HE5AfIY/contents\"\n            },\n            \"status\": \"succeeded\",\n            \"succeeded_at\": 1709124517\n        }\n    },\n    \"message\": \"Tax report requested\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transfer",
+			"item": [
+				{
+					"name": "Pay Contractors",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gig_id\": \"gig_gt3q1q\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/transfer",
+						"description": "This request transfers money from the Platform account to contactors associated with a completed gig.\n\n> This is necessary if the gig was not completed at the time the client made payment \n  \n\n## Request Body\n\n- \\`gig_id\\`: the id of the gig to make transfer for\n    \n\n> The status value of this gig must be set to \\`completed\\` for the transfer to be processed successfully \n  \n\n## Response\n\n### Error - 400 - Bad Request\n\nAn error response of 400 implies the `gig_id` is invalid or the gig is not in \\`completed\\` state\n\n### Error 500 - Internal Server Error\n\n### Success - 200\n\nA successful response, returns:\n\n``` json\n{\n    \"message\": \"Transfers completed successfully\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": {
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZGlkOmV0aHI6MHg0YTU1Nzc4ZjliMjFBYTZlMGMxNjM1NTE1NWY4MTc3Qjc4NjlBODk5IiwianRpIjoiMjJiODc4NWYtZWMzZS00OWU3LThmNzgtYzVmZTk1YTZkNTAyIiwiaWF0IjoxNzE5MjExOTk1LCJleHAiOjE3MTkyOTgzOTV9.QCxBTa4U0C5Jx1QNwdtg90p59ZW3u4bCC6rF0weWtW0",
+			"key": "Gak-Iue-Aty-Dh"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://get-all-work-done.fly.dev",
+			"type": "string"
+		},
+		{
+			"key": "full_refund_req_body",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "partial_refund_req_body",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

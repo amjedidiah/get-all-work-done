@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import expressWinston from 'express-winston';
 import { handleResponseError } from './utils';
 import logger from './config/logger';
+import webhookRoute from './routes/webhook.route';
 
 const host = isDev ? 'localhost' : '0.0.0.0';
 const port = isDev ? 8080 : 3000;
@@ -17,7 +18,9 @@ app.use(helmet());
 
 app.use(cors()); // Cross Origin Site requests
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // Configure to accept JSON request body
+
+// Webhook
+app.use('/webhook', express.raw({ type: 'application/json' }), webhookRoute);
 
 // Use Winston logger with Express Winston
 app.use(
@@ -28,6 +31,7 @@ app.use(
   })
 );
 
+app.use(express.json()); // Configure to accept JSON request body
 app.use(routes);
 
 // Error handling middleware

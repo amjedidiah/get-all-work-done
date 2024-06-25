@@ -30,7 +30,7 @@ const postFullRefund = async (request: Request, response: Response) => {
       charge: paymentIntent.latest_charge.toString(),
       reason: refund_reason,
     });
-    logger.info('Charge refunded successfully: ', refund);
+    logger.info(`Charge refunded successfully: ${JSON.stringify(refund)}`);
 
     // Reverse the tax transaction
     const taxTransactionReversal = await stripe.tax.transactions.createReversal(
@@ -46,8 +46,9 @@ const postFullRefund = async (request: Request, response: Response) => {
       }
     );
     logger.info(
-      'Tax transaction reversed successfully: ',
-      taxTransactionReversal
+      `Tax transaction reversed successfully: ${JSON.stringify(
+        taxTransactionReversal
+      )}`
     );
 
     const transfer_reversals = await handleRefundTransfers(

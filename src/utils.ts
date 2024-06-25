@@ -23,7 +23,9 @@ export const handleResponseError = (res: Response, error: any) => {
 
   logger.error(error);
 
-  res.status(code).json({ data: null, message: (error as Error).message });
+  res
+    .status(code)
+    .json({ data: null, message: (error as Error).message, error: true });
   res.end();
 };
 
@@ -65,13 +67,12 @@ export const performConnectRequest = async (request: Request, user: User) => {
   return { data, code: request.method === 'POST' ? 201 : 200 };
 };
 
-export const prepWebhookEvent = (request: Request) => {
+export const prepWebhookEvent = (
+  request: Request,
+  secret = process.env.STRIPE_ENDPOINT_SECRET as string
+) => {
   const sig = request.headers['stripe-signature'] as string;
-  const event = stripe.webhooks.constructEvent(
-    request.body,
-    sig,
-    process.env.STRIPE_ENDPOINT_SECRET as string
-  );
+  const event = stripe.webhooks.constructEvent(request.body, sig, secret);
 
   // Check if the webhook is in live mode to handle effectively
   const isLiveMode = event.livemode;
