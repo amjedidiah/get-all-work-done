@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import User from "@/db/models/user";
 import useAuthFetch from "@/hooks/use-auth-fetch";
 import { useRouter } from "next/navigation";
 import useSWR, { useSWRConfig } from "swr";
-import { StripeAccount } from "@/types";
+import { StripeAccount, User } from "@/types";
 
 export default function useUser() {
   const authFetch = useAuthFetch();

@@ -1,7 +1,6 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import Stripe from "stripe";
 import taxRegistrationData from "@/data/tax-registration.json";
-import ipData from "@/data/ip-data.json";
 import { gigs } from "@/constants";
 
 declare global {
@@ -60,8 +59,6 @@ export type WithdrawFormValues = {
   amount: number;
 };
 
-export type BankAccount = Stripe.BankAccount;
-
 export type ExternalAccount = Stripe.ExternalAccount;
 
 export type ExternalAccountObject = Stripe.ExternalAccount["object"];
@@ -74,36 +71,23 @@ export type Payout = Stripe.Payout;
 
 export type PayoutListParams = Stripe.PayoutListParams;
 
-export type PaymentLink = Stripe.PaymentLink;
-
 export type PaymentIntent = Stripe.PaymentIntent;
-
-export type StripeEvent = Stripe.Event;
 
 export type Balance = Stripe.Balance;
 
 export type StripeAccount = Stripe.Account;
 
-export type Contractor = {
-  id: string;
-  isSettled: boolean;
-};
-
-export type ContractorWithShares = Contractor & {
-  percentageShare: number;
-};
-
 export type TaxSettings = Stripe.TaxSettingsUpdatedEvent["data"]["object"];
 
 export type TaxRegistration = (typeof taxRegistrationData)["data"][number];
 
-export type IPData = typeof ipData;
-
-export type Transfer = Stripe.Transfer;
-
-export type AccountWithCredit = {
-  accountId: string;
-  credit: number;
-};
-
 export type Gig = (typeof gigs)[number];
+
+export type User = {
+  id: string;
+  accountId: string;
+  email: string;
+  isOnboarded: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};

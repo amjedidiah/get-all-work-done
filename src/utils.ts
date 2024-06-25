@@ -1,25 +1,5 @@
-import {
-  BusinessType,
-  AccountTypeEnum,
-  DOB,
-  Contractor,
-  ContractorWithShares,
-} from "@/types";
+import { BusinessType, AccountTypeEnum, DOB } from "@/types";
 import { business_types } from "@/constants";
-import { NextResponse } from "next/server";
-
-export const handleRequestError = (error: any) => {
-  console.error(error);
-
-  return NextResponse.json(
-    {
-      data: null,
-      message: error.message,
-      error: true,
-    },
-    { status: error.statusCode ?? 500 }
-  );
-};
 
 export const getIsIndividual = (business_type: BusinessType) =>
   business_type === AccountTypeEnum.individual;
@@ -101,42 +81,3 @@ export const formatAmount = (amount: number) =>
   }).format(amount / 100);
 
 export const swrFetcher = (url: string) => fetch(url).then((res) => res.json());
-
-export const updateContractorsWithShares = (
-  contractors: Array<Contractor | ContractorWithShares>
-) => {
-  let updatedContractors = [...contractors];
-
-  // If no shares for all contractors
-  if (contractors.every((contractor) => !("percentageShare" in contractor)))
-    updatedContractors = updatedContractors.map((contractor) => ({
-      ...contractor,
-      percentageShare: (1 / contractors.length).toFixed(2),
-    }));
-  // If shares for some contractors
-  else if (contractors.some((contractor) => "percentageShare" in contractor)) {
-    const totalPercentage = updatedContractors.reduce((total, contractor) => {
-      if (!("percentageShare" in contractor)) return total;
-      return total + contractor.percentageShare;
-    }, 0);
-    const balancePercentage = 1 - totalPercentage;
-    const contractorsWithoutShares = updatedContractors.filter(
-      (contractor) => !("percentageShare" in contractor)
-    ).length;
-
-    updatedContractors = updatedContractors.map((contractor) => {
-      if (!("percentageShare" in contractor))
-        return {
-          ...contractor,
-          percentageShare: (
-            balancePercentage / contractorsWithoutShares
-          ).toFixed(2),
-        };
-      return contractor;
-    });
-  }
-
-  return updatedContractors.filter(
-    ({ isSettled }) => !isSettled
-  ) as ContractorWithShares[];
-};

@@ -1,23 +1,18 @@
 {
-  "name": "get-all-work-done",
+  "name": "get-all-work-done-stripe-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:secure": "next dev --experimental-https",
+    "dev:insecure": "next dev",
+    "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:init": "npx sequelize-cli init",
-    "db:create": "npx sequelize-cli db:create",
-    "db:create:prod": "npx sequelize-cli db:create --env=production",
-    "db:migrate": "npx sequelize-cli db:migrate",
     "docs:dev": "vocs dev",
     "docs:build": "vocs build",
     "docs:preview": "vocs preview"
   },
   "dependencies": {
-    "@magic-sdk/admin": "^2.0.1",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
@@ -27,28 +22,20 @@
     "@stripe/react-connect-js": "^3.1.1",
     "@stripe/react-stripe-js": "^2.4.0",
     "@stripe/stripe-js": "^2.2.2",
-    "@types/sequelize": "^4.28.19",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "country-state-city": "^3.2.1",
-    "dotenv": "^16.4.5",
-    "jose": "^5.2.0",
     "lucide-react": "^0.311.0",
     "magic-sdk": "^21.5.0",
-    "mysql2": "^3.7.0",
     "next": "14.0.4",
-    "pg": "^8.11.3",
     "react": "^18",
     "react-dom": "^18",
-    "sequelize": "^6.35.2",
-    "sequelize-cli": "^6.6.2",
     "stripe": "^14.10.0",
     "swr": "^2.2.4",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.0",
-    "uuid": "^9.0.1",
-    "vocs": "1.0.0-alpha.32"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -59,8 +46,10 @@
     "encoding": "^0.1.13",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "husky": "^9.0.11",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vocs": "1.0.0-alpha.32"
   }
 }

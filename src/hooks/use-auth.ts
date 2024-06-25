@@ -1,6 +1,7 @@
-import { HEADER_NAME } from "@/lib/auth";
 import { isClient } from "@/utils";
 import { useState } from "react";
+
+const HEADER_NAME = process.env.NEXT_PUBLIC_HEADER_NAME!;
 
 const storeUserToken = (token: string) =>
   localStorage.setItem(HEADER_NAME, token);

@@ -1,9 +1,6 @@
-import { Magic } from "@magic-sdk/admin";
-import { Magic as MagicSDK } from "magic-sdk";
-
-export const magicSecret = new Magic(process.env.MAGIC_SECRET_API_KEY);
+import { Magic } from "magic-sdk";
 
 export const magicPublishable =
   typeof window !== "undefined"
-    ? new MagicSDK(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_API_KEY as string)
+    ? new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_API_KEY as string)
     : null;

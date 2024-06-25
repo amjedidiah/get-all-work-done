@@ -1,6 +1,6 @@
 "use client";
 import { Elements } from "@stripe/react-stripe-js";
-import { stripePublishable } from "@/lib/stripe.fe";
+import { stripePublishable } from "@/lib/stripe";
 import PaymentStatus from "@/components/payment-status";
 
 const PayStatus = () => {
