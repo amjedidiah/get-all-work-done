@@ -18,10 +18,14 @@ export default function useAuthFetch() {
           headers.append(name, value)
         );
 
-      const { data, message, error } = await fetch(input, {
-        ...init,
-        headers,
-      }).then((res) => res.json());
+      const { data, message, error } = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}${input}`,
+        {
+          ...init,
+          headers,
+        }
+      ).then((res) => res.json());
+      
 
       if (error) throw new Error(message);
 

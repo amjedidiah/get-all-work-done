@@ -99,7 +99,7 @@ export default function useRegisterForm() {
 
       // 5. Create account
       const data = await authFetch(
-        "/api/stripe/account",
+        "/auth/register",
         {
           method: "POST",
           body: JSON.stringify({ email: person.email }),

@@ -33,7 +33,7 @@ const modifyExternalAccountsData = (externalAccounts?: ExternalAccount[]) => {
 };
 
 export default function useExternalAccounts(type: ExternalAccountObject) {
-  const key = `/api/stripe/external-account?type=${type}`;
+  const key = `/external-account?type=${type}`;
   const { isAuthed } = useAuth();
   const authFetch = useAuthFetch();
   const fetcher = (url: string) =>
@@ -53,7 +53,7 @@ export default function useExternalAccounts(type: ExternalAccountObject) {
   const handleCreateExternalAccount = useCallback(
     async (external_account_token: string) =>
       authFetch(
-        "/api/stripe/external-account",
+        "/external-account",
         {
           method: "POST",
           body: JSON.stringify({}),
@@ -86,7 +86,7 @@ export default function useExternalAccounts(type: ExternalAccountObject) {
 
   const handleDeleteExternalAccount = useCallback(
     async (externalAccountId?: string) => {
-      await authFetch(`/api/stripe/external-account/${externalAccountId}`, {
+      await authFetch(`/external-account/${externalAccountId}`, {
         method: "DELETE",
       });
       mutate(key);
@@ -96,7 +96,7 @@ export default function useExternalAccounts(type: ExternalAccountObject) {
 
   const handleMakeDefaultExternalAccount = useCallback(
     async (externalAccountId?: string) => {
-      await authFetch(`/api/stripe/external-account/${externalAccountId}`, {
+      await authFetch(`/external-account/${externalAccountId}`, {
         method: "PATCH",
       });
       mutate(key);

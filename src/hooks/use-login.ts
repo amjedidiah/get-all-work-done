@@ -14,13 +14,16 @@ export default function useLogin() {
     try {
       const didToken = await magic.auth.loginWithMagicLink({ email });
 
-      const { data, error, message } = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${didToken}`,
-        },
-      }).then((res) => res.json());
+      const { data, error, message } = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${didToken}`,
+          },
+        }
+      ).then((res) => res.json());
 
       if (error) throw new Error(message);
 

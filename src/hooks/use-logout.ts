@@ -12,7 +12,10 @@ export default function useLogout() {
 
   const handleLogout = useCallback(
     async () =>
-      authFetch<null>("/api/auth/logout")
+      authFetch<null>("/auth/logout", {
+        method: "POST",
+        body: JSON.stringify({}),
+      })
         .catch(console.error)
         .finally(async () => {
           if (stripeConnectInstance) await stripeConnectInstance.logout();

@@ -52,7 +52,7 @@ export default function useTaxSettingsForm() {
       if (!formValues.postal_code) throw new Error("Postal code is required");
 
       // 2. Update tax settings
-      await authFetch<any>("/api/stripe/connected/tax.settings/update", {
+      await authFetch<any>("/connect/tax.settings/update", {
         method: "POST",
         body: JSON.stringify({
           defaults: {
@@ -61,7 +61,7 @@ export default function useTaxSettingsForm() {
           },
           ["head_office"]: { address: { ...formValues, country: "US" } },
         }),
-      }).then(() => mutate("/api/stripe/connected/tax.settings/retrieve"));
+      }).then(() => mutate("/connect/tax.settings/retrieve"));
 
       setFormResponse("Tax settings updated");
       setFormValues(initialValues);

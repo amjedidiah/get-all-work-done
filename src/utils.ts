@@ -80,4 +80,16 @@ export const formatAmount = (amount: number) =>
     minimumFractionDigits: 2,
   }).format(amount / 100);
 
-export const swrFetcher = (url: string) => fetch(url).then((res) => res.json());
+export const swrFetcher = ({
+  url,
+  body,
+  method,
+}: {
+  url: string;
+  body: string;
+  method: string;
+}) =>
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+    method,
+    body,
+  }).then((res) => res.json());

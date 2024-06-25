@@ -39,19 +39,16 @@ export default function useWithdrawForm({
       if (amount > withdrawableBalance) throw new Error("Insufficient funds");
 
       // 3. Withdraw
-      const data = await authFetch<any>(
-        "/api/stripe/connected/payouts/create",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            amount: amount * 100, // accounting for cents
-            currency: "usd",
-          }),
-        }
-      );
+      const data = await authFetch<any>("/connect/payouts/create", {
+        method: "POST",
+        body: JSON.stringify({
+          amount: amount * 100, // accounting for cents
+          currency: "usd",
+        }),
+      });
       console.info("Withdrawal successful: ", data);
-      mutate("/api/stripe/connected/payouts/list?limit=100"); // Update payouts list
-      mutate("/api/stripe/connected/balance/retrieve"); // Update available balance
+      mutate("/connect/payouts/list?limit=100"); // Update payouts list
+      mutate("/connect/balance/retrieve"); // Update available balance
 
       setFormResponse("Withdrawal successful");
       setFormValues(initialValues);

@@ -7,15 +7,11 @@ export default function useTransactions(params: TransactionsListParams) {
   const authFetch = useAuthFetch();
   const paramsString = convertToQueryString(params as any);
   const fetcher = (url: string) => authFetch<{ data: Transaction[] }>(url);
-  const { data } = useSWR(
-    "/api/stripe/connected/charges/list?" + paramsString,
-    fetcher,
-    {
-      revalidateIfStale: true,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: true,
-    }
-  );
+  const { data } = useSWR("/connect/charges/list?" + paramsString, fetcher, {
+    revalidateIfStale: true,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+  });
 
   return data?.data;
 }

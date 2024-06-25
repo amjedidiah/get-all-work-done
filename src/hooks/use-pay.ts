@@ -6,7 +6,7 @@ import { Gig } from "@/types";
 const handlePayment = async (gig: Gig) => {
   if (!gig) throw new Error("Gig not found");
 
-  return fetch("/api/stripe/payment", {
+  return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/payment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -8,7 +8,7 @@ export default function useUser() {
   const authFetch = useAuthFetch();
   const fetcher = (url: string) =>
     authFetch<{ user: User; account: StripeAccount }>(url);
-  const { data, error, isLoading } = useSWR("/api/user", fetcher, {
+  const { data, error, isLoading } = useSWR("/account", fetcher, {
     revalidateIfStale: true,
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
@@ -20,10 +20,10 @@ export default function useUser() {
   const handleUpdateUser = async (userUpdate: { dbUpdate: Partial<User> }) =>
     authFetch<{
       user: User;
-    }>("/api/user", {
+    }>("/account", {
       method: "PATCH",
       body: JSON.stringify(userUpdate),
-    }).then(() => mutate("/api/user"));
+    }).then(() => mutate("/account"));
 
   useEffect(() => {
     if (!data?.user && !isLoading) router.push("/logout");

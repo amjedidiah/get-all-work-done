@@ -19,7 +19,7 @@ export default function useConnectInstance() {
 
       const data = await authFetch<{
         client_secret: string;
-      }>("/api/stripe/account/session", {
+      }>("/account/session", {
         method: "POST",
         body: JSON.stringify({
           account_id: user.accountId,

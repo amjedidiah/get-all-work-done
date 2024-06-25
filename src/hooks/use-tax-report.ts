@@ -5,7 +5,7 @@ import useSWR, { useSWRConfig } from "swr";
 export default function useTaxReport() {
   const authFetch = useAuthFetch();
   const fetcher = (url: string) => authFetch<{ reports: any[] }>(url);
-  const { data } = useSWR("/api/stripe/tax/report", fetcher, {
+  const { data } = useSWR("/tax-report", fetcher, {
     revalidateIfStale: true,
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
@@ -20,13 +20,13 @@ export default function useTaxReport() {
     interval_start: number;
     interval_end: number;
   }) =>
-    authFetch<any>("/api/stripe/tax/report", {
+    authFetch<any>("/tax-report", {
       method: "POST",
       body: JSON.stringify({ interval_start, interval_end }),
-    }).then(() => mutate("/api/stripe/tax/report"));
+    }).then(() => mutate("/tax-report"));
 
   const fetchFileLink = async (fileId: string) =>
-    authFetch<any>(`/api/stripe/tax/report/${fileId}`).then(({ fileLink }) =>
+    authFetch<any>(`/tax-report/${fileId}`).then(({ fileLink }) =>
       setActiveFile(fileLink?.url)
     );
 

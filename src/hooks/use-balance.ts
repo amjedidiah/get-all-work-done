@@ -4,7 +4,7 @@ import useAuthFetch from "@/hooks/use-auth-fetch";
 import useSWR from "swr";
 
 export default function useBalance() {
-  const key = `/api/stripe/connected/balance/retrieve`;
+  const key = `/connect/balance/retrieve`;
   const { isAuthed } = useAuth();
   const authFetch = useAuthFetch();
   const fetcher = (url: string) => authFetch<Balance>(url);

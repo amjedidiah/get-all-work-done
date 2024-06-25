@@ -6,15 +6,11 @@ import useSWR, { useSWRConfig } from "swr";
 export default function useTaxRegistration() {
   const authFetch = useAuthFetch();
   const fetcher = (url: string) => authFetch<{ data: TaxRegistration[] }>(url);
-  const { data } = useSWR(
-    "/api/stripe/connected/tax.registrations/list",
-    fetcher,
-    {
-      revalidateIfStale: true,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: true,
-    }
-  );
+  const { data } = useSWR("/connect/tax.registrations/list", fetcher, {
+    revalidateIfStale: true,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+  });
   const { mutate } = useSWRConfig();
 
   const createTaxRegistration = useCallback(
@@ -23,7 +19,7 @@ export default function useTaxRegistration() {
         ? new Date(expiresDate).getTime() / 1000
         : undefined;
 
-      return authFetch<any>("/api/stripe/connected/tax.registrations/create", {
+      return authFetch<any>("/connect/tax.registrations/create", {
         method: "POST",
         body: JSON.stringify({
           country: "US",
@@ -37,8 +33,8 @@ export default function useTaxRegistration() {
           expires_at,
         }),
       }).then(() => {
-        mutate("/api/stripe/connected/tax.registrations/list");
-        mutate("/api/stripe/connected/tax.settings/retrieve");
+        mutate("/connect/tax.registrations/list");
+        mutate("/connect/tax.settings/retrieve");
       });
     },
     [authFetch, mutate]
@@ -50,7 +46,7 @@ export default function useTaxRegistration() {
         const taxRegistrationId = e.currentTarget.id;
 
         return authFetch<any>(
-          `/api/stripe/connected/tax.registrations/update?id=${taxRegistrationId}`,
+          `/connect/tax.registrations/update?id=${taxRegistrationId}`,
           {
             method: "PATCH",
             body: JSON.stringify({
@@ -58,8 +54,8 @@ export default function useTaxRegistration() {
             }),
           }
         ).then(() => {
-          mutate("/api/stripe/connected/tax.registrations/list");
-          mutate("/api/stripe/connected/tax.settings/retrieve");
+          mutate("/connect/tax.registrations/list");
+          mutate("/connect/tax.settings/retrieve");
         });
       },
       [authFetch, mutate]

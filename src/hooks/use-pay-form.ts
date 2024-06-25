@@ -16,7 +16,14 @@ export default function usePayForm({ price, paymentIntentId }: PayFormProps) {
   const [discountedPrice, setDiscountedPrice] = useState(0);
   const { data } = useSWR(
     discountedPrice
-      ? `/api/stripe/payment/update?amount=${discountedPrice}&paymentIntentId=${paymentIntentId}`
+      ? {
+          url: "/payment",
+          body: JSON.stringify({
+            amount: discountedPrice,
+            paymentIntentId,
+          }),
+          method: "PATCH",
+        }
       : null,
     swrFetcher
   );
